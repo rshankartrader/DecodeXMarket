@@ -3144,20 +3144,6 @@
                 `;
             }
 
-            // In initializeNewHeader function, update the navButtons event listener:
-navButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        const page = button.getAttribute('data-page');
-        
-        // Check if it's a link to indicators.html
-        if (page === 'premium') {
-            window.location.href = 'indicators.html';
-        } else {
-            setActivePage(page);
-            closeMenu();
-        }
-    });
-});
             
             // Time Cycles Page
             const timecyclesContent = document.getElementById('timecyclesContent');
