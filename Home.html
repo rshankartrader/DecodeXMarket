@@ -8,19 +8,19 @@
     <style>
         /* ===== CSS RESET & VARIABLES ===== */
         :root {
-            --primary: #3498db;
-            --secondary: #2ecc71;
-            --accent: #e74c3c;
+            --primary: #10b981;
+            --secondary: #059669;
+            --accent: #f43f5e;
             --success: #27ae60;
             --danger: #c0392b;
             --warning: #f39c12;
             --info: #2980b9;
-            --dark: #1a1a2e;
-            --darker: #16213e;
+            --dark: #0f172a;
+            --darker: #0a1120;
             --light: #ecf0f1;
-            --gray: #7f8c8d;
+            --gray: #94a3b8;
             --card-bg: rgba(255, 255, 255, 0.05);
-            --border: rgba(255, 255, 255, 0.1);
+            --border: #1e293b;
         }
 
         * {
@@ -43,14 +43,14 @@
             padding: 0 20px;
         }
 
-        /* ===== LOGIN SYSTEM ===== */
+        /* ===== UPDATED LOGIN SYSTEM ===== */
         .login-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(26, 26, 46, 0.95);
+            background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(10px);
             z-index: 2000;
             display: flex;
@@ -60,9 +60,9 @@
         }
 
         .login-box {
-            background: var(--card-bg);
+            background: rgba(30, 41, 59, 0.95);
             border: 1px solid var(--border);
-            border-radius: 15px;
+            border-radius: 16px;
             padding: 40px;
             width: 100%;
             max-width: 500px;
@@ -76,9 +76,10 @@
         }
 
         .login-header h2 {
-            color: var(--secondary);
+            color: var(--primary);
             margin-bottom: 10px;
             font-size: 2rem;
+            font-weight: 900;
         }
 
         .login-tabs {
@@ -97,6 +98,7 @@
             font-size: 1.1rem;
             cursor: pointer;
             transition: all 0.3s;
+            font-weight: 600;
         }
 
         .login-tab.active {
@@ -126,6 +128,7 @@
             display: block;
             margin-bottom: 8px;
             color: var(--light);
+            font-weight: 600;
         }
 
         .form-group input {
@@ -133,7 +136,7 @@
             padding: 15px;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 12px;
             color: var(--light);
             font-size: 1rem;
             transition: all 0.3s;
@@ -142,16 +145,16 @@
         .form-group input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
         }
 
         .login-btn {
             width: 100%;
             padding: 15px;
-            background: linear-gradient(135deg, var(--primary), var(--info));
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
@@ -161,7 +164,7 @@
 
         .login-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.4);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.4);
         }
 
         .register-note {
@@ -181,330 +184,555 @@
             text-decoration: underline;
         }
 
-        /* ===== UPDATED HEADER & NAVIGATION ===== */
-        header {
-            background: rgba(26, 26, 46, 0.98);
-            backdrop-filter: blur(10px);
-            padding: 15px 0;
+        /* ===== UPDATED HEADER (NEW DESIGN) ===== */
+        .header {
+            width: 100%;
+            background-color: var(--dark);
             border-bottom: 1px solid var(--border);
             position: sticky;
             top: 0;
             z-index: 1000;
         }
 
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: -1;
         }
 
-        .logo {
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            height: 70px;
             display: flex;
             align-items: center;
-            gap: 15px;
-            z-index: 1001;
+            justify-content: space-between;
+        }
+
+        /* Logo Section */
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            text-decoration: none;
         }
 
         .logo-icon {
-            font-size: 2.5rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(5, 150, 105, 0.4);
         }
 
-        .logo-text h1 {
-            font-size: 1.8rem;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            font-weight: 700;
+        .logo-icon i {
+            color: white;
+            font-size: 20px;
         }
 
-        .logo-text p {
-            color: var(--gray);
-            font-size: 0.9rem;
+        .logo-text {
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Daily Update Note */
-        .daily-update-note {
-            background: linear-gradient(135deg, rgba(243, 156, 18, 0.2), rgba(231, 76, 60, 0.2));
-            border: 1px solid rgba(243, 156, 18, 0.3);
-            border-radius: 8px;
-            padding: 12px 20px;
-            color: var(--warning);
-            font-size: 0.95rem;
+        .logo-main {
+            font-size: 20px;
+            font-weight: 900;
+            color: white;
+            line-height: 1;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-sub {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1;
+            margin-top: 4px;
+        }
+
+        /* Action Buttons */
+        .header-actions {
             display: flex;
             align-items: center;
             gap: 10px;
-            margin: 15px auto;
-            max-width: 800px;
-            text-align: center;
+        }
+
+        .action-button {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
             justify-content: center;
-            flex-grow: 1;
-            margin-left: 30px;
-            margin-right: 30px;
+            font-size: 18px;
         }
 
-        .daily-update-note i {
-            font-size: 1.1rem;
-        }
-
-        /* HAMBURGER MENU */
-        .nav-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--light);
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 10px;
-            z-index: 1001;
-        }
-
-        /* Desktop Navigation */
-        .desktop-nav {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .desktop-nav ul {
-            display: flex;
-            list-style: none;
-            gap: 5px;
-        }
-
-        .desktop-nav li {
-            margin: 0;
-        }
-
-        .desktop-nav a {
-            color: var(--light);
-            text-decoration: none;
-            padding: 10px 18px;
-            border-radius: 6px;
-            transition: all 0.3s;
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            white-space: nowrap;
-        }
-
-        .desktop-nav a:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--secondary);
+        .action-button:hover {
+            background-color: #334155;
             transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
-        .desktop-nav a.active {
-            background: rgba(52, 152, 219, 0.2);
-            color: var(--primary);
-            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+        .refresh-button.refreshing {
+            animation: spin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
         }
 
-        .desktop-nav a i {
-            font-size: 1.1rem;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        /* User Info in Desktop */
-        .user-info-desktop {
+        /* User Info */
+        .user-info {
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin-left: 20px;
+            gap: 10px;
+            padding-left: 10px;
         }
 
-        .user-welcome {
-            color: var(--gray);
-            font-size: 0.9rem;
-            white-space: nowrap;
+        .user-details {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
         }
 
-        .logout-btn {
-            background: linear-gradient(135deg, var(--danger), #e74c3c);
+        .user-name {
+            font-size: 13px;
+            font-weight: 800;
             color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            line-height: 1;
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
             white-space: nowrap;
         }
 
-        .logout-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        .user-role {
+            font-size: 10px;
+            color: var(--primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.2px;
+            margin-top: 3px;
         }
 
-        /* Mobile Navigation */
-        @media (max-width: 1024px) {
-            .daily-update-note {
-                display: none;
-            }
-            
-            .desktop-nav {
-                display: none;
-            }
-            
-            .user-info-desktop {
-                display: none;
-            }
-            
-            .nav-toggle {
-                display: block;
-            }
-        }
-
-        .mobile-nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(26, 26, 46, 0.98);
-            backdrop-filter: blur(20px);
-            flex-direction: column;
-            align-items: stretch;
-            padding: 80px 20px 20px;
-            transform: translateX(-100%);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 1000;
-            overflow-y: auto;
-        }
-
-        .mobile-nav.active {
-            transform: translateX(0);
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .mobile-nav ul {
-            flex-direction: column;
-            width: 100%;
-            list-style: none;
-        }
-
-        .mobile-nav li {
-            width: 100%;
-            margin-bottom: 10px;
-        }
-
-        .mobile-nav a {
-            display: block;
-            padding: 15px 20px;
-            text-align: left;
-            color: var(--light);
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
+        .logout-button {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            color: var(--accent);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
-            gap: 15px;
-            transition: all 0.3s;
+            justify-content: center;
+            font-size: 16px;
         }
 
-        .mobile-nav a:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--secondary);
+        .logout-button:hover {
+            background-color: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(244, 63, 94, 0.2);
         }
 
-        .mobile-nav a.active {
-            background: rgba(52, 152, 219, 0.2);
+        /* Last Updated Time Display */
+        .last-updated {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gray);
+            font-size: 12px;
+            margin-right: 15px;
+        }
+
+        .last-updated i {
             color: var(--primary);
+            font-size: 14px;
         }
 
-        .mobile-nav a i {
-            font-size: 1.2rem;
-            width: 24px;
-            text-align: center;
+        #lastUpdate {
+            font-weight: 600;
+            color: var(--light);
+            min-width: 100px;
         }
 
-        .mobile-user-info {
-            flex-direction: column;
-            width: 100%;
-            padding-top: 30px;
-            margin-top: 30px;
+        /* Hamburger Menu Button */
+        .menu-toggle {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            z-index: 70;
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            color: var(--gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-left: 10px;
+        }
+
+        .menu-toggle:hover {
+            background-color: #334155;
+            color: white;
+        }
+
+        .menu-toggle.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            box-shadow: 0 0 20px rgba(5, 150, 105, 0.5);
+            transform: rotate(180deg);
+        }
+
+        /* Desktop Navigation (Hidden in new design) */
+        .desktop-nav {
+            display: none;
+        }
+
+        .daily-update-note {
+            display: none;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background-color: var(--dark);
+            z-index: 65;
+            overflow: hidden;
+            height: 0;
+            transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-top: 1px solid transparent;
+        }
+
+        .mobile-menu.open {
+            height: calc(100vh - 70px);
             border-top: 1px solid var(--border);
         }
 
-        .mobile-user-info .user-welcome {
-            color: var(--light);
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .mobile-user-info .logout-btn {
-            width: 100%;
-            justify-content: center;
-            padding: 12px;
-            font-size: 1.1rem;
-        }
-
-        .close-nav {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            color: var(--light);
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 10px;
-        }
-
-        .header-top {
+        .mobile-menu-container {
+            padding: 0 20px;
+            height: 100%;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 15px;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
         }
 
-        .refresh-section {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        #refreshBtn {
-            background: linear-gradient(135deg, var(--primary), var(--info));
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 25px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
-        }
-
-        #refreshBtn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
-        }
-
-        #refreshBtn:active {
+        .mobile-menu.open .mobile-menu-container {
+            opacity: 1;
             transform: translateY(0);
         }
 
-        .update-info {
-            color: var(--gray);
-            font-size: 0.9rem;
+        /* Navigation Items - UPDATED AS REQUESTED */
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .nav-button {
+            width: 100%;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 15px;
+            padding: 18px 20px;
+            border-radius: 14px;
+            font-size: 17px;
+            font-weight: 800;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid;
+            cursor: pointer;
+            background-color: rgba(30, 41, 59, 0.5);
+            color: var(--gray);
+            border-color: #334155;
+            text-align: left;
+        }
+
+        .nav-button.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
+            transform: translateX(5px);
+        }
+
+        .nav-button:not(.active):hover {
+            background-color: #1e293b;
+            color: white;
+            border-color: #475569;
+            transform: translateX(5px);
+        }
+
+        .nav-icon {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Mobile User Section - UPDATED AS REQUESTED */
+        .mobile-user-section {
+            margin-top: auto;
+            padding: 20px 0 30px 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(15, 23, 42, 0.7) 100%);
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, #334155 50%, transparent 100%);
+            width: 100%;
+            margin-bottom: 25px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+        }
+
+        .mobile-menu.open .divider {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: rgba(30, 41, 59, 0.9);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid #334155;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+        }
+
+        .mobile-menu.open .user-card {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .user-card-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border: 1px solid #475569;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .user-avatar i {
+            font-size: 22px;
+            color: var(--primary);
+        }
+
+        .user-card-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-card-info h4 {
+            color: white;
+            font-weight: 900;
+            font-size: 16px;
+            line-height: 1.2;
+            margin-bottom: 6px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .user-card-badge {
+            display: inline-block;
+            color: var(--primary);
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            background-color: rgba(16, 185, 129, 0.15);
+            padding: 5px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .mobile-logout-button {
+            width: 50px;
+            height: 50px;
+            margin-left: 15px;
+            background-color: rgba(244, 63, 94, 0.15);
+            border: 1px solid rgba(244, 63, 94, 0.3);
+            color: var(--accent);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .mobile-logout-button:hover {
+            background-color: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(244, 63, 94, 0.2);
+        }
+
+        /* Menu Item Animations */
+        .nav-button {
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mobile-menu.open .nav-button {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .mobile-menu.open .nav-button:nth-child(1) { transition-delay: 0.1s; }
+        .mobile-menu.open .nav-button:nth-child(2) { transition-delay: 0.15s; }
+        .mobile-menu.open .nav-button:nth-child(3) { transition-delay: 0.2s; }
+        .mobile-menu.open .nav-button:nth-child(4) { transition-delay: 0.25s; }
+        .mobile-menu.open .nav-button:nth-child(5) { transition-delay: 0.3s; }
+        .mobile-menu.open .nav-button:nth-child(6) { transition-delay: 0.35s; }
+
+        /* Responsive Header */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 15px;
+                height: 65px;
+            }
+
+            .logo-icon {
+                width: 40px;
+                height: 40px;
+            }
+
+            .logo-main {
+                font-size: 18px;
+            }
+
+            .logo-sub {
+                font-size: 10px;
+            }
+
+            .action-button,
+            .logout-button,
+            .menu-toggle {
+                width: 42px;
+                height: 42px;
+            }
+
+            .user-name {
+                max-width: 100px;
+                font-size: 12px;
+            }
+
+            .last-updated {
+                font-size: 11px;
+                margin-right: 10px;
+            }
+
+            #lastUpdate {
+                min-width: 80px;
+            }
+
+            .nav-items {
+                margin-top: 20px;
+            }
+
+            .nav-button {
+                padding: 16px 18px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-container {
+                height: 60px;
+            }
+
+            .logo-text {
+                display: none;
+            }
+
+            .user-name {
+                max-width: 80px;
+                font-size: 11px;
+            }
+
+            .last-updated {
+                display: none;
+            }
+
+            .action-button,
+            .logout-button,
+            .menu-toggle {
+                width: 40px;
+                height: 40px;
+            }
+
+            .mobile-menu-container {
+                padding: 0 15px;
+            }
+
+            .user-avatar {
+                width: 45px;
+                height: 45px;
+            }
+
+            .user-card-info h4 {
+                font-size: 15px;
+            }
+
+            .mobile-logout-button {
+                width: 45px;
+                height: 45px;
+            }
         }
 
         /* ===== DATE SECTION ===== */
@@ -522,8 +750,8 @@
         }
 
         .date-card {
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(41, 128, 185, 0.1));
-            border-radius: 15px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+            border-radius: 16px;
             padding: 20px;
             border: 1px solid var(--border);
         }
@@ -545,15 +773,15 @@
 
         /* ===== PREDICTION SECTION ===== */
         .prediction-card {
-            background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(39, 174, 96, 0.1));
-            border-radius: 15px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+            border-radius: 16px;
             padding: 25px;
             border: 1px solid var(--border);
             text-align: center;
         }
 
         .prediction-card h3 {
-            color: var(--secondary);
+            color: var(--primary);
             margin-bottom: 20px;
             display: flex;
             align-items: center;
@@ -565,7 +793,7 @@
             font-size: 2.2rem;
             font-weight: 800;
             color: white;
-            text-shadow: 0 0 20px rgba(46, 204, 113, 0.7);
+            text-shadow: 0 0 20px rgba(16, 185, 129, 0.7);
             margin: 15px 0;
             min-height: 50px;
             display: flex;
@@ -635,7 +863,7 @@
         }
 
         .purchase-link a {
-            color: var(--secondary);
+            color: var(--primary);
             text-decoration: none;
             font-weight: 600;
             word-break: break-all;
@@ -669,7 +897,7 @@
         .gann-calculator {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border);
-            border-radius: 15px;
+            border-radius: 16px;
             padding: 25px;
             margin: 30px 0;
         }
@@ -707,7 +935,7 @@
         .gann-input-section {
             background: rgba(255, 255, 255, 0.05);
             padding: 25px;
-            border-radius: 15px;
+            border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
@@ -728,7 +956,7 @@
             padding: 15px;
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
+            border-radius: 12px;
             color: white;
             font-size: 1.1rem;
             transition: all 0.3s ease;
@@ -746,7 +974,7 @@
             background: linear-gradient(135deg, #4cc9f0 0%, #4361ee 100%);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 1.2rem;
             font-weight: 600;
             cursor: pointer;
@@ -762,7 +990,7 @@
         .gann-output-section {
             background: rgba(255, 255, 255, 0.05);
             padding: 25px;
-            border-radius: 15px;
+            border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             display: none;
         }
@@ -772,7 +1000,7 @@
             padding: 20px;
             margin-bottom: 30px;
             background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
+            border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
@@ -802,7 +1030,7 @@
 
         .gann-table-section {
             background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
+            border-radius: 12px;
             overflow: hidden;
         }
 
@@ -840,7 +1068,7 @@
         .gann-explanation {
             background: rgba(255, 255, 255, 0.05);
             padding: 25px;
-            border-radius: 15px;
+            border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             margin-top: 40px;
         }
@@ -878,9 +1106,9 @@
 
         /* ===== CARDS ===== */
         .card {
-            background: var(--card-bg);
+            background: rgba(30, 41, 59, 0.8);
             border: 1px solid var(--border);
-            border-radius: 15px;
+            border-radius: 16px;
             padding: 25px;
             margin-bottom: 25px;
             backdrop-filter: blur(10px);
@@ -893,14 +1121,15 @@
         }
 
         .card-title {
-            color: var(--secondary);
+            color: var(--primary);
             font-size: 1.3rem;
             margin-bottom: 20px;
             padding-bottom: 10px;
-            border-bottom: 2px solid rgba(46, 204, 113, 0.3);
+            border-bottom: 2px solid rgba(16, 185, 129, 0.3);
             display: flex;
             align-items: center;
             gap: 10px;
+            font-weight: 700;
         }
 
         /* ===== PARTICIPANTS DATA ===== */
@@ -920,7 +1149,7 @@
         .participant-item {
             background: rgba(255, 255, 255, 0.03);
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 12px;
             border: 1px solid var(--border);
             text-align: center;
         }
@@ -959,7 +1188,7 @@
         .levels-section {
             background: rgba(255, 255, 255, 0.03);
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 12px;
             border: 1px solid var(--border);
         }
 
@@ -975,11 +1204,11 @@
         }
 
         .resistance-title {
-            color: var(--danger);
+            color: var(--accent);
         }
 
         .support-title {
-            color: var(--success);
+            color: var(--primary);
         }
 
         .levels-list {
@@ -990,7 +1219,7 @@
             padding: 12px 15px;
             margin-bottom: 8px;
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
+            border-radius: 12px;
             font-weight: 600;
             font-size: 1.1rem;
             border-left: 4px solid;
@@ -1003,11 +1232,11 @@
         }
 
         .levels-list li.resistance-level {
-            border-left-color: var(--danger);
+            border-left-color: var(--accent);
         }
 
         .levels-list li.support-level {
-            border-left-color: var(--success);
+            border-left-color: var(--primary);
         }
 
         /* ===== REVERSALS SECTION ===== */
@@ -1031,7 +1260,7 @@
         .reversals-section {
             background: rgba(255, 255, 255, 0.03);
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 12px;
             border: 1px solid var(--border);
         }
 
@@ -1082,7 +1311,7 @@
         .global-item {
             background: rgba(255, 255, 255, 0.03);
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 12px;
             border: 1px solid var(--border);
             text-align: center;
         }
@@ -1107,20 +1336,20 @@
         }
 
         .change-up {
-            background: rgba(46, 204, 113, 0.2);
-            color: var(--success);
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--primary);
         }
 
         .change-down {
-            background: rgba(231, 76, 60, 0.2);
-            color: var(--danger);
+            background: rgba(244, 63, 94, 0.2);
+            color: var(--accent);
         }
 
         .global-sentiment {
             margin-top: 20px;
             padding: 15px;
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
+            border-radius: 12px;
             border-left: 4px solid var(--warning);
         }
 
@@ -1153,7 +1382,7 @@
         .vix-main {
             background: rgba(155, 89, 182, 0.1);
             padding: 25px;
-            border-radius: 10px;
+            border-radius: 12px;
             border: 1px solid rgba(155, 89, 182, 0.3);
             text-align: center;
         }
@@ -1181,7 +1410,7 @@
         .range-item {
             background: rgba(255, 255, 255, 0.03);
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 12px;
             border: 1px solid var(--border);
             text-align: center;
         }
@@ -1209,7 +1438,7 @@
         .about-section {
             background: rgba(255, 255, 255, 0.03);
             padding: 25px;
-            border-radius: 15px;
+            border-radius: 16px;
             border: 1px solid var(--border);
             margin-bottom: 25px;
         }
@@ -1229,8 +1458,8 @@
         }
 
         .disclaimer {
-            background: rgba(231, 76, 60, 0.1);
-            border-left: 4px solid var(--danger);
+            background: rgba(244, 63, 94, 0.1);
+            border-left: 4px solid var(--accent);
             padding: 15px;
             border-radius: 0 8px 8px 0;
             margin: 20px 0;
@@ -1266,7 +1495,7 @@
         .contact-item {
             background: rgba(255, 255, 255, 0.03);
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 12px;
             border: 1px solid var(--border);
             text-align: center;
             transition: transform 0.3s;
@@ -1297,7 +1526,7 @@
         }
 
         .contact-link {
-            color: var(--secondary);
+            color: var(--primary);
             text-decoration: none;
             font-size: 0.9rem;
             display: inline-block;
@@ -1328,8 +1557,8 @@
 
         /* ===== OTHER PAGES ===== */
         .page-header {
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(41, 128, 185, 0.1));
-            border-radius: 15px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+            border-radius: 16px;
             padding: 30px;
             margin: 30px 0;
             text-align: center;
@@ -1351,7 +1580,7 @@
         .feature-card {
             background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 15px;
+            border-radius: 16px;
             padding: 30px;
             text-align: center;
             transition: all 0.3s;
@@ -1369,14 +1598,14 @@
         }
 
         .feature-card h3 {
-            color: var(--secondary);
+            color: var(--primary);
             margin-bottom: 15px;
             font-size: 1.5rem;
         }
 
-        /* ===== UPDATED FOOTER ===== */
+        /* ===== RESTORED ORIGINAL FOOTER ===== */
         footer {
-            background: rgba(26, 26, 46, 0.95);
+            background: rgba(15, 23, 42, 0.95);
             padding: 40px 0 20px;
             border-top: 1px solid var(--border);
             margin-top: 40px;
@@ -1394,7 +1623,7 @@
         }
 
         .footer-logo h3 {
-            color: var(--secondary);
+            color: var(--primary);
             margin-bottom: 15px;
             font-size: 1.8rem;
         }
@@ -1453,7 +1682,7 @@
         }
 
         .footer-links a:hover {
-            color: var(--secondary);
+            color: var(--primary);
         }
 
         .footer-bottom {
@@ -1468,7 +1697,7 @@
         }
 
         .footer-disclaimer {
-            background: rgba(231, 76, 60, 0.1);
+            background: rgba(244, 63, 94, 0.1);
             border-radius: 8px;
             padding: 15px;
             margin-top: 10px;
@@ -1484,9 +1713,9 @@
         }
 
         .legal-section {
-            background: var(--card-bg);
+            background: rgba(30, 41, 59, 0.8);
             border: 1px solid var(--border);
-            border-radius: 15px;
+            border-radius: 16px;
             padding: 30px;
             margin-bottom: 25px;
         }
@@ -1495,11 +1724,11 @@
             color: var(--primary);
             margin-bottom: 20px;
             padding-bottom: 10px;
-            border-bottom: 2px solid rgba(52, 152, 219, 0.3);
+            border-bottom: 2px solid rgba(16, 185, 129, 0.3);
         }
 
         .legal-section h4 {
-            color: var(--secondary);
+            color: var(--primary);
             margin: 25px 0 15px;
         }
 
@@ -1616,90 +1845,113 @@
     <!-- MAIN APP (HIDDEN UNTIL LOGIN) -->
     <div id="mainApp" style="display: none;">
         <!-- UPDATED HEADER -->
-        <header>
-            <div class="container">
-                <div class="header-content">
-                    <div class="logo">
-                        <div class="logo-icon">
-                            <i class="fas fa-chart-network"></i>
-                        </div>
-                        <div class="logo-text">
-                            <h1>DecodeXMarket</h1>
-                            <p>with RSK</p>
-                        </div>
+        <header class="header">
+            <div class="header-container">
+                <!-- Logo Section -->
+                <div class="logo-section" id="logoButton">
+                    <div class="logo-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="logo-text">
+                        <span class="logo-main">DecodeX</span>
+                        <span class="logo-sub">Market</span>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="header-actions">
+                    <!-- Last Updated Time Display -->
+                    <div class="last-updated">
+                        <i class="fas fa-clock"></i>
+                        Last: <span id="lastUpdate">Never</span>
                     </div>
                     
-                    <!-- Daily Update Note -->
-                    <div class="daily-update-note">
-                        <i class="fas fa-clock"></i> 
-                        Daily Update: New predictions go live at 9:00 PM (Post-Market Data Sync).
-                    </div>
-                    
-                    <!-- Desktop Navigation -->
-                    <nav class="desktop-nav">
-                        <ul>
-                            <li><a href="#" class="nav-link active" data-page="home"><i class="fas fa-home"></i> Home</a></li>
-                            <li><a href="#" class="nav-link" data-page="premium"><i class="fas fa-crown"></i> Premium</a></li>
-                            <li><a href="#" class="nav-link" data-page="timecycles"><i class="fas fa-clock"></i> Time Cycles</a></li>
-                            <li><a href="#" class="nav-link" data-page="oi"><i class="fas fa-chart-bar"></i> O.I Analysis</a></li>
-                            <li><a href="#" class="nav-link" data-page="gann"><i class="fas fa-calculator"></i> Gann Calculator</a></li>
-                            <li><a href="#" class="nav-link" data-page="links"><i class="fas fa-link"></i> Links</a></li>
-                            <li><a href="#" class="nav-link" data-page="contact"><i class="fas fa-envelope"></i> Contact</a></li>
-                        </ul>
-                    </nav>
-                    
-                    <!-- Desktop User Info -->
-                    <div class="user-info-desktop">
-                        <div class="user-welcome" id="userWelcome"></div>
-                        <button class="logout-btn" onclick="logout()">
-                            <i class="fas fa-sign-out-alt"></i> Logout
+                    <!-- Refresh Button -->
+                    <button class="action-button refresh-button" id="refreshButton" title="Refresh Data">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+
+                    <!-- User Info & Logout -->
+                    <div class="user-info">
+                        <div class="user-details">
+                            <span class="user-name" id="userName"></span>
+                            <span class="user-role" id="userRole"></span>
+                        </div>
+                        <button class="logout-button" id="logoutButton" title="Logout">
+                            <i class="fas fa-sign-out-alt"></i>
                         </button>
                     </div>
-                    
-                    <!-- HAMBURGER MENU TOGGLE -->
-                    <button class="nav-toggle" id="navToggle">
-                        <i class="fas fa-bars"></i>
+
+                    <!-- Hamburger Menu Button -->
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars" id="menuIcon"></i>
                     </button>
                 </div>
-                
-                <div class="header-top">
-                    <div class="refresh-section">
-                        <div class="update-info">
-                            <i class="fas fa-sync-alt"></i> 
-                            Last updated: <span id="lastUpdate">Never</span>
-                        </div>
-                        <button id="refreshBtn">
-                            <i class="fas fa-redo"></i> Refresh Data
+            </div>
+
+            <!-- Mobile Menu -->
+            <div class="mobile-menu" id="mobileMenu">
+                <div class="mobile-menu-container">
+                    <!-- UPDATED NAVIGATION AS REQUESTED -->
+                    <nav class="nav-items">
+                        <button class="nav-button active" data-page="home">
+                            <div class="nav-icon">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            DASHBOARD
                         </button>
+                        <button class="nav-button" data-page="premium">
+                            <div class="nav-icon">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                            PREMIUM INDICATORS
+                        </button>
+                        <button class="nav-button" data-page="oi">
+                            <div class="nav-icon">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            O.I ANALYSIS
+                        </button>
+                        <button class="nav-button" data-page="gann">
+                            <div class="nav-icon">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            GANN TOOL (SCALPING)
+                        </button>
+                        <button class="nav-button" data-page="links">
+                            <div class="nav-icon">
+                                <i class="fas fa-link"></i>
+                            </div>
+                            USEFUL LINKS
+                        </button>
+                        <button class="nav-button" data-page="contact">
+                            <div class="nav-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            CONTACT US
+                        </button>
+                    </nav>
+
+                    <!-- User Info & Logout at Bottom -->
+                    <div class="mobile-user-section">
+                        <div class="divider"></div>
+                        <div class="user-card">
+                            <div class="user-card-left">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user" id="mobileAvatarIcon"></i>
+                                </div>
+                                <div class="user-card-info">
+                                    <h4 id="mobileUserName"></h4>
+                                    <div class="user-card-badge" id="mobileUserRole"></div>
+                                </div>
+                            </div>
+                            <button class="mobile-logout-button" id="mobileLogoutButton" title="Logout">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Mobile Navigation Menu -->
-            <nav class="mobile-nav" id="mobileNav">
-                <button class="close-nav" id="closeNav">
-                    <i class="fas fa-times"></i>
-                </button>
-                <ul>
-                    <li><a href="#" class="nav-link active" data-page="home"><i class="fas fa-home"></i> Home</a></li>
-                    <li><a href="#" class="nav-link" data-page="premium"><i class="fas fa-crown"></i> Premium Indicators</a></li>
-                    <li><a href="#" class="nav-link" data-page="timecycles"><i class="fas fa-clock"></i> Time Cycles & Astro</a></li>
-                    <li><a href="#" class="nav-link" data-page="oi"><i class="fas fa-chart-bar"></i> O.I Analysis</a></li>
-                    <li><a href="#" class="nav-link" data-page="gann"><i class="fas fa-calculator"></i> Gann Calculator (Scalping)</a></li>
-                    <li><a href="#" class="nav-link" data-page="links"><i class="fas fa-link"></i> Useful Links</a></li>
-                    <li><a href="#" class="nav-link" data-page="contact"><i class="fas fa-envelope"></i> Contact Us</a></li>
-                    <li><a href="#" class="nav-link" data-page="disclaimer"><i class="fas fa-exclamation-triangle"></i> Disclaimer</a></li>
-                    <li><a href="#" class="nav-link" data-page="privacy"><i class="fas fa-shield-alt"></i> Privacy Policy</a></li>
-                    <li><a href="#" class="nav-link" data-page="terms"><i class="fas fa-file-contract"></i> Terms & Conditions</a></li>
-                </ul>
-                
-                <div class="mobile-user-info">
-                    <div class="user-welcome" id="mobileUserWelcome"></div>
-                    <button class="logout-btn" onclick="logout()">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </button>
-                </div>
-            </nav>
         </header>
 
         <!-- MAIN CONTENT -->
@@ -1920,7 +2172,7 @@
                 </div>
             </div>
 
-            <!-- TIME CYCLES & ASTRO PAGE -->
+            <!-- TIME CYCLES & ASTRO PAGE (Hidden from mobile menu but still accessible via footer) -->
             <div class="page-content" id="timecyclesPage">
                 <div class="page-header">
                     <h2><i class="fas fa-clock"></i> Time Cycles & Astro Analysis</h2>
@@ -2312,7 +2564,7 @@
             </div>
         </main>
 
-        <!-- UPDATED FOOTER -->
+        <!-- RESTORED ORIGINAL FOOTER -->
         <footer>
             <div class="container">
                 <div class="footer-content">
@@ -2335,7 +2587,10 @@
                         <ul>
                             <li><a href="#" class="nav-link" data-page="home"><i class="fas fa-home"></i> Home</a></li>
                             <li><a href="#" class="nav-link" data-page="premium"><i class="fas fa-crown"></i> Premium</a></li>
+                            <li><a href="#" class="nav-link" data-page="timecycles"><i class="fas fa-clock"></i> Time Cycles</a></li>
+                            <li><a href="#" class="nav-link" data-page="oi"><i class="fas fa-chart-bar"></i> O.I Analysis</a></li>
                             <li><a href="#" class="nav-link" data-page="gann"><i class="fas fa-calculator"></i> Gann Calculator</a></li>
+                            <li><a href="#" class="nav-link" data-page="links"><i class="fas fa-link"></i> Useful Links</a></li>
                             <li><a href="#" class="nav-link" data-page="contact"><i class="fas fa-phone"></i> Contact</a></li>
                         </ul>
                     </div>
@@ -2366,7 +2621,7 @@
         let currentUser = null;
         let users = [];
         
-        // Admin credentials (hidden from public view)
+        // Admin credentials
         const ADMIN_CREDENTIALS = {
             id: "Ravi@Admin",
             password: "RadheRadhe@2000"
@@ -2390,7 +2645,7 @@
             }
         }
 
-        // User login function - NOW USING GOOGLE APPS SCRIPT
+        // User login function - USING GOOGLE APPS SCRIPT
         async function loginUser() {
             const email = document.getElementById('userEmail').value.trim();
             const password = document.getElementById('userPassword').value;
@@ -2412,12 +2667,10 @@
                     body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
                 });
                 
-                // Check if response is ok
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 
-                // Try to parse response as text first, then as JSON
                 const responseText = await response.text();
                 let result;
                 
@@ -2433,7 +2686,7 @@
                     currentUser = {
                         email: email,
                         name: result.name || email.split('@')[0],
-                        role: "user",
+                        role: result.role || "user",
                         hasPurchased: result.purchased || false,
                         status: result.status || "active"
                     };
@@ -2450,7 +2703,7 @@
                             email: email,
                             password: password,
                             name: result.name || email.split('@')[0],
-                            role: "user",
+                            role: result.role || "user",
                             hasPurchased: result.purchased || false,
                             status: result.status || "active"
                         });
@@ -2458,6 +2711,7 @@
                         localUsers[userIndex] = {
                             ...localUsers[userIndex],
                             name: result.name || email.split('@')[0],
+                            role: result.role || "user",
                             hasPurchased: result.purchased || false,
                             status: result.status || "active"
                         };
@@ -2530,14 +2784,56 @@
         function showMainApp() {
             document.getElementById('loginOverlay').style.display = 'none';
             document.getElementById('mainApp').style.display = 'block';
-            document.getElementById('userWelcome').textContent = `Welcome, ${currentUser.name}`;
-            document.getElementById('mobileUserWelcome').textContent = `Welcome, ${currentUser.name}`;
+            
+            // Update user info in new header
+            updateUserInfo();
             
             // Load premium content based on user access
             loadPremiumContent();
             
             // Initialize dashboard
             fetchData();
+            
+            // Initialize new header functionality
+            initializeNewHeader();
+            
+            // Initialize footer navigation
+            initializeFooterNavigation();
+        }
+
+        function updateUserInfo() {
+            const userNameEl = document.getElementById('userName');
+            const userRoleEl = document.getElementById('userRole');
+            const mobileUserName = document.getElementById('mobileUserName');
+            const mobileUserRole = document.getElementById('mobileUserRole');
+            const mobileAvatarIcon = document.getElementById('mobileAvatarIcon');
+            
+            if (currentUser) {
+                // Update header user info
+                userNameEl.textContent = currentUser.name;
+                userRoleEl.textContent = currentUser.role === "admin" ? "Admin" : "User";
+                
+                // Update mobile user info
+                mobileUserName.textContent = currentUser.name;
+                
+                // Update role badge and icon based on user role
+                let roleDisplay = '';
+                let iconClass = '';
+                
+                if (currentUser.role === "admin") {
+                    roleDisplay = "Administrator";
+                    iconClass = "fas fa-user-shield";
+                } else if (currentUser.hasPurchased) {
+                    roleDisplay = "Premium User";
+                    iconClass = "fas fa-crown";
+                } else {
+                    roleDisplay = "Standard User";
+                    iconClass = "fas fa-user";
+                }
+                
+                mobileUserRole.textContent = roleDisplay;
+                mobileAvatarIcon.className = iconClass;
+            }
         }
 
         function logout() {
@@ -2554,7 +2850,203 @@
             document.getElementById('adminPassword').value = '';
             
             // Close mobile menu if open
-            document.getElementById('mobileNav').classList.remove('active');
+            closeMenu();
+        }
+
+        // ===== NEW HEADER FUNCTIONALITY =====
+        function initializeNewHeader() {
+            // DOM Elements for new header
+            const logoButton = document.getElementById('logoButton');
+            const refreshButton = document.getElementById('refreshButton');
+            const logoutButton = document.getElementById('logoutButton');
+            const mobileLogoutButton = document.getElementById('mobileLogoutButton');
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuIcon = document.getElementById('menuIcon');
+            const navButtons = document.querySelectorAll('.mobile-menu .nav-button');
+            
+            // Logo click - go to home
+            if (logoButton) {
+                logoButton.addEventListener('click', () => {
+                    setActivePage('home');
+                    closeMenu();
+                });
+            }
+            
+            // Refresh button
+            if (refreshButton) {
+                refreshButton.addEventListener('click', handleManualRefresh);
+            }
+            
+            // Logout buttons
+            if (logoutButton) {
+                logoutButton.addEventListener('click', logout);
+            }
+            if (mobileLogoutButton) {
+                mobileLogoutButton.addEventListener('click', logout);
+            }
+            
+            // Menu toggle
+            if (menuToggle) {
+                menuToggle.addEventListener('click', toggleMenu);
+            }
+            
+            // Navigation buttons in mobile menu
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const page = button.getAttribute('data-page');
+                    setActivePage(page);
+                    closeMenu();
+                });
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                const mobileMenu = document.getElementById('mobileMenu');
+                const menuToggle = document.getElementById('menuToggle');
+                
+                if (mobileMenu && mobileMenu.classList.contains('open') && 
+                    !mobileMenu.contains(event.target) && 
+                    !menuToggle.contains(event.target)) {
+                    closeMenu();
+                }
+            });
+            
+            // Close menu with Escape key
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeMenu();
+                }
+            });
+            
+            // Initialize active page
+            setActivePage('home');
+        }
+
+        // Toggle mobile menu
+        function toggleMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuToggle = document.getElementById('menuToggle');
+            const menuIcon = document.getElementById('menuIcon');
+            
+            if (mobileMenu && menuToggle && menuIcon) {
+                const isOpen = mobileMenu.classList.contains('open');
+                
+                if (isOpen) {
+                    mobileMenu.classList.remove('open');
+                    menuToggle.classList.remove('active');
+                    menuIcon.className = 'fas fa-bars';
+                } else {
+                    mobileMenu.classList.add('open');
+                    menuToggle.classList.add('active');
+                    menuIcon.className = 'fas fa-times';
+                }
+            }
+        }
+
+        // Close mobile menu
+        function closeMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuToggle = document.getElementById('menuToggle');
+            const menuIcon = document.getElementById('menuIcon');
+            
+            if (mobileMenu && menuToggle && menuIcon) {
+                mobileMenu.classList.remove('open');
+                menuToggle.classList.remove('active');
+                menuIcon.className = 'fas fa-bars';
+            }
+        }
+
+        // Initialize footer navigation
+        function initializeFooterNavigation() {
+            const footerLinks = document.querySelectorAll('.footer-links .nav-link');
+            
+            footerLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const page = this.getAttribute('data-page');
+                    setActivePage(page);
+                });
+            });
+        }
+
+        // Set active page
+        function setActivePage(page) {
+            // Update navigation buttons in mobile menu
+            const mobileNavButtons = document.querySelectorAll('.mobile-menu .nav-button');
+            const footerLinks = document.querySelectorAll('.footer-links .nav-link');
+            
+            // Update mobile navigation buttons
+            mobileNavButtons.forEach(button => {
+                if (button.getAttribute('data-page') === page) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+            
+            // Update footer links
+            footerLinks.forEach(link => {
+                if (link.getAttribute('data-page') === page) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+            
+            // Show selected page
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+            const pageElement = document.getElementById(`${page}Page`);
+            if (pageElement) {
+                pageElement.classList.add('active');
+            }
+            
+            // Load content for premium pages
+            if (page === 'premium' || page === 'timecycles' || page === 'oi' || page === 'links') {
+                loadPremiumContent();
+            }
+            
+            // Initialize Gann Calculator if on that page
+            if (page === 'gann') {
+                setTimeout(initializeGannCalculator, 100);
+            }
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Update browser history
+            history.pushState({ page: page }, '', `#${page}`);
+        }
+
+        // Handle refresh with new header style
+        function handleManualRefresh() {
+            const refreshButton = document.getElementById('refreshButton');
+            const lastUpdateEl = document.getElementById('lastUpdate');
+            
+            if (!refreshButton) return;
+            
+            if (refreshButton.classList.contains('refreshing')) return;
+            
+            refreshButton.classList.add('refreshing');
+            refreshButton.innerHTML = '<i class="fas fa-spinner"></i>';
+            
+            // Fetch new data
+            fetchData().then((success) => {
+                setTimeout(() => {
+                    refreshButton.classList.remove('refreshing');
+                    refreshButton.innerHTML = '<i class="fas fa-sync-alt"></i>';
+                    
+                    // Update last updated time
+                    if (success && lastUpdateEl) {
+                        const now = new Date();
+                        lastUpdateEl.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    }
+                    
+                    if (success) {
+                        showNotification('Data refreshed successfully!', 'success');
+                    }
+                }, 500);
+            });
         }
 
         // ===== OPTIMIZED NAVIGATION SYSTEM =====
@@ -2572,126 +3064,26 @@
                 });
             });
             
-            // Main navigation function
-            function navigateToPage(page) {
-                // Update active navigation
-                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                document.querySelectorAll(`.nav-link[data-page="${page}"]`).forEach(l => l.classList.add('active'));
-                
-                // Show selected page
-                document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
-                const pageElement = document.getElementById(`${page}Page`);
-                if (pageElement) {
-                    pageElement.classList.add('active');
-                }
-                
-                // Close mobile menu if open
-                document.getElementById('mobileNav').classList.remove('active');
-                
-                // Load content for premium pages
-                if (page === 'premium' || page === 'timecycles' || page === 'oi' || page === 'links') {
-                    loadPremiumContent();
-                }
-                
-                // Initialize Gann Calculator if on that page
-                if (page === 'gann') {
-                    setTimeout(initializeGannCalculator, 100);
-                }
-                
-                // Scroll to top
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                
-                // Update browser history
-                history.pushState({ page: page }, '', `#${page}`);
-            }
-            
-            // Setup navigation links
-            function setupNavLinks() {
-                document.querySelectorAll('.nav-link').forEach(link => {
-                    link.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        const page = this.getAttribute('data-page');
-                        navigateToPage(page);
-                    });
-                });
-            }
-            
-            // Initial setup
-            setupNavLinks();
-            
             // Handle browser back/forward
             window.addEventListener('popstate', function(event) {
                 if (event.state && event.state.page) {
-                    navigateToPage(event.state.page);
-                }
-            });
-            
-            // Hamburger menu toggle
-            document.getElementById('navToggle').addEventListener('click', function() {
-                const mobileNav = document.getElementById('mobileNav');
-                mobileNav.classList.toggle('active');
-                
-                // Toggle hamburger icon
-                const icon = this.querySelector('i');
-                if (mobileNav.classList.contains('active')) {
-                    icon.classList.remove('fa-bars');
-                    icon.classList.add('fa-times');
-                } else {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
-            });
-            
-            // Close mobile menu button
-            document.getElementById('closeNav').addEventListener('click', function() {
-                document.getElementById('mobileNav').classList.remove('active');
-                document.getElementById('navToggle').querySelector('i').classList.remove('fa-times');
-                document.getElementById('navToggle').querySelector('i').classList.add('fa-bars');
-            });
-            
-            // Close mobile menu when clicking on a link
-            document.querySelectorAll('.mobile-nav .nav-link').forEach(link => {
-                link.addEventListener('click', function() {
-                    document.getElementById('mobileNav').classList.remove('active');
-                    document.getElementById('navToggle').querySelector('i').classList.remove('fa-times');
-                    document.getElementById('navToggle').querySelector('i').classList.add('fa-bars');
-                });
-            });
-            
-            // Close mobile menu when clicking outside
-            document.addEventListener('click', function(event) {
-                const mobileNav = document.getElementById('mobileNav');
-                const navToggle = document.getElementById('navToggle');
-                
-                if (mobileNav.classList.contains('active') && 
-                    !mobileNav.contains(event.target) && 
-                    !navToggle.contains(event.target)) {
-                    mobileNav.classList.remove('active');
-                    navToggle.querySelector('i').classList.remove('fa-times');
-                    navToggle.querySelector('i').classList.add('fa-bars');
-                }
-            });
-            
-            // Close mobile menu with Escape key
-            document.addEventListener('keydown', function(event) {
-                if (event.key === 'Escape') {
-                    document.getElementById('mobileNav').classList.remove('active');
-                    document.getElementById('navToggle').querySelector('i').classList.remove('fa-times');
-                    document.getElementById('navToggle').querySelector('i').classList.add('fa-bars');
+                    setActivePage(event.state.page);
                 }
             });
             
             // Handle initial hash in URL
             if (window.location.hash) {
                 const page = window.location.hash.substring(1);
-                navigateToPage(page);
+                setActivePage(page);
             }
         }
 
         // ===== PREMIUM CONTENT SYSTEM =====
         function loadPremiumContent() {
-            const isAdmin = currentUser?.role === 'admin';
-            const hasPurchased = currentUser?.hasPurchased || isAdmin;
+            if (!currentUser) return;
+            
+            const isAdmin = currentUser.role === 'admin';
+            const hasPurchased = currentUser.hasPurchased || isAdmin;
             
             // Premium Indicators Page
             const premiumContent = document.getElementById('premiumContent');
@@ -2869,6 +3261,8 @@
             const resBody = document.getElementById('resBody');
             const suppBody = document.getElementById('suppBody');
             
+            if (!calculateBtn) return;
+            
             // Clear previous event listeners
             calculateBtn.replaceWith(calculateBtn.cloneNode(true));
             const newCalculateBtn = document.getElementById('calculateBtn');
@@ -2876,21 +3270,23 @@
             newCalculateBtn.addEventListener('click', calculateGannLevels);
             
             // Allow Enter key to trigger calculation
-            priceInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    calculateGannLevels();
-                }
-            });
-            
-            // Set example price on load
-            priceInput.value = "150.50";
+            if (priceInput) {
+                priceInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        calculateGannLevels();
+                    }
+                });
+                
+                // Set example price on load
+                priceInput.value = "150.50";
+            }
             
             function calculateGannLevels() {
                 const price = parseFloat(priceInput.value);
                 
                 // Validate input
                 if (isNaN(price) || price <= 0) { 
-                    alert('Please enter a valid positive price.');
+                    showNotification('Please enter a valid positive price.', 'error');
                     priceInput.focus();
                     return;
                 }
@@ -2930,13 +3326,15 @@
                 
                 // Scroll to results
                 output.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                
+                showNotification('Gann levels calculated successfully!', 'success');
             }
         }
 
         // ===== DASHBOARD DATA SYSTEM =====
         const MARKET_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQgqBUGz6xFmT2Pd5qdvTZGYm3H3d-KgZlL65PHanPKDz3b9mp1rx7ZQNlV8BUJnYY0nfk-jyYvjWNY/pub?gid=658749771&single=true&output=csv";
 
-        // Sample data based on your image
+        // Sample data
         const sampleData = {
             date: "Thursday, 25 January 2024",
             prediction: "Market May Go Up",
@@ -2965,7 +3363,7 @@
             minDownside: "-0.5%"
         };
 
-        // DOM Elements
+        // DOM Elements for data
         const currentDateEl = document.getElementById('currentDate');
         const finalPredictionEl = document.getElementById('finalPrediction');
         const participantsDataEl = document.getElementById('participantsData');
@@ -2979,7 +3377,6 @@
         const maxUpsideEl = document.getElementById('maxUpside');
         const minDownsideEl = document.getElementById('minDownside');
         const lastUpdateEl = document.getElementById('lastUpdate');
-        const refreshBtn = document.getElementById('refreshBtn');
 
         // Parse CSV
         function parseCSV(csvText) {
@@ -3029,16 +3426,22 @@
                 
                 if (rows.length > 0) {
                     updateDashboardFromSheet(rows);
-                    showNotification("Data updated from Google Sheets", "success");
+                    
+                    // Update last updated time
+                    if (lastUpdateEl) {
+                        const now = new Date();
+                        lastUpdateEl.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    }
                 } else {
                     throw new Error("No data received");
                 }
                 
-                lastUpdateEl.textContent = new Date().toLocaleTimeString();
+                return true;
             } catch (error) {
                 console.error('Error fetching data:', error);
                 showNotification("Using sample data", "warning");
                 updateWithSampleData();
+                return false;
             } finally {
                 showLoading(false);
             }
@@ -3050,27 +3453,31 @@
             if (rows[2] && rows[2][0]) {
                 const dateValue = rows[2][0];
                 const timeValue = rows[3] && rows[3][0] ? rows[3][0] : '';
-                currentDateEl.innerHTML = `${dateValue}<br><small style="color: var(--gray);">${timeValue}</small>`;
+                if (currentDateEl) {
+                    currentDateEl.innerHTML = `${dateValue}<br><small style="color: var(--gray);">${timeValue}</small>`;
+                }
             } else {
                 const yesterday = new Date();
                 yesterday.setDate(yesterday.getDate() - 1);
-                currentDateEl.textContent = yesterday.toLocaleDateString('en-IN', {
-                    weekday: 'long',
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric'
-                });
+                if (currentDateEl) {
+                    currentDateEl.textContent = yesterday.toLocaleDateString('en-IN', {
+                        weekday: 'long',
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                    });
+                }
             }
             
             // Prediction from D1:E2
-            if (rows[0] && (rows[0][3] || rows[0][4])) {
+            if (rows[0] && (rows[0][3] || rows[0][4]) && finalPredictionEl) {
                 const prediction = (rows[0][3] || rows[0][4]).trim();
                 finalPredictionEl.textContent = prediction;
                 
                 if (prediction.toLowerCase().includes('up') || prediction.toLowerCase().includes('bull')) {
-                    finalPredictionEl.style.color = '#2ecc71';
+                    finalPredictionEl.style.color = '#10b981';
                 } else if (prediction.toLowerCase().includes('down') || prediction.toLowerCase().includes('bear')) {
-                    finalPredictionEl.style.color = '#e74c3c';
+                    finalPredictionEl.style.color = '#f43f5e';
                 }
             }
             
@@ -3095,6 +3502,8 @@
 
         // Update participants data
         function updateParticipants(participantRows) {
+            if (!participantsDataEl) return;
+            
             participantsDataEl.innerHTML = '';
             
             participantRows.forEach(row => {
@@ -3117,9 +3526,9 @@
         function getViewColor(view) {
             const viewStr = (view || '').toString().toLowerCase();
             if (viewStr.includes('bull') || viewStr.includes('buy') || viewStr.includes('positive')) {
-                return '#2ecc71';
+                return '#10b981';
             } else if (viewStr.includes('bear') || viewStr.includes('sell') || viewStr.includes('negative')) {
-                return '#e74c3c';
+                return '#f43f5e';
             } else {
                 return '#f39c12';
             }
@@ -3127,12 +3536,14 @@
 
         // Update support/resistance levels
         function updateLevels(levelRows) {
+            if (!resistanceLevelsEl || !supportLevelsEl) return;
+            
             resistanceLevelsEl.innerHTML = '';
             supportLevelsEl.innerHTML = '';
             
             levelRows.forEach(row => {
                 // Resistance from column B (index 1)
-                if (row[1]) {
+                if (row[1] && resistanceLevelsEl) {
                     const resLi = document.createElement('li');
                     resLi.className = 'resistance-level';
                     resLi.textContent = row[1];
@@ -3140,7 +3551,7 @@
                 }
                 
                 // Support from column A (index 0)
-                if (row[0]) {
+                if (row[0] && supportLevelsEl) {
                     const supLi = document.createElement('li');
                     supLi.className = 'support-level';
                     supLi.textContent = row[0];
@@ -3151,6 +3562,8 @@
 
         // Update reversals data
         function updateReversals(reversalRows) {
+            if (!reversals15minTableBody || !reversals5minTableBody) return;
+            
             reversals15minTableBody.innerHTML = '';
             reversals5minTableBody.innerHTML = '';
             
@@ -3171,6 +3584,8 @@
 
         // Update global markets
         function updateGlobalMarkets(globalRows) {
+            if (!globalMarketEl) return;
+            
             globalMarketEl.innerHTML = '';
             
             for (let i = 0; i < 7; i++) {
@@ -3198,15 +3613,17 @@
 
         // Update global sentiment
         function updateGlobalSentiment(sentimentRows) {
+            if (!globalSentimentEl) return;
+            
             if (sentimentRows[0]) {
                 const sentiment = sentimentRows[0][8] || sentimentRows[0][9] || 'Neutral';
                 globalSentimentEl.textContent = sentiment;
                 
                 const sentimentStr = sentiment.toLowerCase();
                 if (sentimentStr.includes('bull') || sentimentStr.includes('positive') || sentimentStr.includes('up')) {
-                    globalSentimentEl.style.color = '#2ecc71';
+                    globalSentimentEl.style.color = '#10b981';
                 } else if (sentimentStr.includes('bear') || sentimentStr.includes('negative') || sentimentStr.includes('down')) {
-                    globalSentimentEl.style.color = '#e74c3c';
+                    globalSentimentEl.style.color = '#f43f5e';
                 } else {
                     globalSentimentEl.style.color = '#f39c12';
                 }
@@ -3215,91 +3632,108 @@
 
         // Update India VIX data
         function updateVixData(vixRows) {
-            if (vixRows[0] && vixRows[0][7]) {
+            if (vixRows[0] && vixRows[0][7] && indiaVixEl) {
                 indiaVixEl.textContent = vixRows[0][7];
             }
             
-            if (vixRows[1] && vixRows[1][8]) {
+            if (vixRows[1] && vixRows[1][8] && maxUpsideEl) {
                 maxUpsideEl.textContent = vixRows[1][8];
             }
             
-            if (vixRows[1] && vixRows[1][9]) {
+            if (vixRows[1] && vixRows[1][9] && minDownsideEl) {
                 minDownsideEl.textContent = vixRows[1][9];
             }
         }
 
         // Fallback to sample data
         function updateWithSampleData() {
-            currentDateEl.textContent = sampleData.date;
-            finalPredictionEl.textContent = sampleData.prediction;
-            finalPredictionEl.style.color = '#2ecc71';
+            if (currentDateEl) {
+                currentDateEl.textContent = sampleData.date;
+            }
             
-            participantsDataEl.innerHTML = '';
-            sampleData.participants.forEach(p => {
-                const viewColor = getViewColor(p.view);
+            if (finalPredictionEl) {
+                finalPredictionEl.textContent = sampleData.prediction;
+                finalPredictionEl.style.color = '#10b981';
+            }
+            
+            if (participantsDataEl) {
+                participantsDataEl.innerHTML = '';
+                sampleData.participants.forEach(p => {
+                    const viewColor = getViewColor(p.view);
+                    
+                    const item = document.createElement('div');
+                    item.className = 'participant-item';
+                    item.innerHTML = `
+                        <div class="participant-label">${p.name}</div>
+                        <div class="participant-value" style="color: ${viewColor}">${p.value}</div>
+                        <div class="participant-view">View: ${p.view}</div>
+                    `;
+                    participantsDataEl.appendChild(item);
+                });
+            }
+            
+            if (resistanceLevelsEl && supportLevelsEl) {
+                resistanceLevelsEl.innerHTML = '';
+                supportLevelsEl.innerHTML = '';
                 
-                const item = document.createElement('div');
-                item.className = 'participant-item';
-                item.innerHTML = `
-                    <div class="participant-label">${p.name}</div>
-                    <div class="participant-value" style="color: ${viewColor}">${p.value}</div>
-                    <div class="participant-view">View: ${p.view}</div>
-                `;
-                participantsDataEl.appendChild(item);
-            });
-            
-            resistanceLevelsEl.innerHTML = '';
-            supportLevelsEl.innerHTML = '';
-            
-            sampleData.resistance.forEach(level => {
-                const li = document.createElement('li');
-                li.className = 'resistance-level';
-                li.textContent = level;
-                resistanceLevelsEl.appendChild(li);
-            });
-            
-            sampleData.support.forEach(level => {
-                const li = document.createElement('li');
-                li.className = 'support-level';
-                li.textContent = level;
-                supportLevelsEl.appendChild(li);
-            });
-            
-            reversals15minTableBody.innerHTML = '';
-            reversals5minTableBody.innerHTML = '';
-            
-            sampleData.reversal15min.forEach(bars => {
-                const tr15 = document.createElement('tr');
-                tr15.innerHTML = `<td>${bars}</td>`;
-                reversals15minTableBody.appendChild(tr15);
-            });
-            
-            sampleData.reversal5min.forEach(bars => {
-                const tr5 = document.createElement('tr');
-                tr5.innerHTML = `<td>${bars}</td>`;
-                reversals5minTableBody.appendChild(tr5);
-            });
-            
-            globalMarketEl.innerHTML = '';
-            sampleData.globalMarkets.forEach(market => {
-                const changeClass = market.change.startsWith('+') ? 'change-up' : 'change-down';
+                sampleData.resistance.forEach(level => {
+                    const li = document.createElement('li');
+                    li.className = 'resistance-level';
+                    li.textContent = level;
+                    resistanceLevelsEl.appendChild(li);
+                });
                 
-                const item = document.createElement('div');
-                item.className = 'global-item';
-                item.innerHTML = `
-                    <div class="global-name">${market.name}</div>
-                    <div class="global-value">${market.price}</div>
-                    <div class="global-change ${changeClass}">${market.change}</div>
-                `;
-                globalMarketEl.appendChild(item);
-            });
+                sampleData.support.forEach(level => {
+                    const li = document.createElement('li');
+                    li.className = 'support-level';
+                    li.textContent = level;
+                    supportLevelsEl.appendChild(li);
+                });
+            }
             
-            globalSentimentEl.textContent = sampleData.globalSentiment;
-            globalSentimentEl.style.color = '#2ecc71';
+            if (reversals15minTableBody && reversals5minTableBody) {
+                reversals15minTableBody.innerHTML = '';
+                reversals5minTableBody.innerHTML = '';
+                
+                sampleData.reversal15min.forEach(bars => {
+                    const tr15 = document.createElement('tr');
+                    tr15.innerHTML = `<td>${bars}</td>`;
+                    reversals15minTableBody.appendChild(tr15);
+                });
+                
+                sampleData.reversal5min.forEach(bars => {
+                    const tr5 = document.createElement('tr');
+                    tr5.innerHTML = `<td>${bars}</td>`;
+                    reversals5minTableBody.appendChild(tr5);
+                });
+            }
             
-            indiaVixEl.textContent = sampleData.indiaVix;
-            maxUpsideEl.textContent = sampleData.maxUpside;
-            minDownsideEl.textContent = sampleData.minDownside;
+            if (globalMarketEl) {
+                globalMarketEl.innerHTML = '';
+                sampleData.globalMarkets.forEach(market => {
+                    const changeClass = market.change.startsWith('+') ? 'change-up' : 'change-down';
+                    
+                    const item = document.createElement('div');
+                    item.className = 'global-item';
+                    item.innerHTML = `
+                        <div class="global-name">${market.name}</div>
+                        <div class="global-value">${market.price}</div>
+                        <div class="global-change ${changeClass}">${market.change}</div>
+                    `;
+                    globalMarketEl.appendChild(item);
+                });
+            }
+            
+            if (globalSentimentEl) {
+                globalSentimentEl.textContent = sampleData.globalSentiment;
+                globalSentimentEl.style.color = '#10b981';
+            }
+            
+            if (indiaVixEl && maxUpsideEl && minDownsideEl) {
+                indiaVixEl.textContent = sampleData.indiaVix;
+                maxUpsideEl.textContent = sampleData.maxUpside;
+                minDownsideEl.textContent = sampleData.minDownside;
+            }
         }
 
         // Show loading state
@@ -3312,11 +3746,6 @@
                     card.classList.remove('loading');
                 }
             });
-            
-            refreshBtn.innerHTML = show 
-                ? '<i class="fas fa-spinner fa-spin"></i> Refreshing...' 
-                : '<i class="fas fa-redo"></i> Refresh Data';
-            refreshBtn.disabled = show;
         }
 
         // Notification system
@@ -3327,18 +3756,19 @@
             notification.className = `notification ${type}`;
             notification.style.cssText = `
                 position: fixed;
-                top: 20px;
+                top: 90px;
                 right: 20px;
-                background: ${type === 'error' ? '#c0392b' : type === 'warning' ? '#f39c12' : '#27ae60'};
+                background: ${type === 'error' ? '#f43f5e' : type === 'warning' ? '#f39c12' : '#10b981'};
                 color: white;
                 padding: 15px 25px;
-                border-radius: 8px;
+                border-radius: 12px;
                 z-index: 10000;
                 box-shadow: 0 5px 15px rgba(0,0,0,0.3);
                 animation: slideIn 0.3s ease;
                 backdrop-filter: blur(10px);
                 border: 1px solid rgba(255,255,255,0.2);
                 max-width: 300px;
+                font-weight: 600;
             `;
             notification.innerHTML = `
                 <i class="fas fa-${type === 'error' ? 'exclamation-triangle' : type === 'warning' ? 'exclamation-circle' : 'check-circle'}"></i> 
@@ -3378,9 +3808,6 @@
             
             // Auto-refresh every 5 minutes
             setInterval(fetchData, 5 * 60 * 1000);
-
-            // Manual refresh
-            refreshBtn.addEventListener('click', fetchData);
         });
     </script>
 </body>
