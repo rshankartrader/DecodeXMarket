@@ -1900,12 +1900,13 @@
                             </div>
                             DASHBOARD
                         </button>
-                        <button class="nav-button" data-page="premium">
-                            <div class="nav-icon">
-                                <i class="fas fa-crown"></i>
-                            </div>
-                            PREMIUM INDICATORS
-                        </button>
+                        <!-- To this: -->
+<a href="indicators.html" class="nav-button">
+    <div class="nav-icon">
+        <i class="fas fa-crown"></i>
+    </div>
+    PREMIUM INDICATORS
+</a>
                         <button class="nav-button" data-page="oi">
                             <div class="nav-icon">
                                 <i class="fas fa-chart-bar"></i>
@@ -2161,16 +2162,21 @@
             </div>
 
             <!-- PREMIUM INDICATORS PAGE -->
-            <div class="page-content" id="premiumPage">
-                <div class="page-header">
-                    <h2><i class="fas fa-crown"></i> Premium Indicators</h2>
-                    <p>Advanced trading indicators and tools for professional traders</p>
-                </div>
+            <!-- Replace with a redirect or link: -->
+<div class="page-content" id="premiumPage">
+    <div class="page-header">
+        <h2><i class="fas fa-crown"></i> Premium Indicators</h2>
+        <p>Advanced trading indicators and tools for professional traders</p>
+    </div>
 
-                <div id="premiumContent">
-                    <!-- Premium content will be loaded here based on user access -->
-                </div>
-            </div>
+    <div class="text-center" style="padding: 50px;">
+        <h3>Premium Indicators Page</h3>
+        <p>Our premium indicators are now available on a separate page.</p>
+        <a href="indicators.html" class="premium-btn" style="display: inline-flex; margin-top: 20px;">
+            <i class="fas fa-external-link-alt"></i> Go to Indicators Page
+        </a>
+    </div>
+</div>
 
             <!-- TIME CYCLES & ASTRO PAGE (Hidden from mobile menu but still accessible via footer) -->
             <div class="page-content" id="timecyclesPage">
@@ -2586,7 +2592,7 @@
                         <h4>Quick Links</h4>
                         <ul>
                             <li><a href="#" class="nav-link" data-page="home"><i class="fas fa-home"></i> Home</a></li>
-                            <li><a href="#" class="nav-link" data-page="premium"><i class="fas fa-crown"></i> Premium</a></li>
+                            <li><a href="indicators.html"><i class="fas fa-crown"></i> Premium Indicators</a></li>
                             <li><a href="#" class="nav-link" data-page="timecycles"><i class="fas fa-clock"></i> Time Cycles</a></li>
                             <li><a href="#" class="nav-link" data-page="oi"><i class="fas fa-chart-bar"></i> O.I Analysis</a></li>
                             <li><a href="#" class="nav-link" data-page="gann"><i class="fas fa-calculator"></i> Gann Calculator</a></li>
@@ -3137,6 +3143,21 @@
                     </div>
                 `;
             }
+
+            // In initializeNewHeader function, update the navButtons event listener:
+navButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const page = button.getAttribute('data-page');
+        
+        // Check if it's a link to indicators.html
+        if (page === 'premium') {
+            window.location.href = 'indicators.html';
+        } else {
+            setActivePage(page);
+            closeMenu();
+        }
+    });
+});
             
             // Time Cycles Page
             const timecyclesContent = document.getElementById('timecyclesContent');
