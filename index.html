@@ -361,11 +361,11 @@
         /* Last Updated Time Display */
         .last-updated {
             display: flex;
-            align-items: center;
+            align-items: right;
             gap: 8px;
             color: var(--gray);
-            font-size: 12px;
-            margin-right: 30px;
+            font-size: 22px;
+            margin-right: 60px;
         }
 
         .last-updated i {
@@ -1893,7 +1893,14 @@
             <div class="mobile-menu" id="mobileMenu">
                 <div class="mobile-menu-container">
                     <!-- UPDATED NAVIGATION AS REQUESTED -->
-                      <button class="nav-button" id="premiumIndicatorsButton">
+                     <nav class="nav-items">
+                  <button class="nav-button active" data-page="home">
+                      <div class="nav-icon">
+                          <i class="fas fa-home"></i>
+                        </div>
+                        DASHBOARD
+                     </button> 
+                    <button class="nav-button" id="premiumIndicatorsButton">
                          <div class="nav-icon">
                              <i class="fas fa-crown"></i> 
                          </div>
