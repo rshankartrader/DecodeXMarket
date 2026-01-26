@@ -1893,19 +1893,12 @@
             <div class="mobile-menu" id="mobileMenu">
                 <div class="mobile-menu-container">
                     <!-- UPDATED NAVIGATION AS REQUESTED -->
-                    <nav class="nav-items">
-                        <button class="nav-button active" data-page="home">
-                            <div class="nav-icon">
-                                <i class="fas fa-home"></i>
-                            </div>
-                            DASHBOARD
-                        </button>
-                        <button class="nav-button" data-page="premium">
-                            <div class="nav-icon">
-                                <i class="fas fa-crown"></i>
-                            </div>
-                            PREMIUM INDICATORS
-                        </button>
+                      <button class="nav-button" id="premiumIndicatorsButton">
+                         <div class="nav-icon">
+                             <i class="fas fa-crown"></i> 
+                         </div>
+                         PREMIUM INDICATORS
+                       </button>
                         <button class="nav-button" data-page="oi">
                             <div class="nav-icon">
                                 <i class="fas fa-chart-bar"></i>
@@ -2585,8 +2578,8 @@
                     <div class="footer-links">
                         <h4>Quick Links</h4>
                         <ul>
-                            <li><a href="#" class="nav-link" data-page="home"><i class="fas fa-home"></i> Home</a></li>
-                            <li><a href="#" class="nav-link" data-page="premium"><i class="fas fa-crown"></i> Premium</a></li>
+                            <li><a href="index.html"><i class="fas fa-crown"></i> Home </a></li>
+                            <li><a href="indicators.html"><i class="fas fa-crown"></i> Premium Indicators</a></li>
                             <li><a href="#" class="nav-link" data-page="timecycles"><i class="fas fa-clock"></i> Time Cycles</a></li>
                             <li><a href="#" class="nav-link" data-page="oi"><i class="fas fa-chart-bar"></i> O.I Analysis</a></li>
                             <li><a href="#" class="nav-link" data-page="gann"><i class="fas fa-calculator"></i> Gann Calculator</a></li>
@@ -2892,13 +2885,27 @@
             }
             
             // Navigation buttons in mobile menu
-            navButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const page = button.getAttribute('data-page');
-                    setActivePage(page);
-                    closeMenu();
-                });
-            });
+              navButtons.forEach(button => {
+               button.addEventListener('click', () => {
+             const page = button.getAttribute('data-page');
+            // Special handling for premium indicators
+            if (page === 'premium') {
+            window.location.href = 'indicators.html';
+            return;
+          }
+             setActivePage(page);
+             closeMenu();  
+    });
+});
+
+// Add specific event listener for premium indicators button if exists
+const premiumButton = document.getElementById('premiumIndicatorsButton');
+if (premiumButton) {
+    premiumButton.addEventListener('click', () => {
+        window.location.href = 'indicators.html';
+        closeMenu();
+    });
+}
             
             // Close menu when clicking outside
             document.addEventListener('click', function(event) {
@@ -2958,17 +2965,22 @@
         }
 
         // Initialize footer navigation
-        function initializeFooterNavigation() {
-            const footerLinks = document.querySelectorAll('.footer-links .nav-link');
-            
+         function initializeFooterNavigation() {
+         const footerLinks = document.querySelectorAll('.footer-links .nav-link');
+    
             footerLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const page = this.getAttribute('data-page');
-                    setActivePage(page);
-                });
-            });
-        }
+            link.addEventListener('click', function(e) {
+            const page = this.getAttribute('data-page');
+            // Special handling for premium indicators
+            if (page === 'premium') {
+                window.location.href = 'indicators.html';
+                return;
+            }
+            e.preventDefault();
+            setActivePage(page);
+        });
+    });
+}
 
         // Set active page
         function setActivePage(page) {
