@@ -1,0 +1,105 @@
+Admin Id: Ravi@Admin
+Password: RadheRadhe@2000
+
+- important sheet for data fii dii fetching: https://docs.google.com/spreadsheets/d/1PBqUKwUAYbAZk3p9OtRLbY4Yxx4N0ltQm6aFyQ-AoOs/edit?usp=sharing
+
+
+- for user email & password : check google sheet of gmail rshankartrader@gmail.com 
+"registration form decodexmarket (responses)" Sheet Link: https://docs.google.com/spreadsheets/d/1IGw2i_ssnG8-E104mxz7qJC29HGaPdJL6V91yP9sM3U/edit?usp=sharing
+
+- to activate or inactivate user go to Users page of sheet & in status column choose active/inactive user. 
+
+
+
+Web DecodeXMarket Google sheet appscript code:  Save appscript deploy web url link copy and paste into index.html and also trigger on at 9-10pm daily.
+
+function archivePreviousTradingDay() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var dashSheet = ss.getSheetByName("DASHBOARD");
+  var historySheet = ss.getSheetByName("Sheet5");
+  var holidaySheet = ss.getSheetByName("Holiday");
+
+  if (!dashSheet || !historySheet || !holidaySheet) return;
+
+  // --- Holidays ---
+  var holidays = holidaySheet.getRange("B2:B30")
+    .getValues()
+    .flat()
+    .filter(d => d instanceof Date)
+    .map(d => d.toDateString());
+
+  function isTradingDay(d) {
+    var day = d.getDay();
+    if (day === 0 || day === 6) return false;
+    if (holidays.includes(d.toDateString())) return false;
+    return true;
+  }
+
+  // --- Get previous valid trading day (original date) ---
+  var originalDate = new Date();
+  do {
+    originalDate.setDate(originalDate.getDate() - 1);
+  } while (!isTradingDay(originalDate));
+
+  // --- Function to subtract N trading days ---
+  function subtractTradingDays(date, n) {
+    var d = new Date(date);
+    var count = 0;
+    while (count < n) {
+      d.setDate(d.getDate() - 1);
+      if (isTradingDay(d)) count++;
+    }
+    return d;
+  }
+
+  // --- Step 1: Check original date ---
+  dashSheet.getRange("A3").setValue(originalDate);
+  SpreadsheetApp.flush();
+  Utilities.sleep(10000);
+
+  var prediction = dashSheet.getRange("D1").getValue();
+
+  // --- Step 2: If Neutral → jump back in 15-day blocks ---
+  var jumpDate = new Date(originalDate);
+
+  while (
+    prediction === "Market Rangebound/Neutral ↔️" ||
+    prediction === "" ||
+    prediction === "#N/A" ||
+    prediction === "Loading..."
+  ) {
+    jumpDate = subtractTradingDays(jumpDate, 15);
+
+    dashSheet.getRange("A3").setValue(jumpDate);
+    SpreadsheetApp.flush();
+    Utilities.sleep(10000);
+
+    prediction = dashSheet.getRange("D1").getValue();
+    Logger.log("Stability check at " + jumpDate + " → " + prediction);
+  }
+
+  // --- Step 3: Re-run ORIGINAL DATE & SAVE ---
+  dashSheet.getRange("A3").setValue(originalDate);
+  SpreadsheetApp.flush();
+  Utilities.sleep(10000);
+
+  var finalPrediction = dashSheet.getRange("D1").getValue();
+
+  if (
+    finalPrediction &&
+    finalPrediction !== "Market Rangebound/Neutral ↔️" &&
+    finalPrediction !== "#N/A"
+  ) {
+    historySheet.getRange("A2").setValue(originalDate);
+    historySheet.getRange("B2").setValue(finalPrediction);
+    historySheet.getRange("E2:E5")
+      .setValues(dashSheet.getRange("B7:B10").getValues());
+
+    Logger.log("Saved ORIGINAL DATE after stabilization");
+  }
+}
+
+
+
+
+
