@@ -469,6 +469,31 @@
 
     <!-- JAVASCRIPT -->
     <script>
+        // Check if user is admin
+function checkAdminAccess() {
+    const savedUser = localStorage.getItem('decodexmarket_current_user');
+    if (savedUser) {
+        const user = JSON.parse(savedUser);
+        if (user.role === "admin") {
+            return true;
+        }
+    }
+    return false;
+}
+
+// On page load
+document.addEventListener('DOMContentLoaded', () => {
+    // Check if user is admin
+    if (!checkAdminAccess()) {
+        alert("Access Denied. This page is for admin users only.");
+        window.location.href = 'index.html';
+        return;
+    }
+    
+    // If admin, proceed with initialization
+    fetchData();
+    setInterval(fetchData, 5 * 60 * 1000);
+});
         // Data configuration
         const MARKET_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQgqBUGz6xFmT2Pd5qdvTZGYm3H3d-KgZlL65PHanPKDz3b9mp1rx7ZQNlV8BUJnYY0nfk-jyYvjWNY/pub?gid=658749771&single=true&output=csv";
         
