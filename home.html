@@ -43,7 +43,7 @@
             padding: 0 20px;
         }
 
-        //* ===== DATA UPDATE NOTICE ===== */
+        /* ===== DATA UPDATE NOTICE ===== */
 .data-update-notice {
     background: rgba(16, 185, 129, 0.08);
     border: 1px solid rgba(16, 185, 129, 0.2);
@@ -53,29 +53,27 @@
     text-align: center;
     position: relative;
     backdrop-filter: blur(5px);
+    line-height: 1.4;
 }
 
-.data-update-notice-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-.data-update-notice h4 {
-    color: var(--primary);
-    margin: 0;
-    display: inline;
-    font-size: 0.95rem;
-    font-weight: 700;
-}
-
-.data-update-notice p {
+.data-update-notice .notice-text {
+    display: inline-block;
     color: var(--light);
-    margin: 0;
-    display: inline;
     font-size: 0.9rem;
+    margin: 0;
+    padding: 0;
+}
+
+.data-update-notice .notice-label {
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: inline;
+    margin-right: 5px;
+}
+
+.data-update-notice .notice-label i {
+    margin-right: 5px;
 }
 
 .update-time {
@@ -93,9 +91,10 @@
 .data-update-note {
     font-size: 0.8rem;
     color: var(--gray);
-    margin-top: 6px;
+    margin-top: 8px;
     opacity: 0.8;
     font-style: italic;
+    text-align: center;
 }
         /* ===== UPDATED LOGIN SYSTEM ===== */
         .login-overlay {
@@ -2076,11 +2075,11 @@
         <!-- DATA UPDATE NOTICE -->
 <div class="container">
     <div class="data-update-notice">
-        <div class="data-update-notice-content">
-            <h4><i class="fas fa-clock"></i> DATA UPDATE NOTICE:</h4>
-            <p>Visit after</p>
-            <div class="update-time">9:00 PM - 10:00 PM</div>
-            <p>for updated post-market analysis.</p>
+        <div class="notice-text">
+            <span class="notice-label"><i class="fas fa-clock"></i> DATA UPDATE NOTICE:</span>
+            Visit after 
+            <span class="update-time">9:00 PM - 10:00 PM</span>
+            for updated post-market analysis.
         </div>
         <div class="data-update-note">
             <i class="fas fa-info-circle"></i> Data updates scheduled during evening hours
