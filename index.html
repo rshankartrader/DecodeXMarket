@@ -2018,6 +2018,15 @@
                         </div>
                         DASHBOARD
                      </button> 
+
+                      <!-- ADMIN ONLY: Overview Page -->
+                   <button class="nav-button admin-only" data-page="overview" style="display: none;">
+                      <div class="nav-icon">
+                             <i class="fas fa-chart-line"></i>
+                      </div>
+                          MARKET OVERVIEW
+                      </button>
+
                     <button class="nav-button" id="premiumIndicatorsButton">
                          <div class="nav-icon">
                              <i class="fas fa-crown"></i> 
@@ -2915,24 +2924,31 @@
         }
 
         function showMainApp() {
-            document.getElementById('loginOverlay').style.display = 'none';
-            document.getElementById('mainApp').style.display = 'block';
-            
-            // Update user info in new header
-            updateUserInfo();
-            
-            // Load premium content based on user access
-            loadPremiumContent();
-            
-            // Initialize dashboard
-            fetchData();
-            
-            // Initialize new header functionality
-            initializeNewHeader();
-            
-            // Initialize footer navigation
-            initializeFooterNavigation();
-        }
+    document.getElementById('loginOverlay').style.display = 'none';
+    document.getElementById('mainApp').style.display = 'block';
+    
+    // Update user info in new header
+    updateUserInfo();
+    
+    // Update admin-only visibility in footer
+    if (currentUser && currentUser.role === "admin") {
+        document.querySelectorAll('.footer-links .admin-only').forEach(item => {
+            item.style.display = 'block';
+        });
+    }
+    
+    // Load premium content based on user access
+    loadPremiumContent();
+    
+    // Initialize dashboard
+    fetchData();
+    
+    // Initialize new header functionality
+    initializeNewHeader();
+    
+    // Initialize footer navigation
+    initializeFooterNavigation();
+}
 
         function updateUserInfo() {
             const userNameEl = document.getElementById('userName');
@@ -2956,18 +2972,34 @@
                 if (currentUser.role === "admin") {
                     roleDisplay = "Administrator";
                     iconClass = "fas fa-user-shield";
-                } else if (currentUser.hasPurchased) {
-                    roleDisplay = "Premium User";
-                    iconClass = "fas fa-crown";
-                } else {
-                    roleDisplay = "Standard User";
-                    iconClass = "fas fa-user";
-                }
-                
-                mobileUserRole.textContent = roleDisplay;
-                mobileAvatarIcon.className = iconClass;
-            }
+                    
+                      // Show admin-only menu items
+            document.querySelectorAll('.admin-only').forEach(item => {
+                item.style.display = 'flex';
+            });
+        } else if (currentUser.hasPurchased) {
+            roleDisplay = "Premium User";
+            iconClass = "fas fa-crown";
+            
+            // Hide admin-only menu items for non-admin users
+            document.querySelectorAll('.admin-only').forEach(item => {
+                item.style.display = 'none';
+            });
+        } else {
+            roleDisplay = "Standard User";
+            iconClass = "fas fa-user";
+            
+            // Hide admin-only menu items for non-admin users
+            document.querySelectorAll('.admin-only').forEach(item => {
+                item.style.display = 'none';
+            });
         }
+        
+        mobileUserRole.textContent = roleDisplay;
+        mobileAvatarIcon.className = iconClass;
+    }
+}
+               
 
         function logout() {
             currentUser = null;
@@ -3029,20 +3061,27 @@
             if (menuToggle) {
                 menuToggle.addEventListener('click', toggleMenu);
             }
-            
             // Navigation buttons in mobile menu
-            navButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const page = button.getAttribute('data-page');
-                    // Special handling for premium indicators
-                    if (page === 'premium') {
-                        window.location.href = 'indicators.html';
-                        return;
-                    }
-                    setActivePage(page);
-                    closeMenu();  
-                });
-            });
+navButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const page = button.getAttribute('data-page');
+        
+        // Special handling for premium indicators
+        if (page === 'premium') {
+            window.location.href = 'indicators.html';
+            return;
+        }
+        
+        // Handle overview page
+        if (page === 'overview') {
+            window.location.href = 'overview.html';
+            return;
+        }
+        
+        setActivePage(page);
+        closeMenu();  
+    });
+});
 
             // Add specific event listener for premium indicators button if exists
             const premiumButton = document.getElementById('premiumIndicatorsButton');
