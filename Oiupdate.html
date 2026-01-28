@@ -1174,15 +1174,24 @@
 
        /* ===== UPDATED: CELL BACKGROUND COLORS FOR DATA ROWS ===== */
 /* Total CE OI, OPEN INTEREST (CE side), OPEN INTEREST (PE side), TOTAL PE OI - Purple background */
-.main-oi-table td.total-oi-cell {
-    background: rgba(139, 92, 246, 0.1) !important;
+.main-oi-table td.total-oi-cell,
+.main-oi-table th.total-oi-col {
+    background: rgba(139, 92, 246, 0.15) !important;
     color: #e2e8f0 !important;
     font-weight: 600;
 }
 
+/* Specific styling for Open Interest header cells */
+.main-oi-table th.total-oi-col {
+    background: rgba(139, 92, 246, 0.25) !important;
+    color: #8b5cf6 !important;
+    font-weight: 700;
+    font-size: 0.86rem;
+}
+
 /* CHANGE IN OI (both CE and PE sides) - Blue background for entire column */
 .main-oi-table td.change-oi-cell,
-.main-oi-table td.change-oi-col {
+.main-oi-table th.change-oi-col {
     background: rgba(59, 130, 246, 0.15) !important;
     color: #e2e8f0 !important;
     font-weight: 600;
@@ -1214,42 +1223,64 @@
     border-right: 2px solid var(--warning) !important;
 }
 
-/* BuildUp Colors - Enhanced for both CE and PE */
-        .long-buildup {
-            background: rgba(16, 185, 129, 0.15) !important;
-            color: var(--primary) !important;
-            font-weight: 600;
-        }
+/* ===== UPDATED: BUILDUP COLUMN COLOR CODING ===== */
+/* LONG BUILDUP & SHORT COVERING - Green Color */
+.main-oi-table td.long-buildup-green {
+    background: rgba(16, 185, 129, 0.2) !important;
+    color: #10b981 !important;
+    font-weight: 700;
+    font-size: 0.86rem;
+}
 
-        .short-buildup {
-            background: rgba(244, 63, 94, 0.15) !important;
-            color: var(--accent) !important;
-            font-weight: 600;
-        }
+/* SHORT BUILDUP & LONG UNWINDING - Red Color */
+.main-oi-table td.short-buildup-red {
+    background: rgba(244, 63, 94, 0.2) !important;
+    color: #f43f5e !important;
+    font-weight: 700;
+    font-size: 0.86rem;
+}
 
-        .short-covering {
-            background: rgba(243, 156, 18, 0.15) !important;
-            color: var(--warning) !important;
-            font-weight: 600;
-        }
+/* BUILDUP cells without specific value - No special background */
+.main-oi-table td.buildup-cell {
+    background: transparent !important;
+    color: var(--light) !important;
+    font-weight: normal;
+}
 
-    /* ===== ATM STRIKE PRICE HIGHLIGHT ===== */
+/* ===== ATM STRIKE PRICE HIGHLIGHT ===== */
 .main-oi-table td.atm-strike-highlight {
-    background: rgba(244, 63, 94, 0.3) !important;
+    background: linear-gradient(135deg, rgba(244, 63, 94, 0.4), rgba(220, 38, 38, 0.4)) !important;
     color: white !important;
     font-weight: 900 !important;
-    font-size: 0.95rem !important;
+    font-size: 1rem !important;
     border: 2px solid #f43f5e !important;
-    box-shadow: 0 0 15px rgba(244, 63, 94, 0.5) !important;
+    box-shadow: 0 0 20px rgba(244, 63, 94, 0.7) !important;
     position: relative;
     animation: pulse-glow 2s infinite;
-    z-index: 1;
+    z-index: 2;
+    transform: scale(1.05);
 }
 
 @keyframes pulse-glow {
-    0% { box-shadow: 0 0 10px rgba(244, 63, 94, 0.5); }
-    50% { box-shadow: 0 0 20px rgba(244, 63, 94, 0.8); }
-    100% { box-shadow: 0 0 10px rgba(244, 63, 94, 0.5); }
+    0% { 
+        box-shadow: 0 0 15px rgba(244, 63, 94, 0.6);
+        transform: scale(1.05);
+    }
+    50% { 
+        box-shadow: 0 0 25px rgba(244, 63, 94, 0.9);
+        transform: scale(1.08);
+    }
+    100% { 
+        box-shadow: 0 0 15px rgba(244, 63, 94, 0.6);
+        transform: scale(1.05);
+    }
+}
+
+/* Ensure ATM strike highlight stays on top */
+.main-oi-table td.atm-strike-highlight:hover {
+    transform: scale(1.1) !important;
+    box-shadow: 0 0 30px rgba(244, 63, 94, 1) !important;
+    z-index: 3 !important;
 }
 
         /* Refresh Button Below OI Analysis */
@@ -2189,498 +2220,644 @@
                 menuIcon.className = 'fas fa-bars';
             }
         }
+// ===== OI ANALYSIS FUNCTIONALITY =====
+let oiData = null;
+let currentInstrument = 'nifty';
 
-        // ===== OI ANALYSIS FUNCTIONALITY =====
-        let oiData = null;
-        let currentInstrument = 'nifty';
-
-        function initializeOI() {
-            const instrumentButtons = document.querySelectorAll('.inst-btn');
-            const refreshBtnBottom = document.getElementById('refreshBtnBottom');
-            
-            // Instrument selection buttons
-            instrumentButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    // Remove active class from all buttons
-                    document.querySelectorAll('.inst-btn').forEach(btn => {
-                        btn.classList.remove('active');
-                    });
-                    
-                    // Add active class to clicked button
-                    this.classList.add('active');
-                    
-                    // Update current instrument
-                    currentInstrument = this.getAttribute('data-instrument');
-                    
-                    // Update UI
-                    updateDataDisplay();
-                });
+function initializeOI() {
+    const instrumentButtons = document.querySelectorAll('.inst-btn');
+    const refreshBtnBottom = document.getElementById('refreshBtnBottom');
+    
+    // Instrument selection buttons
+    instrumentButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Remove active class from all buttons
+            document.querySelectorAll('.inst-btn').forEach(btn => {
+                btn.classList.remove('active');
             });
             
-            // Refresh button
-            if (refreshBtnBottom) {
-                refreshBtnBottom.addEventListener('click', fetchOIData);
-            }
+            // Add active class to clicked button
+            this.classList.add('active');
             
-            // Initialize tab switching
-            document.querySelectorAll('.login-tab').forEach(tab => {
-                tab.addEventListener('click', function() {
-                    const tabId = this.getAttribute('data-tab');
-                    
-                    document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    document.querySelectorAll('.login-form').forEach(form => form.classList.remove('active'));
-                    document.getElementById(`${tabId}LoginForm`).classList.add('active');
-                });
-            });
+            // Update current instrument
+            currentInstrument = this.getAttribute('data-instrument');
             
-            // Load initial data
-            fetchOIData();
+            // Update UI
+            updateDataDisplay();
+        });
+    });
+    
+    // Refresh button
+    if (refreshBtnBottom) {
+        refreshBtnBottom.addEventListener('click', fetchOIData);
+    }
+    
+    // Initialize tab switching
+    document.querySelectorAll('.login-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            const tabId = this.getAttribute('data-tab');
             
-            // Auto-refresh every 2 minutes
-            setInterval(fetchOIData, 2 * 60 * 1000);
-        }
+            document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            
+            document.querySelectorAll('.login-form').forEach(form => form.classList.remove('active'));
+            document.getElementById(`${tabId}LoginForm`).classList.add('active');
+        });
+    });
+    
+    // Load initial data
+    fetchOIData();
+    
+    // Auto-refresh every 2 minutes
+    setInterval(fetchOIData, 2 * 60 * 1000);
+}
 
-        // Parse CSV data
-        function parseCSV(csvText) {
-            const rows = [];
-            const lines = csvText.split('\n');
+// Parse CSV data
+function parseCSV(csvText) {
+    const rows = [];
+    const lines = csvText.split('\n');
+    
+    lines.forEach(line => {
+        if (line.trim()) {
+            const row = [];
+            let inQuotes = false;
+            let currentValue = '';
             
-            lines.forEach(line => {
-                if (line.trim()) {
-                    const row = [];
-                    let inQuotes = false;
-                    let currentValue = '';
-                    
-                    for (let i = 0; i < line.length; i++) {
-                        const char = line[i];
-                        const nextChar = line[i + 1];
-                        
-                        if (char === '"' && inQuotes && nextChar === '"') {
-                            currentValue += '"';
-                            i++;
-                        } else if (char === '"') {
-                            inQuotes = !inQuotes;
-                        } else if (char === ',' && !inQuotes) {
-                            row.push(currentValue);
-                            currentValue = '';
-                        } else {
-                            currentValue += char;
-                        }
-                    }
-                    
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                const nextChar = line[i + 1];
+                
+                if (char === '"' && inQuotes && nextChar === '"') {
+                    currentValue += '"';
+                    i++;
+                } else if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
                     row.push(currentValue);
-                    rows.push(row);
+                    currentValue = '';
+                } else {
+                    currentValue += char;
                 }
+            }
+            
+            row.push(currentValue);
+            rows.push(row);
+        }
+    });
+    
+    return rows;
+}
+
+// Fetch OI data from Google Sheets
+async function fetchOIData() {
+    try {
+        showLoading(true);
+        
+        const response = await fetch(OI_SHEET_URL);
+        if (!response.ok) throw new Error('Network response was not ok');
+        
+        const csvText = await response.text();
+        oiData = parseCSV(csvText);
+        
+        updateDataDisplay();
+        
+        // Update last updated time
+        const lastUpdateText = document.getElementById('lastUpdateText');
+        const lastUpdateHeader = document.getElementById('lastUpdate');
+        if (lastUpdateText && lastUpdateHeader) {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            lastUpdateText.textContent = timeStr;
+            lastUpdateHeader.textContent = timeStr;
+        }
+        
+        showNotification('OI Data refreshed successfully!', 'success');
+        
+    } catch (error) {
+        console.error('Error fetching OI data:', error);
+        showNotification('Failed to load OI data. Please try again.', 'error');
+    } finally {
+        showLoading(false);
+    }
+}
+
+function updateDataDisplay() {
+    if (!oiData || oiData.length === 0) {
+        showNotification('No data available. Please refresh.', 'error');
+        return;
+    }
+    
+    if (currentInstrument === 'nifty') {
+        displayNiftyData();
+    } else {
+        displayBankNiftyData();
+    }
+}
+
+function displayNiftyData() {
+    // Update overview data
+    const expiryDate = getCellValue(2, 1); // B3
+    const spotPrice = getCellValue(2, 2);  // C3
+    const strikePrice = getCellValue(2, 4); // E3
+    const sentiment = getCellValue(10, 2); // C11 - Sentiment
+    
+    document.getElementById('expiryDate').textContent = expiryDate || 'N/A';
+    document.getElementById('spotPrice').textContent = spotPrice || '0.00';
+    document.getElementById('strikePrice').textContent = strikePrice || '0';
+    
+    // Update sentiment with color
+    updateSentimentDisplay(sentiment);
+    
+    // Calculate days to expiry
+    if (expiryDate) {
+        try {
+            const expiry = new Date(expiryDate);
+            const today = new Date();
+            const diffTime = Math.abs(expiry - today);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            document.getElementById('daysToExpiry').textContent = `${diffDays} Days to Expiry`;
+        } catch (e) {
+            document.getElementById('daysToExpiry').textContent = 'Invalid Date';
+        }
+    }
+    
+    // Display OI Analysis Data (A7:C12)
+    displayOIAnalysisData(6, 11, 11, 2); // Row 12, Column C for overall
+    
+    // Display First 30 Minutes View (A16:D17 for data, B21 for overall)
+    displayFirst30View(15, 16, 20, 1); // Rows 16-17, Overall at row 21, column B
+    
+    // Display Main OI Table (A24:O42)
+    displayMainOiTable(23, 41);
+    
+    // Highlight ATM Strike Price
+    setTimeout(highlightATMStrike, 300); // Delay to ensure table is rendered
+}
+
+function displayBankNiftyData() {
+    // Update overview data
+    const expiryDate = getCellValue(48, 2); // C49
+    const spotPrice = getCellValue(48, 3);  // D49
+    const strikePrice = getCellValue(48, 5); // F49
+    const sentiment = getCellValue(56, 2); // C57 - Sentiment
+    
+    document.getElementById('expiryDate').textContent = expiryDate || 'N/A';
+    document.getElementById('spotPrice').textContent = spotPrice || '0.00';
+    document.getElementById('strikePrice').textContent = strikePrice || '0';
+    
+    // Update sentiment with color
+    updateSentimentDisplay(sentiment);
+    
+    // Calculate days to expiry
+    if (expiryDate) {
+        try {
+            const expiry = new Date(expiryDate);
+            const today = new Date();
+            const diffTime = Math.abs(expiry - today);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            document.getElementById('daysToExpiry').textContent = `${diffDays} Days to Expiry`;
+        } catch (e) {
+            document.getElementById('daysToExpiry').textContent = 'Invalid Date';
+        }
+    }
+    
+    // Display OI Analysis Data (A53:C58)
+    displayOIAnalysisData(52, 57, 57, 2); // Row 58, Column C for overall
+    
+    // Display First 30 Minutes View (A62:D63 for data, B64 for overall)
+    displayFirst30View(61, 62, 63, 1); // Rows 62-63, Overall at row 64, column B
+    
+    // Display Main OI Table (A67:O85)
+    displayMainOiTable(66, 84);
+    
+    // Highlight ATM Strike Price
+    setTimeout(highlightATMStrike, 300); // Delay to ensure table is rendered
+}
+
+function getCellValue(row, col) {
+    if (!oiData || row >= oiData.length || col >= oiData[row].length) {
+        return '';
+    }
+    return oiData[row][col] || '';
+}
+
+function updateSentimentDisplay(sentiment) {
+    const sentimentEl = document.getElementById('sentimentValue');
+    if (!sentimentEl) return;
+    
+    sentimentEl.textContent = sentiment || 'Neutral';
+    
+    // Remove all sentiment classes
+    sentimentEl.classList.remove('sentiment-bullish-overview', 'sentiment-bearish-overview', 'sentiment-neutral-overview');
+    
+    // Add appropriate class
+    const sentimentStr = (sentiment || '').toLowerCase();
+    if (sentimentStr.includes('bull')) {
+        sentimentEl.classList.add('sentiment-bullish-overview');
+    } else if (sentimentStr.includes('bear')) {
+        sentimentEl.classList.add('sentiment-bearish-overview');
+    } else {
+        sentimentEl.classList.add('sentiment-neutral-overview');
+    }
+}
+
+function displayOIAnalysisData(startRow, endRow, overallRow, overallCol) {
+    const container = document.getElementById('oiAnalysisData');
+    const overallContainer = document.getElementById('oiOverallView');
+    
+    if (!container || !overallContainer) return;
+    
+    if (endRow - startRow < 5) {
+        container.innerHTML = '<div class="data-error"><h3>Data Error</h3><p>Incomplete OI Analysis Data</p></div>';
+        return;
+    }
+    
+    // Get overall view from specified cell
+    const overallSentiment = getCellValue(overallRow, overallCol) || 'Neutral';
+    updateOverallView(overallContainer, overallSentiment);
+    
+    let html = `
+        <div class="small-table-container">
+            <table class="small-table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>PCR</th>
+                        <th>Sentiment</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+    
+    // Add rows for each parameter
+    const parameters = ['OI (Positional)', 'C.O.I', 'Volume', 'Total O.I'];
+    for (let i = 0; i < 4; i++) {
+        const row = startRow + i + 1;
+        const param = getCellValue(row, 0) || parameters[i];
+        const pcr = getCellValue(row, 1) || '0.00';
+        const sentiment = getCellValue(row, 2) || 'Neutral';
+        
+        const sentimentClass = getSentimentClass(sentiment);
+        
+        html += `
+            <tr>
+                <td>${param}</td>
+                <td>${pcr}</td>
+                <td class="${sentimentClass}">${sentiment}</td>
+            </tr>`;
+    }
+    
+    html += `</tbody></table></div>`;
+    
+    container.innerHTML = html;
+}
+
+function displayFirst30View(startRow, endRow, overallRow, overallCol) {
+    const container = document.getElementById('first30View');
+    const overallContainer = document.getElementById('first30Overall');
+    
+    if (!container || !overallContainer) return;
+    
+    if (endRow - startRow < 1) {
+        container.innerHTML = '<div class="data-error"><h3>Data Error</h3><p>Incomplete First 30 Minutes Data</p></div>';
+        return;
+    }
+    
+    // Get overall view with color coding
+    const overallValue = getCellValue(overallRow, overallCol) || 'N/A';
+    updateFirst30OverallView(overallContainer, overallValue);
+    
+    let html = `
+        <div class="small-table-container">
+            <table class="small-table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>PE %</th>
+                        <th>CE %</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+    
+    // First 30 minutes data (2 rows)
+    for (let i = 0; i < 2; i++) {
+        const row = startRow + i;
+        const type = getCellValue(row, 0) || (i === 0 ? 'O.I' : 'C.O.I');
+        const pe = getCellValue(row, 1) || '0%';
+        const ce = getCellValue(row, 2) || '0%';
+        const score = getCellValue(row, 3) || 'Neutral';
+        
+        const sentimentClass = getSentimentClass(score);
+        
+        html += `
+            <tr>
+                <td>${type}</td>
+                <td>${pe}</td>
+                <td>${ce}</td>
+                <td class="${sentimentClass}">${score}</td>
+            </tr>`;
+    }
+    
+    html += `</tbody></table></div>`;
+    
+    container.innerHTML = html;
+}
+
+function updateFirst30OverallView(container, value) {
+    const val = (value || '').toLowerCase();
+    
+    // Remove all classes
+    container.classList.remove('first30-call', 'first30-put', 'first30-neutral');
+    
+    if (val.includes('call')) {
+        container.className = 'first30-overall first30-call';
+        container.innerHTML = `<strong>Overall View:</strong> ${value} <i class="fas fa-arrow-up"></i>`;
+    } else if (val.includes('put')) {
+        container.className = 'first30-overall first30-put';
+        container.innerHTML = `<strong>Overall View:</strong> ${value} <i class="fas fa-arrow-down"></i>`;
+    } else {
+        container.className = 'first30-overall first30-neutral';
+        container.innerHTML = `<strong>Overall View:</strong> ${value}`;
+    }
+}
+
+// ===== UPDATED: MAIN OI TABLE DISPLAY WITH BOTH HEADER ROWS =====
+function displayMainOiTable(startRow, endRow) {
+    const container = document.getElementById('mainOiTable');
+    if (!container) return;
+    
+    if (endRow - startRow < 5) {
+        container.innerHTML = '<div class="data-error"><h3>Data Error</h3><p>Incomplete OI Table Data</p></div>';
+        return;
+    }
+    
+    // Get header rows
+    const headerRow1 = oiData[startRow]; // CE | STRIKE | PE row
+    const headerRow2 = oiData[startRow + 1]; // Detailed column headers row
+    
+    if (!headerRow1 || !headerRow2 || headerRow2.length < 15) {
+        container.innerHTML = '<div class="data-error"><h3>Data Error</h3><p>Invalid table format</p></div>';
+        return;
+    }
+    
+    let html = `
+        <div class="main-oi-table-container">
+            <table class="main-oi-table">
+                <thead>
+                    <tr>`;
+    
+    // ===== ADD BOTH HEADER ROWS =====
+    // First header row: CE | STRIKE | PE
+    html += `<th colspan="7" class="header-ce">CE</th>`;
+    html += `<th class="header-strike">STRIKE</th>`;
+    html += `<th colspan="7" class="header-pe">PE</th>`;
+    
+    html += `
+                    </tr>
+                    <tr>`;
+    
+    // Second header row: Detailed column names
+    // Expected order: BUILDUP | TOTAL CE OI | OPEN INTEREST | CHANGE IN OI | Volume | Net Change LTP | LTP | PRICE | LTP | Net Change LTP | Volume | CHANGE IN OI | OPEN INTEREST | TOTAL PE OI | BUILDUP
+    for (let j = 0; j < Math.min(headerRow2.length, 15); j++) {
+        const header = headerRow2[j] || '';
+        let headerClass = '';
+        
+        // Apply specific styling based on column position
+        if (j === 1 || j === 2 || j === 13 || j === 14) { // TOTAL CE OI, OPEN INTEREST (CE), OPEN INTEREST (PE), TOTAL PE OI
+            headerClass = 'total-oi-col';
+        } else if (j === 3 || j === 12) { // CHANGE IN OI (both sides)
+            headerClass = 'change-oi-col';
+        } else if (j === 7) { // PRICE (strike column)
+            headerClass = 'header-strike';
+        }
+        // Other columns (BUILDUP, Volume, Net Change LTP, LTP) get default styling
+        
+        html += `<th class="${headerClass}">${header}</th>`;
+    }
+    
+    html += `
+                    </tr>
+                </thead>
+                <tbody>`;
+    
+    // Add data rows (skip the first two header rows)
+    for (let i = startRow + 2; i <= endRow; i++) {
+        if (i >= oiData.length) break;
+        
+        const row = oiData[i];
+        if (!row || row.length === 0) continue;
+        
+        html += '<tr>';
+        
+        // ===== UPDATED: BUILDUP COLOR CODING =====
+        // Determine buildup type for CE (column 0) and PE (column 14)
+        let buildupClassCE = 'buildup-cell';
+        let buildupClassPE = 'buildup-cell';
+        const buildupTypeCE = (row[0] || '').toUpperCase();
+        const buildupTypePE = (row[14] || '').toUpperCase();
+        
+        // CE Side (Column 0) - BUILDUP
+        if (buildupTypeCE.includes('LONG BUILDUP') || buildupTypeCE.includes('SHORT COVERING')) {
+            buildupClassCE = 'long-buildup-green';
+        } else if (buildupTypeCE.includes('SHORT BUILDUP') || buildupTypeCE.includes('LONG UNWINDING')) {
+            buildupClassCE = 'short-buildup-red';
+        }
+        
+        // PE Side (Column 14) - BUILDUP
+        if (buildupTypePE.includes('LONG BUILDUP') || buildupTypePE.includes('SHORT COVERING')) {
+            buildupClassPE = 'long-buildup-green';
+        } else if (buildupTypePE.includes('SHORT BUILDUP') || buildupTypePE.includes('LONG UNWINDING')) {
+            buildupClassPE = 'short-buildup-red';
+        }
+        
+        // Add all cells with updated styling
+        for (let j = 0; j < Math.min(row.length, 15); j++) {
+            const cellValue = row[j] || '';
+            
+            // Determine cell class based on column position
+            let cellClass = '';
+            
+            // Strike column (column 7 - PRICE)
+            if (j === 7) {
+                cellClass = 'strike-cell';
+            }
+            // Total CE OI, OPEN INTEREST (CE), OPEN INTEREST (PE), TOTAL PE OI - Purple background
+            else if (j === 1 || j === 2 || j === 13 || j === 14) {
+                cellClass = 'total-oi-cell';
+            }
+            // CHANGE IN OI - Blue background
+            else if (j === 3 || j === 12) {
+                cellClass = 'change-oi-cell';
+            }
+            // Volume, Net Change LTP, LTP - No background
+            else if (j === 4 || j === 11) { // Volume columns
+                cellClass = 'volume-cell';
+            } else if (j === 5 || j === 10) { // Net Change LTP columns
+                cellClass = 'net-change-cell';
+            } else if (j === 6 || j === 9) { // LTP columns
+                cellClass = 'ltp-cell';
+            }
+            // BUILDUP columns (0 and 8) get special buildup classes
+            else if (j === 0) {
+                cellClass = buildupClassCE;
+            } else if (j === 8) {
+                // Note: Column 8 is LTP (PE side), not BUILDUP
+                cellClass = 'ltp-cell';
+            } else if (j === 15) {
+                // Note: Column 15 is BUILDUP (PE side) but we're only showing 15 columns
+                cellClass = buildupClassPE;
+            }
+            
+            html += `<td class="${cellClass.trim()}">${formatValue(cellValue)}</td>`;
+        }
+        
+        html += '</tr>';
+    }
+    
+    html += `
+                </tbody>
+            </table>
+        </div>`;
+    
+    container.innerHTML = html;
+}
+
+// ===== NEW FUNCTION: HIGHLIGHT ATM STRIKE PRICE =====
+function highlightATMStrike() {
+    // Get ATM strike price from overview box
+    const atmStrikeElement = document.getElementById('strikePrice');
+    if (!atmStrikeElement) return;
+    
+    const atmStrikeText = atmStrikeElement.textContent.trim();
+    if (!atmStrikeText || atmStrikeText === '0' || atmStrikeText === 'Loading...') {
+        return; // No valid ATM strike available
+    }
+    
+    // Clean the strike price (remove commas, etc.)
+    const atmStrike = atmStrikeText.replace(/[^\d]/g, '');
+    if (!atmStrike) return;
+    
+    // Find all price cells in the table (column 8 - PRICE column, index 7)
+    const priceCells = document.querySelectorAll('.main-oi-table td.strike-cell');
+    
+    // Remove any existing highlights first
+    priceCells.forEach(cell => {
+        cell.classList.remove('atm-strike-highlight');
+    });
+    
+    let found = false;
+    
+    // Search for the ATM strike price
+    priceCells.forEach(cell => {
+        const cellText = cell.textContent.trim();
+        const cellValue = cellText.replace(/[^\d]/g, '');
+        
+        if (cellValue === atmStrike) {
+            // Found the ATM strike price
+            found = true;
+            cell.classList.add('atm-strike-highlight');
+            cell.innerHTML = `<strong>${cellText}</strong>`;
+            
+            // Also add a tooltip
+            cell.title = `ATM Strike Price: ${atmStrike}`;
+            
+            // Scroll to highlight the ATM strike row
+            setTimeout(() => {
+                cell.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 500);
+        }
+    });
+    
+    // If ATM strike not found, check if we need to search in a different format
+    if (!found) {
+        // Try searching without cleaning
+        priceCells.forEach(cell => {
+            const cellText = cell.textContent.trim();
+            if (cellText === atmStrikeText || cellText.includes(atmStrike)) {
+                cell.classList.add('atm-strike-highlight');
+                cell.innerHTML = `<strong>${cellText}</strong>`;
+                cell.title = `ATM Strike Price: ${atmStrikeText}`;
+                
+                setTimeout(() => {
+                    cell.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 500);
+            }
+        });
+    }
+    
+    // Log for debugging
+    if (found) {
+        console.log(`ATM Strike Price ${atmStrike} highlighted in table`);
+    } else {
+        console.log(`ATM Strike Price ${atmStrike} not found in table`);
+    }
+}
+
+function formatValue(value) {
+    if (!value) return '';
+    
+    // Try to parse as number
+    const num = parseFloat(value.replace(/[^\d.-]/g, ''));
+    if (!isNaN(num)) {
+        // Format large numbers with commas
+        if (Math.abs(num) >= 1000) {
+            return num.toLocaleString('en-IN', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
             });
-            
-            return rows;
         }
-
-        // Fetch OI data from Google Sheets
-        async function fetchOIData() {
-            try {
-                showLoading(true);
-                
-                const response = await fetch(OI_SHEET_URL);
-                if (!response.ok) throw new Error('Network response was not ok');
-                
-                const csvText = await response.text();
-                oiData = parseCSV(csvText);
-                
-                updateDataDisplay();
-                
-                // Update last updated time
-                const lastUpdateText = document.getElementById('lastUpdateText');
-                const lastUpdateHeader = document.getElementById('lastUpdate');
-                if (lastUpdateText && lastUpdateHeader) {
-                    const now = new Date();
-                    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    lastUpdateText.textContent = timeStr;
-                    lastUpdateHeader.textContent = timeStr;
-                }
-                
-                showNotification('OI Data refreshed successfully!', 'success');
-                
-            } catch (error) {
-                console.error('Error fetching OI data:', error);
-                showNotification('Failed to load OI data. Please try again.', 'error');
-            } finally {
-                showLoading(false);
-            }
-        }
-
-        function updateDataDisplay() {
-            if (!oiData || oiData.length === 0) {
-                showNotification('No data available. Please refresh.', 'error');
-                return;
-            }
-            
-            if (currentInstrument === 'nifty') {
-                displayNiftyData();
-            } else {
-                displayBankNiftyData();
-            }
-        }
-
-        function displayNiftyData() {
-            // Update overview data
-            const expiryDate = getCellValue(2, 1); // B3
-            const spotPrice = getCellValue(2, 2);  // C3
-            const strikePrice = getCellValue(2, 4); // E3
-            const sentiment = getCellValue(10, 2); // C11 - Sentiment
-            
-            document.getElementById('expiryDate').textContent = expiryDate || 'N/A';
-            document.getElementById('spotPrice').textContent = spotPrice || '0.00';
-            document.getElementById('strikePrice').textContent = strikePrice || '0';
-            
-            // Update sentiment with color
-            updateSentimentDisplay(sentiment);
-            
-            // Calculate days to expiry
-            if (expiryDate) {
-                try {
-                    const expiry = new Date(expiryDate);
-                    const today = new Date();
-                    const diffTime = Math.abs(expiry - today);
-                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                    document.getElementById('daysToExpiry').textContent = `${diffDays} Days to Expiry`;
-                } catch (e) {
-                    document.getElementById('daysToExpiry').textContent = 'Invalid Date';
-                }
-            }
-            
-            // Display OI Analysis Data (A7:C12)
-            displayOIAnalysisData(6, 11, 11, 2); // Row 12, Column C for overall
-            
-            // Display First 30 Minutes View (A16:D17 for data, B21 for overall)
-            displayFirst30View(15, 16, 20, 1); // Rows 16-17, Overall at row 21, column B
-            
-            // Display Main OI Table (A24:O42)
-            displayMainOiTable(23, 41);
-        }
-
-        function displayBankNiftyData() {
-            // Update overview data
-            const expiryDate = getCellValue(48, 2); // C49
-            const spotPrice = getCellValue(48, 3);  // D49
-            const strikePrice = getCellValue(48, 5); // F49
-            const sentiment = getCellValue(56, 2); // C57 - Sentiment
-            
-            document.getElementById('expiryDate').textContent = expiryDate || 'N/A';
-            document.getElementById('spotPrice').textContent = spotPrice || '0.00';
-            document.getElementById('strikePrice').textContent = strikePrice || '0';
-            
-            // Update sentiment with color
-            updateSentimentDisplay(sentiment);
-            
-            // Calculate days to expiry
-            if (expiryDate) {
-                try {
-                    const expiry = new Date(expiryDate);
-                    const today = new Date();
-                    const diffTime = Math.abs(expiry - today);
-                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                    document.getElementById('daysToExpiry').textContent = `${diffDays} Days to Expiry`;
-                } catch (e) {
-                    document.getElementById('daysToExpiry').textContent = 'Invalid Date';
-                }
-            }
-            
-            // Display OI Analysis Data (A53:C58)
-            displayOIAnalysisData(52, 57, 57, 2); // Row 58, Column C for overall
-            
-            // Display First 30 Minutes View (A62:D63 for data, B64 for overall)
-            displayFirst30View(61, 62, 63, 1); // Rows 62-63, Overall at row 64, column B
-            
-            // Display Main OI Table (A67:O85)
-            displayMainOiTable(66, 84);
-        }
-
-        function getCellValue(row, col) {
-            if (!oiData || row >= oiData.length || col >= oiData[row].length) {
-                return '';
-            }
-            return oiData[row][col] || '';
-        }
-
-        function updateSentimentDisplay(sentiment) {
-            const sentimentEl = document.getElementById('sentimentValue');
-            if (!sentimentEl) return;
-            
-            sentimentEl.textContent = sentiment || 'Neutral';
-            
-            // Remove all sentiment classes
-            sentimentEl.classList.remove('sentiment-bullish-overview', 'sentiment-bearish-overview', 'sentiment-neutral-overview');
-            
-            // Add appropriate class
-            const sentimentStr = (sentiment || '').toLowerCase();
-            if (sentimentStr.includes('bull')) {
-                sentimentEl.classList.add('sentiment-bullish-overview');
-            } else if (sentimentStr.includes('bear')) {
-                sentimentEl.classList.add('sentiment-bearish-overview');
-            } else {
-                sentimentEl.classList.add('sentiment-neutral-overview');
-            }
-        }
-
-        function displayOIAnalysisData(startRow, endRow, overallRow, overallCol) {
-            const container = document.getElementById('oiAnalysisData');
-            const overallContainer = document.getElementById('oiOverallView');
-            
-            if (!container || !overallContainer) return;
-            
-            if (endRow - startRow < 5) {
-                container.innerHTML = '<div class="data-error"><h3>Data Error</h3><p>Incomplete OI Analysis Data</p></div>';
-                return;
-            }
-            
-            // Get overall view from specified cell
-            const overallSentiment = getCellValue(overallRow, overallCol) || 'Neutral';
-            updateOverallView(overallContainer, overallSentiment);
-            
-            let html = `
-                <div class="small-table-container">
-                    <table class="small-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>PCR</th>
-                                <th>Sentiment</th>
-                            </tr>
-                        </thead>
-                        <tbody>`;
-            
-            // Add rows for each parameter
-            const parameters = ['OI (Positional)', 'C.O.I', 'Volume', 'Total O.I'];
-            for (let i = 0; i < 4; i++) {
-                const row = startRow + i + 1;
-                const param = getCellValue(row, 0) || parameters[i];
-                const pcr = getCellValue(row, 1) || '0.00';
-                const sentiment = getCellValue(row, 2) || 'Neutral';
-                
-                const sentimentClass = getSentimentClass(sentiment);
-                
-                html += `
-                    <tr>
-                        <td>${param}</td>
-                        <td>${pcr}</td>
-                        <td class="${sentimentClass}">${sentiment}</td>
-                    </tr>`;
-            }
-            
-            html += `</tbody></table></div>`;
-            
-            container.innerHTML = html;
-        }
-
-        function displayFirst30View(startRow, endRow, overallRow, overallCol) {
-            const container = document.getElementById('first30View');
-            const overallContainer = document.getElementById('first30Overall');
-            
-            if (!container || !overallContainer) return;
-            
-            if (endRow - startRow < 1) {
-                container.innerHTML = '<div class="data-error"><h3>Data Error</h3><p>Incomplete First 30 Minutes Data</p></div>';
-                return;
-            }
-            
-            // Get overall view with color coding
-            const overallValue = getCellValue(overallRow, overallCol) || 'N/A';
-            updateFirst30OverallView(overallContainer, overallValue);
-            
-            let html = `
-                <div class="small-table-container">
-                    <table class="small-table">
-                        <thead>
-                            <tr>
-                                <th>Type</th>
-                                <th>PE %</th>
-                                <th>CE %</th>
-                                <th>Score</th>
-                            </tr>
-                        </thead>
-                        <tbody>`;
-            
-            // First 30 minutes data (2 rows)
-            for (let i = 0; i < 2; i++) {
-                const row = startRow + i;
-                const type = getCellValue(row, 0) || (i === 0 ? 'O.I' : 'C.O.I');
-                const pe = getCellValue(row, 1) || '0%';
-                const ce = getCellValue(row, 2) || '0%';
-                const score = getCellValue(row, 3) || 'Neutral';
-                
-                const sentimentClass = getSentimentClass(score);
-                
-                html += `
-                    <tr>
-                        <td>${type}</td>
-                        <td>${pe}</td>
-                        <td>${ce}</td>
-                        <td class="${sentimentClass}">${score}</td>
-                    </tr>`;
-            }
-            
-            html += `</tbody></table></div>`;
-            
-            container.innerHTML = html;
-        }
-
-        function updateFirst30OverallView(container, value) {
-            const val = (value || '').toLowerCase();
-            
-            // Remove all classes
-            container.classList.remove('first30-call', 'first30-put', 'first30-neutral');
-            
-            if (val.includes('call')) {
-                container.className = 'first30-overall first30-call';
-                container.innerHTML = `<strong>Overall View:</strong> ${value} <i class="fas fa-arrow-up"></i>`;
-            } else if (val.includes('put')) {
-                container.className = 'first30-overall first30-put';
-                container.innerHTML = `<strong>Overall View:</strong> ${value} <i class="fas fa-arrow-down"></i>`;
-            } else {
-                container.className = 'first30-overall first30-neutral';
-                container.innerHTML = `<strong>Overall View:</strong> ${value}`;
-            }
-        }
-
-        // ===== UPDATED: MAIN OI TABLE DISPLAY WITH BOTH HEADER ROWS =====
-        function displayMainOiTable(startRow, endRow) {
-            const container = document.getElementById('mainOiTable');
-            if (!container) return;
-            
-            if (endRow - startRow < 5) {
-                container.innerHTML = '<div class="data-error"><h3>Data Error</h3><p>Incomplete OI Table Data</p></div>';
-                return;
-            }
-            
-            // Get header rows
-            const headerRow1 = oiData[startRow]; // CE | STRIKE | PE row
-            const headerRow2 = oiData[startRow + 1]; // Detailed column headers row
-            
-            if (!headerRow1 || !headerRow2 || headerRow2.length < 15) {
-                container.innerHTML = '<div class="data-error"><h3>Data Error</h3><p>Invalid table format</p></div>';
-                return;
-            }
-            
-            let html = `
-                <div class="main-oi-table-container">
-                    <table class="main-oi-table">
-                        <thead>
-                            <tr>`;
-            
-            // ===== UPDATED: ADD BOTH HEADER ROWS =====
-            // First header row: CE | STRIKE | PE
-            html += `<th colspan="7" class="header-ce">CE</th>`;
-            html += `<th class="header-strike">STRIKE</th>`;
-            html += `<th colspan="7" class="header-pe">PE</th>`;
-            
-            html += `
-                            </tr>
-                            <tr>`;
-            
-            // Second header row: Detailed column names
-            // Expected order: BUILDUP | TOTAL CE OI | OPEN INTEREST | CHANGE IN OI | Volume | Net Change LTP | LTP | PRICE | LTP | Net Change LTP | Volume | CHANGE IN OI | OPEN INTEREST | TOTAL PE OI | BUILDUP
-            for (let j = 0; j < Math.min(headerRow2.length, 15); j++) {
-                const header = headerRow2[j] || '';
-                let headerClass = '';
-                
-                // Apply specific styling based on column position
-                if (j === 1 || j === 2 || j === 13 || j === 14) { // TOTAL CE OI, OPEN INTEREST (CE), OPEN INTEREST (PE), TOTAL PE OI
-                    headerClass = 'open-interest-col';
-                } else if (j === 3 || j === 12) { // CHANGE IN OI (both sides)
-                    headerClass = 'change-oi-col';
-                } else if (j === 7) { // PRICE (strike column)
-                    headerClass = 'header-strike';
-                }
-                // Other columns (BUILDUP, Volume, Net Change LTP, LTP) get default styling
-                
-                html += `<th class="${headerClass}">${header}</th>`;
-            }
-            
-            html += `
-                            </tr>
-                        </thead>
-                        <tbody>`;
-            
-            // Add data rows (skip the first two header rows)
-            for (let i = startRow + 2; i <= endRow; i++) {
-                if (i >= oiData.length) break;
-                
-                const row = oiData[i];
-                if (!row || row.length === 0) continue;
-                
-                html += '<tr>';
-                
-             // Determine buildup type for CE (column 0) and PE (column 14)
-let buildupClassCE = 'buildup-cell';
-let buildupClassPE = 'buildup-cell';
-const buildupTypeCE = (row[0] || '').toUpperCase();
-const buildupTypePE = (row[14] || '').toUpperCase();
-
-// ===== UPDATED: BUILDUP COLOR CODING =====
-// CE Side (Column 0) - BUILDUP
-if (buildupTypeCE.includes('LONG BUILDUP') || buildupTypeCE.includes('SHORT COVERING')) {
-    buildupClassCE = 'long-buildup-green';
-} else if (buildupTypeCE.includes('SHORT BUILDUP') || buildupTypeCE.includes('LONG UNWINDING')) {
-    buildupClassCE = 'short-buildup-red';
+        // Format smaller numbers appropriately
+        return num.toFixed(Math.abs(num) < 1 ? 2 : 0);
+    }
+    
+    return value;
 }
 
-// PE Side (Column 14) - BUILDUP
-if (buildupTypePE.includes('LONG BUILDUP') || buildupTypePE.includes('SHORT COVERING')) {
-    buildupClassPE = 'long-buildup-green';
-} else if (buildupTypePE.includes('SHORT BUILDUP') || buildupTypePE.includes('LONG UNWINDING')) {
-    buildupClassPE = 'short-buildup-red';
+function updateOverallView(container, sentiment) {
+    const sentimentStr = (sentiment || '').toLowerCase();
+    
+    if (sentimentStr.includes('bull')) {
+        container.className = 'overall-view bullish';
+        container.innerHTML = `<i class="fas fa-arrow-up"></i> Overall: ${sentiment}`;
+    } else if (sentimentStr.includes('bear')) {
+        container.className = 'overall-view bearish';
+        container.innerHTML = `<i class="fas fa-arrow-down"></i> Overall: ${sentiment}`;
+    } else {
+        container.className = 'overall-view';
+        container.innerHTML = `<i class="fas fa-minus"></i> Overall: ${sentiment || 'Neutral'}`;
+    }
 }
-                
-                // Add all cells with updated styling
-                for (let j = 0; j < Math.min(row.length, 15); j++) {
-                    const cellValue = row[j] || '';
-                    
-                    // Determine cell class based on column position
-                    let cellClass = '';
-                    
-                    // Strike column (column 7 - PRICE)
-                    if (j === 7) {
-                        cellClass = 'strike-cell';
-                    }
-                    // Total CE OI, OPEN INTEREST (CE), OPEN INTEREST (PE), TOTAL PE OI - Purple background
-                    else if (j === 1 || j === 2 || j === 13 || j === 14) {
-                        cellClass = 'total-oi-cell';
-                    }
-                    // CHANGE IN OI - Blue background
-                    else if (j === 3 || j === 12) {
-                        cellClass = 'change-oi-cell';
-                    }
-                    // Volume, Net Change LTP, LTP, BUILDUP - No background
-                    else if (j === 4 || j === 5 || j === 6 || j === 9 || j === 10 || j === 11 || j === 0 || j === 8) {
-                        if (j === 4 || j === 11) cellClass = 'volume-cell';
-                        else if (j === 5 || j === 10) cellClass = 'net-change-cell';
-                        else if (j === 6 || j === 9) cellClass = 'ltp-cell';
-                        else if (j === 0 || j === 8) cellClass = 'buildup-cell';
-                    }
-                    
-                    // Apply buildup color to first and last columns only (BUILDUP columns)
-                    if (j === 0 && buildupClassCE) {
-                        cellClass = cellClass ? cellClass + ' ' + buildupClassCE : buildupClassCE;
-                    } else if (j === 14 && buildupClassPE) {
-                        cellClass = cellClass ? cellClass + ' ' + buildupClassPE : buildupClassPE;
-                    }
-                    
-                    html += `<td class="${cellClass.trim()}">${formatValue(cellValue)}</td>`;
-                }
-                
-                html += '</tr>';
-            }
-            
-            html += `
-                        </tbody>
-                    </table>
-                </div>`;
-            
-            container.innerHTML = html;
+
+function getSentimentClass(sentiment) {
+    const sentimentStr = (sentiment || '').toLowerCase();
+    if (sentimentStr.includes('bull')) {
+        return 'sentiment-bullish';
+    } else if (sentimentStr.includes('bear')) {
+        return 'sentiment-bearish';
+    } else {
+        return 'sentiment-neutral';
+    }
+}
+
+function showLoading(show) {
+    const refreshBtn = document.getElementById('refreshBtnBottom');
+    
+    if (show) {
+        document.body.classList.add('loading');
+        if (refreshBtn) {
+            refreshBtn.classList.add('refreshing');
+            refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
+            refreshBtn.disabled = true;
         }
+    } else {
+        document.body.classList.remove('loading');
+        if (refreshBtn) {
+            refreshBtn.classList.remove('refreshing');
+            refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh Data';
+            refreshBtn.disabled = false;
+        }
+    }
+}
 
         function formatValue(value) {
             if (!value) return '';
