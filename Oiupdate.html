@@ -1180,11 +1180,20 @@
     font-weight: 600;
 }
 
-/* CHANGE IN OI (both CE and PE sides) - Blue background */
-.main-oi-table td.change-oi-cell {
-    background: rgba(59, 130, 246, 0.1) !important;
+/* CHANGE IN OI (both CE and PE sides) - Blue background for entire column */
+.main-oi-table td.change-oi-cell,
+.main-oi-table td.change-oi-col {
+    background: rgba(59, 130, 246, 0.15) !important;
     color: #e2e8f0 !important;
     font-weight: 600;
+}
+
+/* Specific styling for CHANGE IN OI header cells */
+.main-oi-table th.change-oi-col {
+    background: rgba(59, 130, 246, 0.25) !important;
+    color: #3b82f6 !important;
+    font-weight: 700;
+    font-size: 0.86rem;
 }
 
 /* Volume, Net Change LTP, LTP - No background */
@@ -1227,6 +1236,25 @@
     background: transparent !important;
     color: var(--light) !important;
     font-weight: normal;
+}
+
+    /* ===== ATM STRIKE PRICE HIGHLIGHT ===== */
+.main-oi-table td.atm-strike-highlight {
+    background: rgba(244, 63, 94, 0.3) !important;
+    color: white !important;
+    font-weight: 900 !important;
+    font-size: 0.95rem !important;
+    border: 2px solid #f43f5e !important;
+    box-shadow: 0 0 15px rgba(244, 63, 94, 0.5) !important;
+    position: relative;
+    animation: pulse-glow 2s infinite;
+    z-index: 1;
+}
+
+@keyframes pulse-glow {
+    0% { box-shadow: 0 0 10px rgba(244, 63, 94, 0.5); }
+    50% { box-shadow: 0 0 20px rgba(244, 63, 94, 0.8); }
+    100% { box-shadow: 0 0 10px rgba(244, 63, 94, 0.5); }
 }
 
         /* Refresh Button Below OI Analysis */
