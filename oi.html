@@ -1025,16 +1025,31 @@
             background: rgba(16, 185, 129, 0.05);
         }
 
-        /* Strike Column Styling ONLY */
+        /* CE/PE Separation in Table */
+        .ce-section {
+            background: rgba(16, 185, 129, 0.03) !important;
+        }
+
+        .pe-section {
+            background: rgba(244, 63, 94, 0.03) !important;
+        }
+
+        /* Strike Column Styling */
         .strike-column {
-            background: rgba(243, 156, 18, 0.15) !important;
+            background: rgba(243, 156, 18, 0.1) !important;
             font-weight: 700 !important;
             color: var(--warning) !important;
             border-left: 2px solid var(--warning) !important;
             border-right: 2px solid var(--warning) !important;
         }
 
-        /* BuildUp Colors - For CE and PE columns */
+        /* Price Columns Styling */
+        .price-column {
+            font-weight: 600 !important;
+            color: #e2e8f0 !important;
+        }
+
+        /* BuildUp Colors - Enhanced for both CE and PE */
         .long-buildup {
             background: rgba(16, 185, 129, 0.15) !important;
             color: var(--primary) !important;
@@ -1594,7 +1609,7 @@
             </div>
         </main>
 
-        <!-- FOOTER (SAME AS INDEX) -->
+        <!-- FOOTER (SAME AS INDEX) ===== -->
         <footer>
             <div class="container">
                 <div class="footer-content">
@@ -2242,27 +2257,27 @@
                     </thead>
                     <tbody>`;
             
-                        // Add rows for each parameter
-                const parameters = ['OI (Positional)', 'C.O.I', 'Volume', 'Total O.I'];
-                for (let i = 0; i < 4; i++) {
-                    const row = startRow + i + 1;
-                    const param = getCellValue(row, 0) || parameters[i];
-                    const pcr = getCellValue(row, 1) || '0.00';
-                    const sentiment = getCellValue(row, 2) || 'Neutral';
-                    
-                    const sentimentClass = getSentimentClass(sentiment);
-                    
-                    html += `
-                        <tr>
-                            <td>${param}</td>
-                            <td>${pcr}</td>
-                            <td class="${sentimentClass}">${sentiment}</td>
-                        </tr>`;
-                }
+            // Add rows for each parameter
+            const parameters = ['OI (Positional)', 'C.O.I', 'Volume', 'Total O.I'];
+            for (let i = 0; i < 4; i++) {
+                const row = startRow + i + 1;
+                const param = getCellValue(row, 0) || parameters[i];
+                const pcr = getCellValue(row, 1) || '0.00';
+                const sentiment = getCellValue(row, 2) || 'Neutral';
                 
-                html += `</tbody></table>`;
+                const sentimentClass = getSentimentClass(sentiment);
                 
-                container.innerHTML = html;
+                html += `
+                    <tr>
+                        <td>${param}</td>
+                        <td>${pcr}</td>
+                        <td class="${sentimentClass}">${sentiment}</td>
+                    </tr>`;
+            }
+            
+            html += `</tbody></table>`;
+            
+            container.innerHTML = html;
         }
 
         function displayFirst30View(startRow, endRow, overallRow, overallCol) {
@@ -2411,14 +2426,25 @@
                     if (j === 7 || j === 8) { // Adjust column index as needed
                         cellClass = 'strike-column';
                     }
-                    // Apply buildup color coding
-                    else if (j === 0 && buildupClassCE) {
-                        cellClass = buildupClassCE;
-                    } else if (j === 14 && buildupClassPE) {
-                        cellClass = buildupClassPE;
+                    // Price columns (adjust indices as needed)
+                    else if (j === 3 || j === 4 || j === 10 || j === 11) { // Example price columns
+                        cellClass = 'price-column';
+                    }
+                    // CE/PE section backgrounds
+                    else if (j >= 1 && j <= 7) { // CE section
+                        cellClass = 'ce-section';
+                    } else if (j >= 9 && j <= 14) { // PE section
+                        cellClass = 'pe-section';
                     }
                     
-                    html += `<td class="${cellClass}">${formatValue(cellValue)}</td>`;
+                    // Apply buildup color coding
+                    if (j === 0 && buildupClassCE) {
+                        cellClass += ' ' + buildupClassCE;
+                    } else if (j === 14 && buildupClassPE) {
+                        cellClass += ' ' + buildupClassPE;
+                    }
+                    
+                    html += `<td class="${cellClass.trim()}">${formatValue(cellValue)}</td>`;
                 }
                 
                 html += '</tr>';
