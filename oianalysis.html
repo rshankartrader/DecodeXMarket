@@ -1,0 +1,2647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DecodeXMarket - OI Analysis</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== CSS RESET & VARIABLES (SAME AS INDEX) ===== */
+        :root {
+            --primary: #10b981;
+            --secondary: #059669;
+            --accent: #f43f5e;
+            --success: #27ae60;
+            --danger: #c0392b;
+            --warning: #f39c12;
+            --info: #2980b9;
+            --dark: #0f172a;
+            --darker: #0a1120;
+            --light: #ecf0f1;
+            --gray: #94a3b8;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border: #1e293b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
+            color: var(--light);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ===== UPDATED LOGIN SYSTEM (SAME AS INDEX) ===== */
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-box {
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h2 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 2rem;
+            font-weight: 900;
+        }
+
+        .login-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .login-tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .login-tab.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .login-form {
+            display: none;
+        }
+
+        .login-form.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--light);
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--light);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .register-note {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .register-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .register-link:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== UPDATED HEADER (SAME AS INDEX) ===== */
+        .header {
+            width: 100%;
+            background-color: var(--dark);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: -1;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Logo Section */
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(5, 150, 105, 0.4);
+        }
+
+        .logo-icon i {
+            color: white;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-main {
+            font-size: 20px;
+            font-weight: 900;
+            color: white;
+            line-height: 1;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-sub {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1;
+            margin-top: 4px;
+        }
+
+        /* Action Buttons */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .action-button {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .action-button:hover {
+            background-color: #334155;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* User Info */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-left: 10px;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .user-name {
+            font-size: 13px;
+            font-weight: 800;
+            color: white;
+            line-height: 1;
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .user-role {
+            font-size: 10px;
+            color: var(--primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.2px;
+            margin-top: 3px;
+        }
+
+        .logout-button {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            color: var(--accent);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .logout-button:hover {
+            background-color: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(244, 63, 94, 0.2);
+        }
+
+        /* Last Updated Time Display */
+        .last-updated {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gray);
+            font-size: 11px;
+        }
+
+        .last-updated i {
+            color: var(--primary);
+            font-size: 14px;
+        }
+
+        #lastUpdate {
+            font-weight: 600;
+            color: var(--light);
+            min-width: 100px;
+        }
+
+        /* Hamburger Menu Button */
+        .menu-toggle {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            z-index: 70;
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            color: var(--gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-left: 10px;
+        }
+
+        .menu-toggle:hover {
+            background-color: #334155;
+            color: white;
+        }
+
+        .menu-toggle.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            box-shadow: 0 0 20px rgba(5, 150, 105, 0.5);
+            transform: rotate(180deg);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background-color: var(--dark);
+            z-index: 65;
+            overflow: hidden;
+            height: 0;
+            transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-top: 1px solid transparent;
+        }
+
+        .mobile-menu.open {
+            height: calc(100vh - 70px);
+            border-top: 1px solid var(--border);
+        }
+
+        .mobile-menu-container {
+            padding: 0 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+        }
+
+        .mobile-menu.open .mobile-menu-container {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Navigation Items - SAME AS INDEX.HTML */
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .nav-button {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 18px 20px;
+            border-radius: 14px;
+            font-size: 17px;
+            font-weight: 800;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid;
+            cursor: pointer;
+            background-color: rgba(30, 41, 59, 0.5);
+            color: var(--gray);
+            border-color: #334155;
+            text-align: left;
+        }
+
+        .nav-button.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
+            transform: translateX(5px);
+        }
+
+        .nav-button:not(.active):hover {
+            background-color: #1e293b;
+            color: white;
+            border-color: #475569;
+            transform: translateX(5px);
+        }
+
+        .nav-icon {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Mobile User Section */
+        .mobile-user-section {
+            margin-top: auto;
+            padding: 20px 0 30px 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(15, 23, 42, 0.7) 100%);
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, #334155 50%, transparent 100%);
+            width: 100%;
+            margin-bottom: 25px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+        }
+
+        .mobile-menu.open .divider {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: rgba(30, 41, 59, 0.9);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid #334155;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+        }
+
+        .mobile-menu.open .user-card {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .user-card-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border: 1px solid #475569;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .user-avatar i {
+            font-size: 22px;
+            color: var(--primary);
+        }
+
+        .user-card-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-card-info h4 {
+            color: white;
+            font-weight: 900;
+            font-size: 16px;
+            line-height: 1.2;
+            margin-bottom: 6px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .user-card-badge {
+            display: inline-block;
+            color: var(--primary);
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            background-color: rgba(16, 185, 129, 0.15);
+            padding: 5px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .mobile-logout-button {
+            width: 50px;
+            height: 50px;
+            margin-left: 15px;
+            background-color: rgba(244, 63, 94, 0.15);
+            border: 1px solid rgba(244, 63, 94, 0.3);
+            color: var(--accent);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .mobile-logout-button:hover {
+            background-color: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(244, 63, 94, 0.2);
+        }
+
+        /* Responsive Header */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 15px;
+                height: 65px;
+            }
+
+            .logo-section .refresh-button {
+                width: 40px;
+                height: 40px;
+                margin-right: 8px;
+            }
+
+            .logo-main {
+                font-size: 18px;
+            }
+
+            .logo-sub {
+                font-size: 10px;
+            }
+
+            .action-button,
+            .logout-button,
+            .menu-toggle {
+                width: 42px;
+                height: 42px;
+            }
+
+            .user-name {
+                max-width: 100px;
+                font-size: 12px;
+            }
+
+            .last-updated {
+                font-size: 11px;
+                margin-right: 10px;
+            }
+
+            #lastUpdate {
+                min-width: 80px;
+            }
+
+            .nav-items {
+                margin-top: 20px;
+            }
+
+            .nav-button {
+                padding: 16px 18px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-container {
+                height: 60px;
+            }
+
+            .logo-text {
+                display: none;
+            }
+
+            .logo-section .refresh-button {
+                width: 38px;
+                height: 38px;
+                margin-right: 0;
+            }
+
+            .user-name {
+                max-width: 80px;
+                font-size: 11px;
+            }
+
+            .last-updated {
+                display: none;
+            }
+
+            .action-button,
+            .logout-button,
+            .menu-toggle {
+                width: 40px;
+                height: 40px;
+            }
+
+            .mobile-menu-container {
+                padding: 0 15px;
+            }
+
+            .user-avatar {
+                width: 45px;
+                height: 45px;
+            }
+
+            .user-card-info h4 {
+                font-size: 15px;
+            }
+
+            .mobile-logout-button {
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        /* ===== OI ANALYSIS PAGE SPECIFIC STYLES - UPDATED ===== */
+        .oi-header {
+            text-align: center;
+            margin: 30px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .oi-header h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .oi-header p {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        /* Instrument Selector */
+        .instrument-selector {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .selector-label {
+            color: var(--light);
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .selector-label i {
+            color: var(--primary);
+        }
+
+        .instrument-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .inst-btn {
+            padding: 15px 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            color: var(--gray);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 200px;
+        }
+
+        .inst-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .inst-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .instrument-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .inst-btn {
+                width: 100%;
+                min-width: unset;
+            }
+        }
+
+        /* Market Overview */
+        .market-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .overview-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .overview-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .overview-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .overview-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--light);
+            margin: 10px 0;
+        }
+
+        .overview-subtext {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+
+        /* Sentiment Color in Overview */
+        .sentiment-value {
+            font-size: 1.8rem !important;
+            font-weight: 800;
+        }
+
+        .sentiment-bullish-overview {
+            color: var(--primary) !important;
+        }
+
+        .sentiment-bearish-overview {
+            color: var(--accent) !important;
+        }
+
+        .sentiment-neutral-overview {
+            color: var(--warning) !important;
+        }
+
+        /* ===== UPDATED: HORIZONTAL LAYOUT FOR OI BOXES ===== */
+        .oi-boxes-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .oi-boxes-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .oi-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .oi-box-title {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            text-align: center;
+        }
+
+        /* Small table styling for both boxes */
+        .small-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .small-table th {
+            background: rgba(16, 185, 129, 0.1);
+            padding: 10px 8px;
+            text-align: center;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .small-table td {
+            padding: 10px 8px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            color: var(--light);
+            font-size: 0.85rem;
+        }
+
+        .small-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .small-table tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        /* Center alignment for both tables */
+        .small-table th,
+        .small-table td {
+            text-align: center !important;
+        }
+
+        /* Sentiment Colors */
+        .sentiment-bullish {
+            color: var(--primary) !important;
+            font-weight: 600;
+        }
+
+        .sentiment-bearish {
+            color: var(--accent) !important;
+            font-weight: 600;
+        }
+
+        .sentiment-neutral {
+            color: var(--warning) !important;
+            font-weight: 600;
+        }
+
+        /* Overall View in OI Analysis */
+        .overall-view {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .overall-view.bullish {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .overall-view.bearish {
+            background: rgba(244, 63, 94, 0.1);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+        }
+
+        /* First 30 Minutes Overall - Color Coded */
+        .first30-overall {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .first30-call {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .first30-put {
+            background: rgba(244, 63, 94, 0.1);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .first30-neutral {
+            background: rgba(243, 156, 18, 0.1);
+            border: 1px solid var(--warning);
+            color: var(--warning);
+        }
+
+        /* ===== UPDATED: DETAILED OI TABLE STYLING ===== */
+        .main-oi-table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .main-oi-table {
+            width: 100%;
+            min-width: 1200px;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        /* Updated header styling - merged CE/PE */
+        .main-oi-table thead tr:first-child {
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .main-oi-table th {
+            padding: 12px 8px;
+            text-align: center;
+            color: var(--primary);
+            font-weight: 600;
+            border: 1px solid var(--border);
+            white-space: nowrap;
+            font-size: 0.9rem;
+        }
+
+        /* Specific styling for merged header cells */
+        .main-oi-table th.header-ce {
+            background: rgba(244, 63, 94, 0.2) !important;
+            color: #ff6b6b !important;
+            text-decoration: line-through;
+            font-size: 1rem;
+        }
+
+        .main-oi-table th.header-pe {
+            background: rgba(16, 185, 129, 0.2) !important;
+            color: #10b981 !important;
+            font-size: 1rem;
+        }
+
+        .main-oi-table th.header-strike {
+            background: rgba(243, 156, 18, 0.2) !important;
+            color: var(--warning) !important;
+            font-weight: 800;
+        }
+
+        .main-oi-table th.header-price {
+            background: rgba(59, 130, 246, 0.2) !important;
+            color: #3b82f6 !important;
+            font-weight: 700;
+        }
+
+        .main-oi-table td {
+            padding: 10px 8px;
+            text-align: center;
+            color: var(--light);
+            border: 1px solid var(--border);
+            font-size: 0.85rem;
+        }
+
+        .main-oi-table tbody tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .main-oi-table tbody tr:hover {
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        /* Updated: Price column highlighting only */
+        .main-oi-table td.price-cell {
+            font-weight: 700 !important;
+            font-size: 0.95rem !important;
+            color: #e2e8f0 !important;
+            background: rgba(59, 130, 246, 0.1) !important;
+        }
+
+        /* Remove highlight from LTP column */
+        .main-oi-table td.ltp-cell {
+            font-weight: normal !important;
+            font-size: 0.85rem !important;
+            background: transparent !important;
+        }
+
+        /* Strike Column Styling */
+        .main-oi-table td.strike-cell {
+            background: rgba(243, 156, 18, 0.1) !important;
+            font-weight: 700 !important;
+            color: var(--warning) !important;
+            border-left: 2px solid var(--warning) !important;
+            border-right: 2px solid var(--warning) !important;
+        }
+
+        /* BuildUp Colors - Enhanced for both CE and PE */
+        .long-buildup {
+            background: rgba(16, 185, 129, 0.15) !important;
+            color: var(--primary) !important;
+            font-weight: 600;
+        }
+
+        .short-buildup {
+            background: rgba(244, 63, 94, 0.15) !important;
+            color: var(--accent) !important;
+            font-weight: 600;
+        }
+
+        .short-covering {
+            background: rgba(243, 156, 18, 0.15) !important;
+            color: var(--warning) !important;
+            font-weight: 600;
+        }
+
+        /* Refresh Button Below OI Analysis */
+        .refresh-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 30px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .refresh-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .refresh-info .last-updated {
+            font-size: 14px;
+            color: var(--light);
+        }
+
+        .refresh-btn-bottom {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .refresh-btn-bottom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .refresh-btn-bottom.refreshing {
+            opacity: 0.8;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .refresh-section {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+            
+            .refresh-info {
+                justify-content: space-between;
+            }
+            
+            .refresh-btn-bottom {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Loading States */
+        .loading {
+            opacity: 0.7;
+            position: relative;
+            pointer-events: none;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .data-loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        .data-loading i {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 20px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Error State */
+        .data-error {
+            text-align: center;
+            padding: 40px;
+            background: rgba(244, 63, 94, 0.1);
+            border-radius: 16px;
+            border: 1px solid var(--accent);
+            margin: 20px 0;
+        }
+
+        .data-error h3 {
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .oi-header {
+                padding: 20px;
+                margin: 20px 0;
+            }
+
+            .oi-header h1 {
+                font-size: 2rem;
+            }
+
+            .instrument-selector {
+                padding: 20px;
+            }
+
+            .oi-boxes-container {
+                grid-template-columns: 1fr;
+            }
+
+            .oi-box {
+                padding: 15px;
+            }
+
+            .oi-box-title {
+                font-size: 1.1rem;
+            }
+
+            .small-table {
+                font-size: 0.8rem;
+            }
+
+            .overall-view,
+            .first30-overall {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+        }
+
+        /* ===== FOOTER STYLES (SAME AS INDEX) ===== */
+        footer {
+            background: rgba(15, 23, 42, 0.95);
+            padding: 40px 0 20px;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-logo {
+            padding-right: 20px;
+        }
+
+        .footer-logo h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .footer-description {
+            color: var(--gray);
+            margin-top: 15px;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .features-list li {
+            margin-bottom: 10px;
+            color: var(--light);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+
+        .features-list i {
+            color: var(--primary);
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+
+        .footer-links h4 {
+            color: var(--light);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 25px;
+            border-top: 1px solid var(--border);
+            color: var(--gray);
+            font-size: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-disclaimer {
+            background: rgba(244, 63, 94, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: #ff9999;
+        }
+    </style>
+</head>
+<body>
+    <!-- LOGIN SYSTEM (SAME AS INDEX) -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-box">
+            <div class="login-header">
+                <h2>DecodeXMarket</h2>
+                <p style="color: var(--gray);">Please login to access OI Analysis</p>
+            </div>
+            
+            <div class="login-tabs">
+                <button class="login-tab active" data-tab="user">User Login</button>
+                <button class="login-tab" data-tab="admin">Admin Login</button>
+            </div>
+            
+            <!-- USER LOGIN -->
+            <div class="login-form active" id="userLoginForm">
+                <div class="form-group">
+                    <label for="userEmail">Email</label>
+                    <input type="email" id="userEmail" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="userPassword">Password</label>
+                    <input type="password" id="userPassword" placeholder="Enter your password">
+                </div>
+                <button class="login-btn" onclick="loginUser()">Login</button>
+                
+                <div class="register-note">
+                    <p>Don't have an account? <a href="https://forms.gle/JhdWJDXDH93NHx6Y8" target="_blank" class="register-link">Register here</a></p>
+                </div>
+            </div>
+            
+            <!-- ADMIN LOGIN -->
+            <div class="login-form" id="adminLoginForm">
+                <div class="form-group">
+                    <label for="adminEmail">Admin ID</label>
+                    <input type="text" id="adminEmail" placeholder="Ravi@Admin">
+                </div>
+                <div class="form-group">
+                    <label for="adminPassword">Password</label>
+                    <input type="password" id="adminPassword" placeholder="RadheRadhe@2000">
+                </div>
+                <button class="login-btn" onclick="loginAdmin()">Login as Admin</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP (HIDDEN UNTIL LOGIN) -->
+    <div id="mainApp" style="display: none;">
+        <!-- HEADER (SAME AS INDEX) -->
+        <header class="header">
+            <div class="header-container">
+                
+                <!-- Logo Section -->
+                <div class="logo-section" id="logoButton">
+                    <div class="logo-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="logo-text">
+                        <span class="logo-main">DecodeX</span>
+                        <span class="logo-sub">OI Analysis</span>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="header-actions">
+                    <!-- Last Updated Time Display -->
+                    <div class="last-updated">
+                        <i class="fas fa-clock"></i>
+                        Last: <span id="lastUpdate">Never</span>
+                    </div>
+
+                    <!-- User Info & Logout -->
+                    <div class="user-info">
+                        <div class="user-details">
+                            <span class="user-name" id="userName"></span>
+                            <span class="user-role" id="userRole"></span>
+                        </div>
+                        <button class="logout-button" id="logoutButton" title="Logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+
+                    <!-- Hamburger Menu Button -->
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars" id="menuIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div class="mobile-menu" id="mobileMenu">
+                <div class="mobile-menu-container">
+                    <!-- NAVIGATION ITEMS - SAME AS INDEX.HTML -->
+                    <nav class="nav-items">
+                        <button class="nav-button" data-page="home">
+                            <div class="nav-icon">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            DASHBOARD
+                        </button>
+                        
+                        <!-- ADMIN ONLY: Overview Page -->
+                        <button class="nav-button admin-only" data-page="overview" style="display: none;">
+                            <div class="nav-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            MARKET OVERVIEW
+                        </button>
+                        
+                        <button class="nav-button" id="premiumIndicatorsButton">
+                            <div class="nav-icon">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                            PREMIUM INDICATORS
+                        </button>
+                        
+                        <button class="nav-button active" data-page="oi">
+                            <div class="nav-icon">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            O.I ANALYSIS
+                        </button>
+                        
+                        <button class="nav-button" data-page="gann">
+                            <div class="nav-icon">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            GANN TOOL(SCALPING)
+                        </button>
+                        
+                        <button class="nav-button" data-page="links">
+                            <div class="nav-icon">
+                                <i class="fas fa-link"></i>
+                            </div>
+                            USEFUL LINKS
+                        </button>
+                        
+                        <button class="nav-button" data-page="contact">
+                            <div class="nav-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            CONTACT US
+                        </button>
+                    </nav>
+
+                    <!-- User Info & Logout at Bottom -->
+                    <div class="mobile-user-section">
+                        <div class="divider"></div>
+                        <div class="user-card">
+                            <div class="user-card-left">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user" id="mobileAvatarIcon"></i>
+                                </div>
+                                <div class="user-card-info">
+                                    <h4 id="mobileUserName"></h4>
+                                    <div class="user-card-badge" id="mobileUserRole"></div>
+                                </div>
+                            </div>
+                            <button class="mobile-logout-button" id="mobileLogoutButton" title="Logout">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN CONTENT - UPDATED LAYOUT -->
+        <main class="container">
+            <!-- PAGE HEADER -->
+            <div class="oi-header">
+                <h1><i class="fas fa-chart-bar"></i> Open Interest Analysis</h1>
+                <p>Advanced OI analysis for Nifty and Bank Nifty with real-time data</p>
+            </div>
+
+            <!-- INSTRUMENT SELECTOR -->
+            <div class="instrument-selector">
+                <div class="selector-label">
+                    <i class="fas fa-chart-line"></i> Select Instrument
+                </div>
+                <div class="instrument-buttons">
+                    <button class="inst-btn active" data-instrument="nifty">NIFTY 50</button>
+                    <button class="inst-btn" data-instrument="banknifty">BANKNIFTY</button>
+                </div>
+            </div>
+
+            <!-- MARKET OVERVIEW -->
+            <div class="market-overview" id="marketOverview">
+                <div class="overview-card">
+                    <div class="overview-label">
+                        <i class="fas fa-calendar-day"></i> Expiry Date
+                    </div>
+                    <div class="overview-value" id="expiryDate">Loading...</div>
+                    <div class="overview-subtext" id="daysToExpiry">- Days to Expiry</div>
+                </div>
+                
+                <div class="overview-card">
+                    <div class="overview-label">
+                        <i class="fas fa-rupee-sign"></i> Spot Price
+                    </div>
+                    <div class="overview-value" id="spotPrice">0.00</div>
+                    <div class="overview-subtext">Current Market Price</div>
+                </div>
+                
+                <div class="overview-card">
+                    <div class="overview-label">
+                        <i class="fas fa-tags"></i> ATM Strike
+                    </div>
+                    <div class="overview-value" id="strikePrice">0</div>
+                    <div class="overview-subtext">At The Money Strike</div>
+                </div>
+                
+                <div class="overview-card">
+                    <div class="overview-label">
+                        <i class="fas fa-chart-line"></i> Sentiment
+                    </div>
+                    <div class="overview-value sentiment-value" id="sentimentValue">Neutral</div>
+                    <div class="overview-subtext">Market Sentiment</div>
+                </div>
+            </div>
+
+            <!-- ===== UPDATED: HORIZONTAL OI BOXES LAYOUT ===== -->
+            <div class="oi-boxes-container">
+                <!-- DAY BASED OI ANALYSIS BOX (Left - Larger) -->
+                <div class="oi-box">
+                    <h3 class="oi-box-title">
+                        <i class="fas fa-chart-pie"></i> Day Based OI Analysis
+                    </h3>
+                    
+                    <div id="oiAnalysisData" class="data-loading">
+                        <i class="fas fa-spinner"></i>
+                        <p>Loading OI Analysis Data...</p>
+                    </div>
+                    
+                    <!-- Overall View -->
+                    <div id="oiOverallView" class="overall-view">
+                        Loading overall view...
+                    </div>
+                </div>
+
+                <!-- FIRST 30 MINUTES VIEW BOX (Right - Smaller) -->
+                <div class="oi-box">
+                    <h3 class="oi-box-title">
+                        <i class="fas fa-clock"></i> First 30 Minutes View
+                    </h3>
+                    
+                    <div id="first30View" class="data-loading">
+                        <i class="fas fa-spinner"></i>
+                        <p>Loading First 30 Minutes Data...</p>
+                    </div>
+                    
+                    <!-- Overall View for First 30 Minutes -->
+                    <div id="first30Overall" class="first30-overall">
+                        Loading overall view...
+                    </div>
+                </div>
+            </div>
+
+            <!-- DETAILED OI ANALYSIS -->
+            <div class="oi-box">
+                <h3 class="oi-box-title">
+                    <i class="fas fa-table"></i> Detailed OI Analysis
+                </h3>
+                
+                <div id="mainOiTable" class="data-loading">
+                    <i class="fas fa-spinner"></i>
+                    <p>Loading Detailed OI Data...</p>
+                </div>
+            </div>
+
+            <!-- REFRESH BUTTON BELOW OI ANALYSIS -->
+            <div class="refresh-section">
+                <div class="refresh-info">
+                    <div class="last-updated">
+                        <i class="fas fa-clock"></i>
+                        Last Updated: <span id="lastUpdateText">Never</span>
+                    </div>
+                </div>
+                <button class="refresh-btn-bottom" id="refreshBtnBottom">
+                    <i class="fas fa-sync-alt"></i> Refresh Data
+                </button>
+            </div>
+        </main>
+
+        <!-- FOOTER (SAME AS INDEX) -->
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-logo">
+                        <h3>DecodeXMarket</h3>
+                        <div class="footer-description">
+                            <p><strong>Where Data meets Time Cycles.</strong></p>
+                            <ul class="features-list">
+                                <li><i class="fas fa-chart-line"></i> Daily FII/DII Decoding</li>
+                                <li><i class="fas fa-star"></i> AstroIndicator Reversals</li>
+                                <li><i class="fas fa-layer-group"></i> S&R Levels that Hold</li>
+                                <li><i class="fas fa-bullseye"></i> Nifty & BankNifty Predictions</li>
+                            </ul>
+                            <p style="margin-top: 15px;">An educational platform for market analysis enthusiasts</p>
+                        </div>
+                    </div>
+                    
+                    <div class="footer-links">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                            <li><a href="indicators.html"><i class="fas fa-crown"></i> Premium Indicators</a></li>
+                            <li><a href="oi.html" class="active"><i class="fas fa-chart-bar"></i> O.I Analysis</a></li>
+                            <li><a href="gann.html"><i class="fas fa-calculator"></i> Gann Calculator</a></li>
+                            <li><a href="links.html"><i class="fas fa-link"></i> Useful Links</a></li>
+                            <li><a href="contact.html"><i class="fas fa-phone"></i> Contact</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-links">
+                        <h4>Legal</h4>
+                        <ul>
+                            <li><a href="disclaimer.html"><i class="fas fa-exclamation-triangle"></i> Disclaimer</a></li>
+                            <li><a href="privacy.html"><i class="fas fa-shield-alt"></i> Privacy Policy</a></li>
+                            <li><a href="terms.html"><i class="fas fa-file-contract"></i> Terms & Conditions</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p>&copy; 2024 DecodeXMarket with RSK. All rights reserved.</p>
+                    <div class="footer-disclaimer">
+                        <p><i class="fas fa-exclamation-circle"></i> <strong>IMPORTANT:</strong> I am NOT SEBI registered. Trading is NOT my full-time career. All information is for educational purposes only. My market study should NOT be taken as buy/sell recommendations.</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JAVASCRIPT - UPDATED FOR NEW LAYOUT -->
+    <script>
+        // ===== AUTHENTICATION SYSTEM (SAME AS INDEX) =====
+        let currentUser = null;
+        let users = [];
+        
+        const ADMIN_CREDENTIALS = {
+            id: "Ravi@Admin",
+            password: "RadheRadhe@2000"
+        };
+
+        const LOGIN_API_URL = "https://script.google.com/macros/s/AKfycbx75r_4U2RjpihxddZJulj1JkhaizxElBe2rv845586WnOgPbOjXOmVMt1MEfA2OIDt-w/exec";
+
+        // Google Sheets URL for OI Analysis
+        const OI_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSdtY5FNbrGCeClr0zW25Cc9Iw2AMFcHqesucg9K7kO03_xrVDi5CmMlyxQOtPSpjo7VLvT5Pi6aavq/pub?gid=2046155963&single=true&output=csv";
+
+        function initializeUsers() {
+            const savedUsers = localStorage.getItem('decodexmarket_users');
+            if (savedUsers) {
+                users = JSON.parse(savedUsers);
+            }
+            
+            const savedUser = localStorage.getItem('decodexmarket_current_user');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showMainApp();
+            }
+        }
+
+        async function loginUser() {
+            const email = document.getElementById('userEmail').value.trim();
+            const password = document.getElementById('userPassword').value;
+            
+            if (!email || !password) {
+                showNotification('Please enter email and password!', 'error');
+                return;
+            }
+            
+            showNotification('Checking credentials...', 'info');
+            
+            try {
+                const response = await fetch(LOGIN_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+                });
+                
+                if (!response.ok) throw new Error('Network response was not ok');
+                
+                const responseText = await response.text();
+                let result;
+                
+                try {
+                    result = JSON.parse(responseText);
+                } catch (e) {
+                    throw new Error('Invalid server response');
+                }
+                
+                if (result.success) {
+                    currentUser = {
+                        email: email,
+                        name: result.name || email.split('@')[0],
+                        role: result.role || "user",
+                        hasPurchased: result.purchased || false,
+                        status: result.status || "active"
+                    };
+                    
+                    localStorage.setItem('decodexmarket_current_user', JSON.stringify(currentUser));
+                    
+                    const localUsers = JSON.parse(localStorage.getItem('decodexmarket_users') || '[]');
+                    const userIndex = localUsers.findIndex(u => u.email === email);
+                    
+                    if (userIndex === -1) {
+                        localUsers.push({
+                            email: email,
+                            password: password,
+                            name: result.name || email.split('@')[0],
+                            role: result.role || "user",
+                            hasPurchased: result.purchased || false,
+                            status: result.status || "active"
+                        });
+                    } else {
+                        localUsers[userIndex] = {
+                            ...localUsers[userIndex],
+                            name: result.name || email.split('@')[0],
+                            role: result.role || "user",
+                            hasPurchased: result.purchased || false,
+                            status: result.status || "active"
+                        };
+                    }
+                    
+                    localStorage.setItem('decodexmarket_users', JSON.stringify(localUsers));
+                    
+                    showMainApp();
+                    showNotification(`Welcome back, ${currentUser.name}!`, 'success');
+                    
+                } else {
+                    const localUsers = JSON.parse(localStorage.getItem('decodexmarket_users') || '[]');
+                    const localUser = localUsers.find(u => u.email === email && u.password === password);
+                    
+                    if (localUser && localUser.status !== "inactive") {
+                        currentUser = localUser;
+                        localStorage.setItem('decodexmarket_current_user', JSON.stringify(currentUser));
+                        showMainApp();
+                        showNotification(`Welcome back, ${currentUser.name}!`, 'success');
+                    } else {
+                        showNotification(result.message || 'Invalid email or password!', 'error');
+                    }
+                }
+                
+            } catch (error) {
+                console.error('Login error:', error);
+                
+                const localUsers = JSON.parse(localStorage.getItem('decodexmarket_users') || '[]');
+                const localUser = localUsers.find(u => u.email === email && u.password === password);
+                
+                if (localUser && localUser.status !== "inactive") {
+                    currentUser = localUser;
+                    localStorage.setItem('decodexmarket_current_user', JSON.stringify(currentUser));
+                    showMainApp();
+                    showNotification(`Welcome back, ${currentUser.name}!`, 'success');
+                } else {
+                    showNotification('Cannot connect to server. Please try again later.', 'error');
+                }
+            }
+        }
+
+        function loginAdmin() {
+            const id = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+            
+            if (id === ADMIN_CREDENTIALS.id && password === ADMIN_CREDENTIALS.password) {
+                currentUser = {
+                    email: ADMIN_CREDENTIALS.id,
+                    name: "Admin Ravi",
+                    role: "admin",
+                    hasPurchased: true,
+                    status: "active"
+                };
+                localStorage.setItem('decodexmarket_current_user', JSON.stringify(currentUser));
+                showMainApp();
+                showNotification('Welcome, Admin Ravi!', 'success');
+            } else {
+                showNotification('Invalid admin credentials!', 'error');
+            }
+        }
+
+        function showMainApp() {
+            document.getElementById('loginOverlay').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+            
+            updateUserInfo();
+            initializeHeader();
+            initializeOI();
+        }
+
+        function updateUserInfo() {
+            const userNameEl = document.getElementById('userName');
+            const userRoleEl = document.getElementById('userRole');
+            const mobileUserName = document.getElementById('mobileUserName');
+            const mobileUserRole = document.getElementById('mobileUserRole');
+            const mobileAvatarIcon = document.getElementById('mobileAvatarIcon');
+            
+            if (currentUser) {
+                userNameEl.textContent = currentUser.name;
+                userRoleEl.textContent = currentUser.role === "admin" ? "Admin" : "User";
+                mobileUserName.textContent = currentUser.name;
+                
+                let roleDisplay = '';
+                let iconClass = '';
+                
+                if (currentUser.role === "admin") {
+                    roleDisplay = "Administrator";
+                    iconClass = "fas fa-user-shield";
+                    
+                    // Show admin-only menu items
+                    document.querySelectorAll('.admin-only').forEach(item => {
+                        item.style.display = 'flex';
+                    });
+                } else if (currentUser.hasPurchased) {
+                    roleDisplay = "Premium User";
+                    iconClass = "fas fa-crown";
+                } else {
+                    roleDisplay = "Standard User";
+                    iconClass = "fas fa-user";
+                }
+                
+                mobileUserRole.textContent = roleDisplay;
+                mobileAvatarIcon.className = iconClass;
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('decodexmarket_current_user');
+            document.getElementById('loginOverlay').style.display = 'flex';
+            document.getElementById('mainApp').style.display = 'none';
+            showNotification('Logged out successfully!', 'info');
+            
+            document.getElementById('userEmail').value = '';
+            document.getElementById('userPassword').value = '';
+            document.getElementById('adminEmail').value = '';
+            document.getElementById('adminPassword').value = '';
+            
+            closeMenu();
+        }
+
+        // ===== HEADER FUNCTIONALITY =====
+        function initializeHeader() {
+            const logoButton = document.querySelector('.logo-section');
+            const logoutButton = document.getElementById('logoutButton');
+            const mobileLogoutButton = document.getElementById('mobileLogoutButton');
+            const menuToggle = document.getElementById('menuToggle');
+            const navButtons = document.querySelectorAll('.nav-button');
+            
+            if (logoButton) {
+                logoButton.addEventListener('click', () => {
+                    window.location.href = 'index.html';
+                });
+            }
+            
+            if (logoutButton) {
+                logoutButton.addEventListener('click', logout);
+            }
+            
+            if (mobileLogoutButton) {
+                mobileLogoutButton.addEventListener('click', logout);
+            }
+            
+            if (menuToggle) {
+                menuToggle.addEventListener('click', toggleMenu);
+            }
+            
+            navButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const page = this.getAttribute('data-page');
+                    
+                    // Remove active class from all buttons
+                    document.querySelectorAll('.nav-button').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Handle page navigation
+                    if (page === 'home') {
+                        window.location.href = 'index.html';
+                    } else if (page === 'oi') {
+                        // Already on OI page
+                    } else if (page) {
+                        window.location.href = `${page}.html`;
+                    }
+                    
+                    closeMenu();
+                });
+            });
+            
+            const premiumButton = document.getElementById('premiumIndicatorsButton');
+            if (premiumButton) {
+                premiumButton.addEventListener('click', () => {
+                    window.location.href = 'indicators.html';
+                    closeMenu();
+                });
+            }
+            
+            document.addEventListener('click', function(event) {
+                const mobileMenu = document.getElementById('mobileMenu');
+                const menuToggle = document.getElementById('menuToggle');
+                
+                if (mobileMenu && mobileMenu.classList.contains('open') && 
+                    !mobileMenu.contains(event.target) && 
+                    !menuToggle.contains(event.target)) {
+                    closeMenu();
+                }
+            });
+            
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeMenu();
+                }
+            });
+        }
+
+        function toggleMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuToggle = document.getElementById('menuToggle');
+            const menuIcon = document.getElementById('menuIcon');
+            
+            if (mobileMenu && menuToggle && menuIcon) {
+                const isOpen = mobileMenu.classList.contains('open');
+                
+                if (isOpen) {
+                    mobileMenu.classList.remove('open');
+                    menuToggle.classList.remove('active');
+                    menuIcon.className = 'fas fa-bars';
+                } else {
+                    mobileMenu.classList.add('open');
+                    menuToggle.classList.add('active');
+                    menuIcon.className = 'fas fa-times';
+                }
+            }
+        }
+
+        function closeMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuToggle = document.getElementById('menuToggle');
+            const menuIcon = document.getElementById('menuIcon');
+            
+            if (mobileMenu && menuToggle && menuIcon) {
+                mobileMenu.classList.remove('open');
+                menuToggle.classList.remove('active');
+                menuIcon.className = 'fas fa-bars';
+            }
+        }
+
+        // ===== OI ANALYSIS FUNCTIONALITY =====
+        let oiData = null;
+        let currentInstrument = 'nifty';
+
+        function initializeOI() {
+            const instrumentButtons = document.querySelectorAll('.inst-btn');
+            const refreshBtnBottom = document.getElementById('refreshBtnBottom');
+            
+            // Instrument selection buttons
+            instrumentButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    document.querySelectorAll('.inst-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Update current instrument
+                    currentInstrument = this.getAttribute('data-instrument');
+                    
+                    // Update UI
+                    updateDataDisplay();
+                });
+            });
+            
+            // Refresh button
+            if (refreshBtnBottom) {
+                refreshBtnBottom.addEventListener('click', fetchOIData);
+            }
+            
+            // Initialize tab switching
+            document.querySelectorAll('.login-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    document.querySelectorAll('.login-form').forEach(form => form.classList.remove('active'));
+                    document.getElementById(`${tabId}LoginForm`).classList.add('active');
+                });
+            });
+            
+            // Load initial data
+            fetchOIData();
+            
+            // Auto-refresh every 2 minutes
+            setInterval(fetchOIData, 2 * 60 * 1000);
+        }
+
+        // Parse CSV data
+        function parseCSV(csvText) {
+            const rows = [];
+            const lines = csvText.split('\n');
+            
+            lines.forEach(line => {
+                if (line.trim()) {
+                    const row = [];
+                    let inQuotes = false;
+                    let currentValue = '';
+                    
+                    for (let i = 0; i < line.length; i++) {
+                        const char = line[i];
+                        const nextChar = line[i + 1];
+                        
+                        if (char === '"' && inQuotes && nextChar === '"') {
+                            currentValue += '"';
+                            i++;
+                        } else if (char === '"') {
+                            inQuotes = !inQuotes;
+                        } else if (char === ',' && !inQuotes) {
+                            row.push(currentValue);
+                            currentValue = '';
+                        } else {
+                            currentValue += char;
+                        }
+                    }
+                    
+                    row.push(currentValue);
+                    rows.push(row);
+                }
+            });
+            
+            return rows;
+        }
+
+        // Fetch OI data from Google Sheets
+        async function fetchOIData() {
+            try {
+                showLoading(true);
+                
+                const response = await fetch(OI_SHEET_URL);
+                if (!response.ok) throw new Error('Network response was not ok');
+                
+                const csvText = await response.text();
+                oiData = parseCSV(csvText);
+                
+                updateDataDisplay();
+                
+                // Update last updated time
+                const lastUpdateText = document.getElementById('lastUpdateText');
+                const lastUpdateHeader = document.getElementById('lastUpdate');
+                if (lastUpdateText && lastUpdateHeader) {
+                    const now = new Date();
+                    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    lastUpdateText.textContent = timeStr;
+                    lastUpdateHeader.textContent = timeStr;
+                }
+                
+                showNotification('OI Data refreshed successfully!', 'success');
+                
+            } catch (error) {
+                console.error('Error fetching OI data:', error);
+                showNotification('Failed to load OI data. Please try again.', 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function updateDataDisplay() {
+            if (!oiData || oiData.length === 0) {
+                showNotification('No data available. Please refresh.', 'error');
+                return;
+            }
+            
+            if (currentInstrument === 'nifty') {
+                displayNiftyData();
+            } else {
+                displayBankNiftyData();
+            }
+        }
+
+        function displayNiftyData() {
+            // Update overview data
+            const expiryDate = getCellValue(2, 1); // B3
+            const spotPrice = getCellValue(2, 2);  // C3
+            const strikePrice = getCellValue(2, 4); // E3
+            const sentiment = getCellValue(10, 2); // C11 - Sentiment
+            
+            document.getElementById('expiryDate').textContent = expiryDate || 'N/A';
+            document.getElementById('spotPrice').textContent = spotPrice || '0.00';
+            document.getElementById('strikePrice').textContent = strikePrice || '0';
+            
+            // Update sentiment with color
+            updateSentimentDisplay(sentiment);
+            
+            // Calculate days to expiry
+            if (expiryDate) {
+                try {
+                    const expiry = new Date(expiryDate);
+                    const today = new Date();
+                    const diffTime = Math.abs(expiry - today);
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    document.getElementById('daysToExpiry').textContent = `${diffDays} Days to Expiry`;
+                } catch (e) {
+                    document.getElementById('daysToExpiry').textContent = 'Invalid Date';
+                }
+            }
+            
+            // Display OI Analysis Data (A7:C12)
+            displayOIAnalysisData(6, 11, 11, 2); // Row 12, Column C for overall
+            
+            // Display First 30 Minutes View (A16:D17 for data, B21 for overall)
+            displayFirst30View(15, 16, 20, 1); // Rows 16-17, Overall at row 21, column B
+            
+            // Display Main OI Table (A24:O42)
+            displayMainOiTable(23, 41);
+        }
+
+        function displayBankNiftyData() {
+            // Update overview data
+            const expiryDate = getCellValue(48, 2); // C49
+            const spotPrice = getCellValue(48, 3);  // D49
+            const strikePrice = getCellValue(48, 5); // F49
+            const sentiment = getCellValue(56, 2); // C57 - Sentiment
+            
+            document.getElementById('expiryDate').textContent = expiryDate || 'N/A';
+            document.getElementById('spotPrice').textContent = spotPrice || '0.00';
+            document.getElementById('strikePrice').textContent = strikePrice || '0';
+            
+            // Update sentiment with color
+            updateSentimentDisplay(sentiment);
+            
+            // Calculate days to expiry
+            if (expiryDate) {
+                try {
+                    const expiry = new Date(expiryDate);
+                    const today = new Date();
+                    const diffTime = Math.abs(expiry - today);
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    document.getElementById('daysToExpiry').textContent = `${diffDays} Days to Expiry`;
+                } catch (e) {
+                    document.getElementById('daysToExpiry').textContent = 'Invalid Date';
+                }
+            }
+            
+            // Display OI Analysis Data (A53:C58)
+            displayOIAnalysisData(52, 57, 57, 2); // Row 58, Column C for overall
+            
+            // Display First 30 Minutes View (A62:D63 for data, B64 for overall)
+            displayFirst30View(61, 62, 63, 1); // Rows 62-63, Overall at row 64, column B
+            
+            // Display Main OI Table (A67:O85)
+            displayMainOiTable(66, 84);
+        }
+
+        function getCellValue(row, col) {
+            if (!oiData || row >= oiData.length || col >= oiData[row].length) {
+                return '';
+            }
+            return oiData[row][col] || '';
+        }
+
+        function updateSentimentDisplay(sentiment) {
+            const sentimentEl = document.getElementById('sentimentValue');
+            if (!sentimentEl) return;
+            
+            sentimentEl.textContent = sentiment || 'Neutral';
+            
+            // Remove all sentiment classes
+            sentimentEl.classList.remove('sentiment-bullish-overview', 'sentiment-bearish-overview', 'sentiment-neutral-overview');
+            
+            // Add appropriate class
+            const sentimentStr = (sentiment || '').toLowerCase();
+            if (sentimentStr.includes('bull')) {
+                sentimentEl.classList.add('sentiment-bullish-overview');
+            } else if (sentimentStr.includes('bear')) {
+                sentimentEl.classList.add('sentiment-bearish-overview');
+            } else {
+                sentimentEl.classList.add('sentiment-neutral-overview');
+            }
+        }
+
+        function displayOIAnalysisData(startRow, endRow, overallRow, overallCol) {
+            const container = document.getElementById('oiAnalysisData');
+            const overallContainer = document.getElementById('oiOverallView');
+            
+            if (!container || !overallContainer) return;
+            
+            if (endRow - startRow < 5) {
+                container.innerHTML = '<div class="data-error"><h3>Data Error</h3><p>Incomplete OI Analysis Data</p></div>';
+                return;
+            }
+            
+            // Get overall view from specified cell
+            const overallSentiment = getCellValue(overallRow, overallCol) || 'Neutral';
+            updateOverallView(overallContainer, overallSentiment);
+            
+            let html = `
+                <table class="small-table">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>PCR</th>
+                            <th>Sentiment</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+            
+            // Add rows for each parameter
+            const parameters = ['OI (Positional)', 'C.O.I', 'Volume', 'Total O.I'];
+            for (let i = 0; i < 4; i++) {
+                const row = startRow + i + 1;
+                const param = getCellValue(row, 0) || parameters[i];
+                const pcr = getCellValue(row, 1) || '0.00';
+                const sentiment = getCellValue(row, 2) || 'Neutral';
+                
+                const sentimentClass = getSentimentClass(sentiment);
+                
+                html += `
+                    <tr>
+                        <td>${param}</td>
+                        <td>${pcr}</td>
+                        <td class="${sentimentClass}">${sentiment}</td>
+                    </tr>`;
+            }
+            
+            html += `</tbody></table>`;
+            
+            container.innerHTML = html;
+        }
+
+        function displayFirst30View(startRow, endRow, overallRow, overallCol) {
+            const container = document.getElementById('first30View');
+            const overallContainer = document.getElementById('first30Overall');
+            
+            if (!container || !overallContainer) return;
+            
+            if (endRow - startRow < 1) {
+                container.innerHTML = '<div class="data-error"><h3>Data Error</h3><p>Incomplete First 30 Minutes Data</p></div>';
+                return;
+            }
+            
+            // Get overall view with color coding
+            const overallValue = getCellValue(overallRow, overallCol) || 'N/A';
+            updateFirst30OverallView(overallContainer, overallValue);
+            
+            let html = `
+                <table class="small-table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>PE %</th>
+                            <th>CE %</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+            
+            // First 30 minutes data (2 rows)
+            for (let i = 0; i < 2; i++) {
+                const row = startRow + i;
+                const type = getCellValue(row, 0) || (i === 0 ? 'O.I' : 'C.O.I');
+                const pe = getCellValue(row, 1) || '0%';
+                const ce = getCellValue(row, 2) || '0%';
+                const score = getCellValue(row, 3) || 'Neutral';
+                
+                const sentimentClass = getSentimentClass(score);
+                
+                html += `
+                    <tr>
+                        <td>${type}</td>
+                        <td>${pe}</td>
+                        <td>${ce}</td>
+                        <td class="${sentimentClass}">${score}</td>
+                    </tr>`;
+            }
+            
+            html += `</tbody></table>`;
+            
+            container.innerHTML = html;
+        }
+
+        function updateFirst30OverallView(container, value) {
+            const val = (value || '').toLowerCase();
+            
+            // Remove all classes
+            container.classList.remove('first30-call', 'first30-put', 'first30-neutral');
+            
+            if (val.includes('call')) {
+                container.className = 'first30-overall first30-call';
+                container.innerHTML = `<strong>Overall View:</strong> ${value} <i class="fas fa-arrow-up"></i>`;
+            } else if (val.includes('put')) {
+                container.className = 'first30-overall first30-put';
+                container.innerHTML = `<strong>Overall View:</strong> ${value} <i class="fas fa-arrow-down"></i>`;
+            } else {
+                container.className = 'first30-overall first30-neutral';
+                container.innerHTML = `<strong>Overall View:</strong> ${value}`;
+            }
+        }
+
+        // ===== UPDATED: MAIN OI TABLE DISPLAY =====
+        function displayMainOiTable(startRow, endRow) {
+            const container = document.getElementById('mainOiTable');
+            if (!container) return;
+            
+            if (endRow - startRow < 5) {
+                container.innerHTML = '<div class="data-error"><h3>Data Error</h3><p>Incomplete OI Table Data</p></div>';
+                return;
+            }
+            
+            // Get headers from the first row
+            const headerRow = oiData[startRow];
+            if (!headerRow || headerRow.length < 15) {
+                container.innerHTML = '<div class="data-error"><h3>Data Error</h3><p>Invalid table format</p></div>';
+                return;
+            }
+            
+            let html = `
+                <div class="main-oi-table-container">
+                    <table class="main-oi-table">
+                        <thead>
+                            <tr>`;
+            
+            // Add merged headers for CE section (columns 1-7)
+            html += `<th colspan="7" class="header-ce">CE</th>`;
+            
+            // Add strike column (column 8)
+            const strikeHeader = headerRow[7] || 'Strike';
+            html += `<th class="header-strike">${strikeHeader}</th>`;
+            
+            // Add merged headers for PE section (columns 9-15)
+            html += `<th colspan="7" class="header-pe">PE</th>`;
+            
+            html += `
+                            </tr>
+                            <tr>`;
+            
+            // Add detailed column headers
+            for (let j = 0; j < 15; j++) {
+                let header = headerRow[j] || `Col ${j+1}`;
+                let headerClass = '';
+                
+                // Apply special classes based on column position
+                if (j >= 0 && j <= 6) { // CE columns
+                    headerClass = 'header-ce';
+                } else if (j === 7) { // Strike column
+                    headerClass = 'header-strike';
+                } else if (j >= 8 && j <= 14) { // PE columns
+                    headerClass = 'header-pe';
+                }
+                
+                // Identify price columns (adjust indices as needed)
+                if (j === 2 || j === 3 || j === 9 || j === 10) { // Price columns
+                    headerClass = 'header-price';
+                }
+                
+                html += `<th class="${headerClass}">${header}</th>`;
+            }
+            
+            html += `
+                            </tr>
+                        </thead>
+                        <tbody>`;
+            
+            // Add data rows (skip the header row)
+            for (let i = startRow + 1; i <= endRow; i++) {
+                if (i >= oiData.length) break;
+                
+                const row = oiData[i];
+                if (!row || row.length === 0) continue;
+                
+                html += '<tr>';
+                
+                // Determine buildup type for CE (column 0) and PE (column 14)
+                let buildupClassCE = '';
+                let buildupClassPE = '';
+                const buildupTypeCE = (row[0] || '').toUpperCase();
+                const buildupTypePE = (row[14] || '').toUpperCase();
+                
+                // Color coding for CE column (column 0)
+                if (buildupTypeCE.includes('LONG BUILDUP')) {
+                    buildupClassCE = 'long-buildup';
+                } else if (buildupTypeCE.includes('SHORT BUILDUP')) {
+                    buildupClassCE = 'short-buildup';
+                } else if (buildupTypeCE.includes('SHORT COVERING')) {
+                    buildupClassCE = 'short-covering';
+                }
+                
+                // Color coding for PE column (column 14)
+                if (buildupTypePE.includes('LONG BUILDUP')) {
+                    buildupClassPE = 'long-buildup';
+                } else if (buildupTypePE.includes('SHORT BUILDUP')) {
+                    buildupClassPE = 'short-buildup';
+                } else if (buildupTypePE.includes('SHORT COVERING')) {
+                    buildupClassPE = 'short-covering';
+                }
+                
+                // Add all cells with updated styling
+                for (let j = 0; j < Math.min(row.length, 15); j++) {
+                    const cellValue = row[j] || '';
+                    
+                    // Determine cell class
+                    let cellClass = '';
+                    
+                    // Strike column (column 7)
+                    if (j === 7) {
+                        cellClass = 'strike-cell';
+                    }
+                    // Price columns only (highlighted)
+                    else if (j === 2 || j === 3 || j === 9 || j === 10) { // Price columns
+                        cellClass = 'price-cell';
+                    }
+                    // LTP columns (not highlighted)
+                    else if (j === 4 || j === 11) { // LTP columns
+                        cellClass = 'ltp-cell';
+                    }
+                    // CE/PE section backgrounds
+                    else if (j >= 0 && j <= 6) { // CE section
+                        // Apply CE buildup color to first column only
+                        if (j === 0 && buildupClassCE) {
+                            cellClass = buildupClassCE;
+                        }
+                    } else if (j >= 8 && j <= 14) { // PE section
+                        // Apply PE buildup color to last column only
+                        if (j === 14 && buildupClassPE) {
+                            cellClass = buildupClassPE;
+                        }
+                    }
+                    
+                    html += `<td class="${cellClass.trim()}">${formatValue(cellValue)}</td>`;
+                }
+                
+                html += '</tr>';
+            }
+            
+            html += `
+                        </tbody>
+                    </table>
+                </div>`;
+            
+            container.innerHTML = html;
+        }
+
+        function formatValue(value) {
+            if (!value) return '';
+            
+            // Try to parse as number
+            const num = parseFloat(value.replace(/[^\d.-]/g, ''));
+            if (!isNaN(num)) {
+                // Format large numbers with commas
+                if (Math.abs(num) >= 1000) {
+                    return num.toLocaleString('en-IN', {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                    });
+                }
+                // Format smaller numbers appropriately
+                return num.toFixed(Math.abs(num) < 1 ? 2 : 0);
+            }
+            
+            return value;
+        }
+
+        function updateOverallView(container, sentiment) {
+            const sentimentStr = (sentiment || '').toLowerCase();
+            
+            if (sentimentStr.includes('bull')) {
+                container.className = 'overall-view bullish';
+                container.innerHTML = `<i class="fas fa-arrow-up"></i> Overall: ${sentiment}`;
+            } else if (sentimentStr.includes('bear')) {
+                container.className = 'overall-view bearish';
+                container.innerHTML = `<i class="fas fa-arrow-down"></i> Overall: ${sentiment}`;
+            } else {
+                container.className = 'overall-view';
+                container.innerHTML = `<i class="fas fa-minus"></i> Overall: ${sentiment || 'Neutral'}`;
+            }
+        }
+
+        function getSentimentClass(sentiment) {
+            const sentimentStr = (sentiment || '').toLowerCase();
+            if (sentimentStr.includes('bull')) {
+                return 'sentiment-bullish';
+            } else if (sentimentStr.includes('bear')) {
+                return 'sentiment-bearish';
+            } else {
+                return 'sentiment-neutral';
+            }
+        }
+
+        function showLoading(show) {
+            const refreshBtn = document.getElementById('refreshBtnBottom');
+            
+            if (show) {
+                document.body.classList.add('loading');
+                if (refreshBtn) {
+                    refreshBtn.classList.add('refreshing');
+                    refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
+                    refreshBtn.disabled = true;
+                }
+            } else {
+                document.body.classList.remove('loading');
+                if (refreshBtn) {
+                    refreshBtn.classList.remove('refreshing');
+                    refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh Data';
+                    refreshBtn.disabled = false;
+                }
+            }
+        }
+
+        // Notification system
+        function showNotification(message, type = "success") {
+            document.querySelectorAll('.notification').forEach(n => n.remove());
+            
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 90px;
+                right: 20px;
+                background: ${type === 'error' ? '#f43f5e' : type === 'warning' ? '#f39c12' : '#10b981'};
+                color: white;
+                padding: 15px 25px;
+                border-radius: 12px;
+                z-index: 10000;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                animation: slideIn 0.3s ease;
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255,255,255,0.2);
+                max-width: 300px;
+                font-weight: 600;
+            `;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'error' ? 'exclamation-triangle' : type === 'warning' ? 'exclamation-circle' : 'check-circle'}"></i> 
+                ${message}
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // ===== INITIALIZATION =====
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeUsers();
+        });
+    </script>
+</body>
+</html>
