@@ -1017,7 +1017,7 @@
             color: var(--warning);
         }
 
-        /* ===== UPDATED: DETAILED OI TABLE STYLING - FIXED TO FIT IN BOX ===== */
+        /* ===== UPDATED: DETAILED OI TABLE STYLING - RESTORED SCROLLABLE ===== */
         .main-oi-table-container {
             width: 100%;
             overflow-x: auto;
@@ -1029,91 +1029,8 @@
         .main-oi-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.8rem;
-            table-layout: fixed;
-        }
-
-        /* Fixed column widths to fit in container */
-        .main-oi-table th,
-        .main-oi-table td {
-            padding: 6px 4px;
-            text-align: center;
-            border: 1px solid var(--border);
-            font-size: 0.78rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /* Set specific widths for columns */
-        .main-oi-table th:nth-child(1),
-        .main-oi-table td:nth-child(1) { /* BUILDUP CE */
-            width: 90px;
-            min-width: 90px;
-            max-width: 90px;
-        }
-        
-        .main-oi-table th:nth-child(2),
-        .main-oi-table td:nth-child(2),
-        .main-oi-table th:nth-child(3),
-        .main-oi-table td:nth-child(3),
-        .main-oi-table th:nth-child(13),
-        .main-oi-table td:nth-child(13),
-        .main-oi-table th:nth-child(14),
-        .main-oi-table td:nth-child(14) { /* Total OI and Open Interest columns */
-            width: 80px;
-            min-width: 80px;
-            max-width: 80px;
-        }
-        
-        .main-oi-table th:nth-child(4),
-        .main-oi-table td:nth-child(4),
-        .main-oi-table th:nth-child(12),
-        .main-oi-table td:nth-child(12) { /* Change in OI columns */
-            width: 75px;
-            min-width: 75px;
-            max-width: 75px;
-        }
-        
-        .main-oi-table th:nth-child(5),
-        .main-oi-table td:nth-child(5),
-        .main-oi-table th:nth-child(11),
-        .main-oi-table td:nth-child(11) { /* Volume columns */
-            width: 85px;
-            min-width: 85px;
-            max-width: 85px;
-        }
-        
-        .main-oi-table th:nth-child(6),
-        .main-oi-table td:nth-child(6),
-        .main-oi-table th:nth-child(10),
-        .main-oi-table td:nth-child(10) { /* Net Change LTP columns */
-            width: 70px;
-            min-width: 70px;
-            max-width: 70px;
-        }
-        
-        .main-oi-table th:nth-child(7),
-        .main-oi-table td:nth-child(7),
-        .main-oi-table th:nth-child(9),
-        .main-oi-table td:nth-child(9) { /* LTP columns */
-            width: 60px;
-            min-width: 60px;
-            max-width: 60px;
-        }
-        
-        .main-oi-table th:nth-child(8),
-        .main-oi-table td:nth-child(8) { /* Strike column */
-            width: 70px;
-            min-width: 70px;
-            max-width: 70px;
-        }
-        
-        .main-oi-table th:nth-child(15),
-        .main-oi-table td:nth-child(15) { /* BUILDUP PE */
-            width: 90px;
-            min-width: 90px;
-            max-width: 90px;
+            font-size: 0.85rem;
+            min-width: 1200px; /* Allow table to be wider than container */
         }
 
         /* Updated header styling - merged CE/PE */
@@ -1122,13 +1039,13 @@
         }
 
         .main-oi-table th {
-            padding: 8px 4px;
+            padding: 10px 6px;
             text-align: center;
             color: var(--primary);
             font-weight: 600;
             border: 1px solid var(--border);
             white-space: nowrap;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
         }
 
         /* Specific styling for merged header cells */
@@ -1136,14 +1053,14 @@
             background: rgba(244, 63, 94, 0.2) !important;
             color: #ff6b6b !important;
             text-decoration: line-through;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 700;
         }
 
         .main-oi-table th.header-pe {
             background: rgba(16, 185, 129, 0.2) !important;
             color: #10b981 !important;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 700;
         }
 
@@ -1151,7 +1068,7 @@
             background: rgba(243, 156, 18, 0.2) !important;
             color: var(--warning) !important;
             font-weight: 800;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
         }
 
         /* ===== UPDATED: DETAILED HEADER ROW STYLING ===== */
@@ -1163,8 +1080,8 @@
             background: rgba(30, 41, 59, 0.7) !important;
             color: var(--light) !important;
             font-weight: 600;
-            font-size: 0.75rem;
-            padding: 6px 3px;
+            font-size: 0.82rem;
+            padding: 8px 4px;
         }
 
         /* ===== UPDATED: SPECIFIC COLUMN STYLING FOR DETAILED HEADERS ===== */
@@ -1173,7 +1090,7 @@
             background: rgba(139, 92, 246, 0.25) !important;
             color: #8b5cf6 !important;
             font-weight: 700;
-            font-size: 0.78rem;
+            font-size: 0.86rem;
         }
 
         /* CHANGE IN OI (both CE and PE sides) - Blue header */
@@ -1181,7 +1098,7 @@
             background: rgba(59, 130, 246, 0.25) !important;
             color: #3b82f6 !important;
             font-weight: 700;
-            font-size: 0.78rem;
+            font-size: 0.86rem;
         }
 
         /* Strike Column Header */
@@ -1189,7 +1106,15 @@
             background: rgba(243, 156, 18, 0.2) !important;
             color: var(--warning) !important;
             font-weight: 700;
-            font-size: 0.78rem;
+            font-size: 0.86rem;
+        }
+
+        .main-oi-table td {
+            padding: 8px 6px;
+            text-align: center;
+            color: var(--light);
+            border: 1px solid var(--border);
+            font-size: 0.82rem;
         }
 
         .main-oi-table tbody tr:nth-child(even) {
@@ -1239,7 +1164,7 @@
     background: rgba(16, 185, 129, 0.2) !important;
     color: #10b981 !important;
     font-weight: 700;
-    font-size: 0.78rem;
+    font-size: 0.86rem;
 }
 
 /* SHORT BUILDUP & LONG UNWINDING - Red Color */
@@ -1247,7 +1172,7 @@
     background: rgba(244, 63, 94, 0.2) !important;
     color: #f43f5e !important;
     font-weight: 700;
-    font-size: 0.78rem;
+    font-size: 0.86rem;
 }
 
 /* BUILDUP cells without specific value - No special background */
@@ -1262,7 +1187,7 @@
     background: linear-gradient(135deg, rgba(244, 63, 94, 0.4), rgba(220, 38, 38, 0.4)) !important;
     color: white !important;
     font-weight: 900 !important;
-    font-size: 0.85rem !important;
+    font-size: 1rem !important;
     border: 2px solid #f43f5e !important;
     box-shadow: 0 0 20px rgba(244, 63, 94, 0.7) !important;
     position: relative;
@@ -1450,91 +1375,15 @@
                 font-size: 0.75rem;
             }
 
-            /* Adjust table for mobile */
-            .main-oi-table {
-                font-size: 0.7rem;
-            }
-            
             .main-oi-table th,
             .main-oi-table td {
-                padding: 4px 3px;
-                font-size: 0.7rem;
+                padding: 6px 4px;
+                font-size: 0.75rem;
             }
-            
+
             .main-oi-table thead tr:nth-child(2) th {
-                font-size: 0.7rem;
-                padding: 4px 2px;
-            }
-            
-            /* Reduce column widths for mobile */
-            .main-oi-table th:nth-child(1),
-            .main-oi-table td:nth-child(1) { /* BUILDUP CE */
-                width: 70px;
-                min-width: 70px;
-                max-width: 70px;
-            }
-            
-            .main-oi-table th:nth-child(2),
-            .main-oi-table td:nth-child(2),
-            .main-oi-table th:nth-child(3),
-            .main-oi-table td:nth-child(3),
-            .main-oi-table th:nth-child(13),
-            .main-oi-table td:nth-child(13),
-            .main-oi-table th:nth-child(14),
-            .main-oi-table td:nth-child(14) {
-                width: 65px;
-                min-width: 65px;
-                max-width: 65px;
-            }
-            
-            .main-oi-table th:nth-child(4),
-            .main-oi-table td:nth-child(4),
-            .main-oi-table th:nth-child(12),
-            .main-oi-table td:nth-child(12) {
-                width: 60px;
-                min-width: 60px;
-                max-width: 60px;
-            }
-            
-            .main-oi-table th:nth-child(5),
-            .main-oi-table td:nth-child(5),
-            .main-oi-table th:nth-child(11),
-            .main-oi-table td:nth-child(11) {
-                width: 70px;
-                min-width: 70px;
-                max-width: 70px;
-            }
-            
-            .main-oi-table th:nth-child(6),
-            .main-oi-table td:nth-child(6),
-            .main-oi-table th:nth-child(10),
-            .main-oi-table td:nth-child(10) {
-                width: 55px;
-                min-width: 55px;
-                max-width: 55px;
-            }
-            
-            .main-oi-table th:nth-child(7),
-            .main-oi-table td:nth-child(7),
-            .main-oi-table th:nth-child(9),
-            .main-oi-table td:nth-child(9) {
-                width: 50px;
-                min-width: 50px;
-                max-width: 50px;
-            }
-            
-            .main-oi-table th:nth-child(8),
-            .main-oi-table td:nth-child(8) {
-                width: 60px;
-                min-width: 60px;
-                max-width: 60px;
-            }
-            
-            .main-oi-table th:nth-child(15),
-            .main-oi-table td:nth-child(15) {
-                width: 70px;
-                min-width: 70px;
-                max-width: 70px;
+                font-size: 0.75rem;
+                padding: 6px 3px;
             }
 
             .overall-view,
@@ -2668,7 +2517,7 @@ function updateFirst30OverallView(container, value) {
     }
 }
 
-// ===== UPDATED: MAIN OI TABLE DISPLAY WITH FIXED COLUMN WIDTHS =====
+// ===== UPDATED: MAIN OI TABLE DISPLAY - RESTORED SCROLLABLE =====
 function displayMainOiTable(startRow, endRow) {
     const container = document.getElementById('mainOiTable');
     if (!container) return;
