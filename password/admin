@@ -68,6 +68,21 @@ function archivePreviousTradingDay() {
     prediction === "#N/A" ||
     prediction === "Loading..."
   ) {
+  // 🚨 TELEGRAM ALERT (RAW'S cell a5,a14,a22 blank)
+  if (isRawIncomplete()) {
+    sendTelegramMessage(
+      "⚠️ <b>RAW DATA MISSING</b>\n\n" +
+      "Date checked: <b>" + Utilities.formatDate(jumpDate, "IST", "dd-MMM-yyyy") + "</b>\n\n" +
+      "Cells empty:\n" +
+      "• RAW'S!A5\n" +
+      "• RAW'S!A14\n" +
+      "• RAW'S!A22\n\n" +
+      "⏰ Time: " + Utilities.formatDate(new Date(), "IST", "HH:mm") + "\n\n" +
+      "❌ Archiving skipped until data is complete."
+    );
+  }
+
+  // ⏪ Jump back 15 trading days
     jumpDate = subtractTradingDays(jumpDate, 15);
 
     dashSheet.getRange("A3").setValue(jumpDate);
@@ -99,6 +114,31 @@ function archivePreviousTradingDay() {
   }
 }
 
+
+************* End *************
+
+
+**********CREATE NEW APPSCRIPT CODE FOR TELEGRAM BOT AUTOMATION
+
+function sendTelegramMessage(message) {
+  var BOT_TOKEN = "8537723787:AAETSJBD_1xQVdB0R3dIJmGavOHS6mdIQYc";
+  var CHAT_ID = "1397183438";
+
+  var url = "https://api.telegram.org/bot" + BOT_TOKEN + "/sendMessage";
+
+  var payload = {
+    chat_id: CHAT_ID,
+    text: message,
+    parse_mode: "HTML"
+  };
+
+  UrlFetchApp.fetch(url, {
+    method: "post",
+    contentType: "application/json",
+    payload: JSON.stringify(payload),
+    muteHttpExceptions: true
+  });
+}
 
 
 
