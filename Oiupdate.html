@@ -1214,29 +1214,24 @@
     border-right: 2px solid var(--warning) !important;
 }
 
-/* ===== UPDATED: BUILDUP COLUMN COLOR CODING ===== */
-/* LONG BUILDUP & SHORT COVERING - Green Color */
-.main-oi-table td.long-buildup-green,
-.main-oi-table td.short-covering-green {
-    background: rgba(16, 185, 129, 0.15) !important;
-    color: #10b981 !important;
-    font-weight: 600;
-}
+/* BuildUp Colors - Enhanced for both CE and PE */
+        .long-buildup {
+            background: rgba(16, 185, 129, 0.15) !important;
+            color: var(--primary) !important;
+            font-weight: 600;
+        }
 
-/* SHORT BUILDUP & LONG UNWINDING - Red Color */
-.main-oi-table td.short-buildup-red,
-.main-oi-table td.long-unwinding-red {
-    background: rgba(244, 63, 94, 0.15) !important;
-    color: #f43f5e !important;
-    font-weight: 600;
-}
+        .short-buildup {
+            background: rgba(244, 63, 94, 0.15) !important;
+            color: var(--accent) !important;
+            font-weight: 600;
+        }
 
-/* BUILDUP cells without specific value - No special background */
-.main-oi-table td.buildup-cell {
-    background: transparent !important;
-    color: var(--light) !important;
-    font-weight: normal;
-}
+        .short-covering {
+            background: rgba(243, 156, 18, 0.15) !important;
+            color: var(--warning) !important;
+            font-weight: 600;
+        }
 
     /* ===== ATM STRIKE PRICE HIGHLIGHT ===== */
 .main-oi-table td.atm-strike-highlight {
