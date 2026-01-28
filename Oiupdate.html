@@ -1172,58 +1172,62 @@
             background: rgba(16, 185, 129, 0.05);
         }
 
-        /* ===== UPDATED: CELL BACKGROUND COLORS FOR DATA ROWS ===== */
-        /* Total CE OI, OPEN INTEREST, TOTAL PE OI - Purple background */
-        .main-oi-table td.total-oi-cell {
-            background: rgba(139, 92, 246, 0.1) !important;
-            color: #e2e8f0 !important;
-            font-weight: 600;
-        }
+       /* ===== UPDATED: CELL BACKGROUND COLORS FOR DATA ROWS ===== */
+/* Total CE OI, OPEN INTEREST (CE side), OPEN INTEREST (PE side), TOTAL PE OI - Purple background */
+.main-oi-table td.total-oi-cell {
+    background: rgba(139, 92, 246, 0.1) !important;
+    color: #e2e8f0 !important;
+    font-weight: 600;
+}
 
-        /* CHANGE IN OI - Blue background */
-        .main-oi-table td.change-oi-cell {
-            background: rgba(59, 130, 246, 0.1) !important;
-            color: #e2e8f0 !important;
-            font-weight: 600;
-        }
+/* CHANGE IN OI (both CE and PE sides) - Blue background */
+.main-oi-table td.change-oi-cell {
+    background: rgba(59, 130, 246, 0.1) !important;
+    color: #e2e8f0 !important;
+    font-weight: 600;
+}
 
-        /* Volume, Net Change LTP, LTP, BUILDUP - No background */
-        .main-oi-table td.volume-cell,
-        .main-oi-table td.net-change-cell,
-        .main-oi-table td.ltp-cell,
-        .main-oi-table td.buildup-cell {
-            background: transparent !important;
-            color: var(--light) !important;
-            font-weight: normal;
-        }
+/* Volume, Net Change LTP, LTP - No background */
+.main-oi-table td.volume-cell,
+.main-oi-table td.net-change-cell,
+.main-oi-table td.ltp-cell {
+    background: transparent !important;
+    color: var(--light) !important;
+    font-weight: normal;
+}
 
-        /* Strike Column Styling */
-        .main-oi-table td.strike-cell {
-            background: rgba(243, 156, 18, 0.1) !important;
-            font-weight: 700 !important;
-            color: var(--warning) !important;
-            border-left: 2px solid var(--warning) !important;
-            border-right: 2px solid var(--warning) !important;
-        }
+/* Strike Column Styling */
+.main-oi-table td.strike-cell {
+    background: rgba(243, 156, 18, 0.1) !important;
+    font-weight: 700 !important;
+    color: var(--warning) !important;
+    border-left: 2px solid var(--warning) !important;
+    border-right: 2px solid var(--warning) !important;
+}
 
-        /* BuildUp Colors - Enhanced for both CE and PE */
-        .long-buildup {
-            background: rgba(16, 185, 129, 0.15) !important;
-            color: var(--primary) !important;
-            font-weight: 600;
-        }
+/* ===== UPDATED: BUILDUP COLUMN COLOR CODING ===== */
+/* LONG BUILDUP & SHORT COVERING - Green Color */
+.main-oi-table td.long-buildup-green,
+.main-oi-table td.short-covering-green {
+    background: rgba(16, 185, 129, 0.15) !important;
+    color: #10b981 !important;
+    font-weight: 600;
+}
 
-        .short-buildup {
-            background: rgba(244, 63, 94, 0.15) !important;
-            color: var(--accent) !important;
-            font-weight: 600;
-        }
+/* SHORT BUILDUP & LONG UNWINDING - Red Color */
+.main-oi-table td.short-buildup-red,
+.main-oi-table td.long-unwinding-red {
+    background: rgba(244, 63, 94, 0.15) !important;
+    color: #f43f5e !important;
+    font-weight: 600;
+}
 
-        .short-covering {
-            background: rgba(243, 156, 18, 0.15) !important;
-            color: var(--warning) !important;
-            font-weight: 600;
-        }
+/* BUILDUP cells without specific value - No special background */
+.main-oi-table td.buildup-cell {
+    background: transparent !important;
+    color: var(--light) !important;
+    font-weight: normal;
+}
 
         /* Refresh Button Below OI Analysis */
         .refresh-section {
@@ -2586,29 +2590,26 @@
                 
                 html += '<tr>';
                 
-                // Determine buildup type for CE (column 0) and PE (column 14)
-                let buildupClassCE = '';
-                let buildupClassPE = '';
-                const buildupTypeCE = (row[0] || '').toUpperCase();
-                const buildupTypePE = (row[14] || '').toUpperCase();
-                
-                // Color coding for CE column (column 0)
-                if (buildupTypeCE.includes('LONG BUILDUP')) {
-                    buildupClassCE = 'long-buildup';
-                } else if (buildupTypeCE.includes('SHORT BUILDUP')) {
-                    buildupClassCE = 'short-buildup';
-                } else if (buildupTypeCE.includes('SHORT COVERING')) {
-                    buildupClassCE = 'short-covering';
-                }
-                
-                // Color coding for PE column (column 14)
-                if (buildupTypePE.includes('LONG BUILDUP')) {
-                    buildupClassPE = 'long-buildup';
-                } else if (buildupTypePE.includes('SHORT BUILDUP')) {
-                    buildupClassPE = 'short-buildup';
-                } else if (buildupTypePE.includes('SHORT COVERING')) {
-                    buildupClassPE = 'short-covering';
-                }
+             // Determine buildup type for CE (column 0) and PE (column 14)
+let buildupClassCE = 'buildup-cell';
+let buildupClassPE = 'buildup-cell';
+const buildupTypeCE = (row[0] || '').toUpperCase();
+const buildupTypePE = (row[14] || '').toUpperCase();
+
+// ===== UPDATED: BUILDUP COLOR CODING =====
+// CE Side (Column 0) - BUILDUP
+if (buildupTypeCE.includes('LONG BUILDUP') || buildupTypeCE.includes('SHORT COVERING')) {
+    buildupClassCE = 'long-buildup-green';
+} else if (buildupTypeCE.includes('SHORT BUILDUP') || buildupTypeCE.includes('LONG UNWINDING')) {
+    buildupClassCE = 'short-buildup-red';
+}
+
+// PE Side (Column 14) - BUILDUP
+if (buildupTypePE.includes('LONG BUILDUP') || buildupTypePE.includes('SHORT COVERING')) {
+    buildupClassPE = 'long-buildup-green';
+} else if (buildupTypePE.includes('SHORT BUILDUP') || buildupTypePE.includes('LONG UNWINDING')) {
+    buildupClassPE = 'short-buildup-red';
+}
                 
                 // Add all cells with updated styling
                 for (let j = 0; j < Math.min(row.length, 15); j++) {
