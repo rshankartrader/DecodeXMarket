@@ -1,0 +1,3235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DecodeXMarket - Premium Indicators</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== CSS RESET & VARIABLES ===== */
+        :root {
+            --primary: #10b981;
+            --secondary: #059669;
+            --accent: #f43f5e;
+            --success: #27ae60;
+            --danger: #c0392b;
+            --warning: #f39c12;
+            --info: #2980b9;
+            --dark: #0f172a;
+            --darker: #0a1120;
+            --light: #ecf0f1;
+            --gray: #94a3b8;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border: #1e293b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
+            color: var(--light);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ===== UPDATED LOGIN SYSTEM ===== */
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-box {
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h2 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 2rem;
+            font-weight: 900;
+        }
+
+        .login-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .login-tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .login-tab.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .login-form {
+            display: none;
+        }
+
+        .login-form.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--light);
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--light);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .register-note {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .register-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .register-link:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== UPDATED HEADER (NEW DESIGN) ===== */
+        .header {
+            width: 100%;
+            background-color: var(--dark);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: -1;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Logo Section */
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(5, 150, 105, 0.4);
+        }
+
+        .logo-icon i {
+            color: white;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-main {
+            font-size: 20px;
+            font-weight: 900;
+            color: white;
+            line-height: 1;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-sub {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1;
+            margin-top: 4px;
+        }
+
+        /* Action Buttons */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .action-button {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .action-button:hover {
+            background-color: #334155;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .refresh-button.refreshing {
+            animation: spin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* User Info */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-left: 10px;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .user-name {
+            font-size: 13px;
+            font-weight: 800;
+            color: white;
+            line-height: 1;
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .user-role {
+            font-size: 10px;
+            color: var(--primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.2px;
+            margin-top: 3px;
+        }
+
+        .logout-button {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            color: var(--accent);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .logout-button:hover {
+            background-color: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(244, 63, 94, 0.2);
+        }
+
+        /* Last Updated Time Display */
+        .last-updated {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gray);
+            font-size: 12px;
+            margin-right: 30px;
+        }
+
+        .last-updated i {
+            color: var(--primary);
+            font-size: 14px;
+        }
+
+        #lastUpdate {
+            font-weight: 600;
+            color: var(--light);
+            min-width: 100px;
+        }
+
+        /* Hamburger Menu Button */
+        .menu-toggle {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            z-index: 70;
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            color: var(--gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-left: 10px;
+        }
+
+        .menu-toggle:hover {
+            background-color: #334155;
+            color: white;
+        }
+
+        .menu-toggle.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            box-shadow: 0 0 20px rgba(5, 150, 105, 0.5);
+            transform: rotate(180deg);
+        }
+
+        /* Desktop Navigation (Hidden in new design) */
+        .desktop-nav {
+            display: none;
+        }
+
+        .daily-update-note {
+            display: none;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background-color: var(--dark);
+            z-index: 65;
+            overflow: hidden;
+            height: 0;
+            transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-top: 1px solid transparent;
+        }
+
+        .mobile-menu.open {
+            height: calc(100vh - 70px);
+            border-top: 1px solid var(--border);
+        }
+
+        .mobile-menu-container {
+            padding: 0 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+        }
+
+        .mobile-menu.open .mobile-menu-container {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Navigation Items */
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .nav-button {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 18px 20px;
+            border-radius: 14px;
+            font-size: 17px;
+            font-weight: 800;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid;
+            cursor: pointer;
+            background-color: rgba(30, 41, 59, 0.5);
+            color: var(--gray);
+            border-color: #334155;
+            text-align: left;
+        }
+
+        .nav-button.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
+            transform: translateX(5px);
+        }
+
+        .nav-button:not(.active):hover {
+            background-color: #1e293b;
+            color: white;
+            border-color: #475569;
+            transform: translateX(5px);
+        }
+
+        .nav-icon {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Mobile User Section */
+        .mobile-user-section {
+            margin-top: auto;
+            padding: 20px 0 30px 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(15, 23, 42, 0.7) 100%);
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, #334155 50%, transparent 100%);
+            width: 100%;
+            margin-bottom: 25px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+        }
+
+        .mobile-menu.open .divider {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: rgba(30, 41, 59, 0.9);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid #334155;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+        }
+
+        .mobile-menu.open .user-card {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .user-card-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border: 1px solid #475569;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .user-avatar i {
+            font-size: 22px;
+            color: var(--primary);
+        }
+
+        .user-card-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-card-info h4 {
+            color: white;
+            font-weight: 900;
+            font-size: 16px;
+            line-height: 1.2;
+            margin-bottom: 6px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .user-card-badge {
+            display: inline-block;
+            color: var(--primary);
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            background-color: rgba(16, 185, 129, 0.15);
+            padding: 5px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .mobile-logout-button {
+            width: 50px;
+            height: 50px;
+            margin-left: 15px;
+            background-color: rgba(244, 63, 94, 0.15);
+            border: 1px solid rgba(244, 63, 94, 0.3);
+            color: var(--accent);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .mobile-logout-button:hover {
+            background-color: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(244, 63, 94, 0.2);
+        }
+
+        /* Menu Item Animations */
+        .nav-button {
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mobile-menu.open .nav-button {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .mobile-menu.open .nav-button:nth-child(1) { transition-delay: 0.1s; }
+        .mobile-menu.open .nav-button:nth-child(2) { transition-delay: 0.15s; }
+        .mobile-menu.open .nav-button:nth-child(3) { transition-delay: 0.2s; }
+        .mobile-menu.open .nav-button:nth-child(4) { transition-delay: 0.25s; }
+        .mobile-menu.open .nav-button:nth-child(5) { transition-delay: 0.3s; }
+        .mobile-menu.open .nav-button:nth-child(6) { transition-delay: 0.35s; }
+
+        /* Responsive Header */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 15px;
+                height: 65px;
+            }
+
+            .logo-icon {
+                width: 40px;
+                height: 40px;
+            }
+
+            .logo-main {
+                font-size: 18px;
+            }
+
+            .logo-sub {
+                font-size: 10px;
+            }
+
+            .action-button,
+            .logout-button,
+            .menu-toggle {
+                width: 42px;
+                height: 42px;
+            }
+
+            .user-name {
+                max-width: 100px;
+                font-size: 12px;
+            }
+
+            .last-updated {
+                font-size: 11px;
+                margin-right: 10px;
+            }
+
+            #lastUpdate {
+                min-width: 80px;
+            }
+
+            .nav-items {
+                margin-top: 20px;
+            }
+
+            .nav-button {
+                padding: 16px 18px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-container {
+                height: 60px;
+            }
+
+            .logo-text {
+                display: none;
+            }
+
+            .user-name {
+                max-width: 80px;
+                font-size: 11px;
+            }
+
+            .last-updated {
+                display: none;
+            }
+
+            .action-button,
+            .logout-button,
+            .menu-toggle {
+                width: 40px;
+                height: 40px;
+            }
+
+            .mobile-menu-container {
+                padding: 0 15px;
+            }
+
+            .user-avatar {
+                width: 45px;
+                height: 45px;
+            }
+
+            .user-card-info h4 {
+                font-size: 15px;
+            }
+
+            .mobile-logout-button {
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        /* ===== INDICATORS PAGE STYLES ===== */
+        .page-header {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+            border-radius: 16px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .page-header h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 2rem;
+        }
+
+        .page-header p {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .filter-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-tab {
+            padding: 10px 20px;
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .filter-tab.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .filter-tab:hover:not(.active) {
+            background: rgba(30, 41, 59, 1);
+            color: var(--light);
+        }
+
+        /* Indicators Grid */
+        .indicators-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        @media (max-width: 768px) {
+            .indicators-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Indicator Card */
+        .indicator-card {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .indicator-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
+        }
+
+        .indicator-header {
+            padding: 20px;
+            background: rgba(16, 185, 129, 0.1);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .indicator-title {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .indicator-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--light);
+        }
+
+        .indicator-price span {
+            color: var(--warning);
+            font-size: 1.4rem;
+        }
+
+        .indicator-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .indicator-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .indicator-card:hover .indicator-image img {
+            transform: scale(1.05);
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+            color: var(--gray);
+            font-size: 1.2rem;
+        }
+
+        .indicator-content {
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        .indicator-description {
+            color: var(--light);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .features-list li {
+            margin-bottom: 10px;
+            color: var(--gray);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .features-list i {
+            color: var(--primary);
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+
+        .indicator-footer {
+            padding: 20px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .buy-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .buy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .buy-btn i {
+            font-size: 1.2rem;
+        }
+
+        /* Group Header */
+        .group-header {
+            margin: 50px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .group-header h3 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .group-price {
+            background: linear-gradient(135deg, var(--warning), var(--danger));
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            padding: 25px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: var(--accent);
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .modal-image-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .modal-image {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .modal-description {
+            margin-bottom: 30px;
+        }
+
+        .modal-description h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .modal-description p {
+            color: var(--light);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .modal-description ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .modal-description li {
+            color: var(--light);
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .payment-section {
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 30px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .payment-section h4 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            text-align: center;
+        }
+
+        .payment-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .payment-step {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-weight: 700;
+        }
+
+        .step-description {
+            color: var(--light);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .qr-section {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .qr-image {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            background: white;
+            padding: 10px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qr-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #eee 25%, #ddd 25%, #ddd 50%, #eee 50%, #eee 75%, #ddd 75%);
+            background-size: 20px 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .upi-details {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .upi-details h5 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .upi-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .upi-id {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--light);
+            margin: 10px 0;
+            word-break: break-all;
+        }
+
+        .upi-note {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .whatsapp-btn {
+            display: inline-block;
+            background: #25D366;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            margin-top: 20px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+
+        .whatsapp-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+            color: white;
+        }
+
+        .whatsapp-btn i {
+            margin-right: 10px;
+        }
+
+        /* ===== RESTORED ORIGINAL FOOTER ===== */
+        footer {
+            background: rgba(15, 23, 42, 0.95);
+            padding: 40px 0 20px;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-logo {
+            padding-right: 20px;
+        }
+
+        .footer-logo h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .footer-description {
+            color: var(--gray);
+            margin-top: 15px;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .footer-features-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .footer-features-list li {
+            margin-bottom: 10px;
+            color: var(--light);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+
+        .footer-features-list i {
+            color: var(--primary);
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+
+        .footer-links h4 {
+            color: var(--light);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 25px;
+            border-top: 1px solid var(--border);
+            color: var(--gray);
+            font-size: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-disclaimer {
+            background: rgba(244, 63, 94, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: #ff9999;
+        }
+
+        /* ===== UTILITY CLASSES ===== */
+        .text-center { text-align: center; }
+        .mt-20 { margin-top: 20px; }
+        .mb-20 { margin-bottom: 20px; }
+        .pulse { animation: pulse 2s infinite; }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- LOGIN SYSTEM -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-box">
+            <div class="login-header">
+                <h2>DecodeXMarket</h2>
+                <p style="color: var(--gray);">Please login to access indicators</p>
+            </div>
+            
+            <div class="login-tabs">
+                <button class="login-tab active" data-tab="user">User Login</button>
+                <button class="login-tab" data-tab="admin">Admin Login</button>
+            </div>
+            
+            <!-- USER LOGIN -->
+            <div class="login-form active" id="userLoginForm">
+                <div class="form-group">
+                    <label for="userEmail">Email</label>
+                    <input type="email" id="userEmail" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="userPassword">Password</label>
+                    <input type="password" id="userPassword" placeholder="Enter your password">
+                </div>
+                <button class="login-btn" onclick="loginUser()">Login</button>
+                
+                <div class="register-note">
+                    <p>Don't have an account? <a href="https://forms.gle/JhdWJDXDH93NHx6Y8" target="_blank" class="register-link">Register here</a></p>
+                </div>
+            </div>
+            
+            <!-- ADMIN LOGIN -->
+            <div class="login-form" id="adminLoginForm">
+                <div class="form-group">
+                    <label for="adminEmail">Admin ID</label>
+                    <input type="text" id="adminEmail" placeholder="Enter admin ID">
+                </div>
+                <div class="form-group">
+                    <label for="adminPassword">Password</label>
+                    <input type="password" id="adminPassword" placeholder="Enter admin password">
+                </div>
+                <button class="login-btn" onclick="loginAdmin()">Login as Admin</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP (HIDDEN UNTIL LOGIN) -->
+    <div id="mainApp" style="display: none;">
+        <!-- UPDATED HEADER -->
+        <header class="header">
+            <div class="header-container">
+                <!-- Logo Section -->
+                <div class="logo-section" id="logoButton">
+                    <div class="logo-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="logo-text">
+                        <span class="logo-main">DecodeX</span>
+                        <span class="logo-sub">Market with RSK</span>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="header-actions">
+                    <!-- Last Updated Time Display -->
+                    <div class="last-updated">
+                        <i class="fas fa-clock"></i>
+                        Last: <span id="lastUpdate">Never</span>
+                    </div>
+                    
+                    <!-- Refresh Button -->
+                    <button class="action-button refresh-button" id="refreshButton" title="Refresh Data">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+
+                    <!-- User Info & Logout -->
+                    <div class="user-info">
+                        <div class="user-details">
+                            <span class="user-name" id="userName"></span>
+                            <span class="user-role" id="userRole"></span>
+                        </div>
+                        <button class="logout-button" id="logoutButton" title="Logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+
+                    <!-- Hamburger Menu Button -->
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars" id="menuIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div class="mobile-menu" id="mobileMenu">
+                <div class="mobile-menu-container">
+                    <!-- UPDATED NAVIGATION (SAME AS INDEX.HTML) -->
+                    <nav class="nav-items">
+                        <button class="nav-button" data-page="home">
+                            <div class="nav-icon">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            DASHBOARD
+                        </button>
+                        
+                        <!-- ADMIN ONLY: Overview Page -->
+                        <button class="nav-button admin-only" data-page="overview" style="display: none;">
+                            <div class="nav-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            MARKET OVERVIEW
+                        </button>
+                        
+                        <button class="nav-button active" id="premiumIndicatorsButton">
+                            <div class="nav-icon">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                            PREMIUM INDICATORS
+                        </button>
+                        
+                        <button class="nav-button" data-page="oi">
+                            <div class="nav-icon">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            O.I ANALYSIS
+                        </button>
+                        
+                        <button class="nav-button" data-page="gann">
+                            <div class="nav-icon">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            GANN TOOL(SCALPING)
+                        </button>
+                        
+                        <button class="nav-button" data-page="links">
+                            <div class="nav-icon">
+                                <i class="fas fa-link"></i>
+                            </div>
+                            USEFUL LINKS
+                        </button>
+                        
+                        <button class="nav-button" data-page="contact">
+                            <div class="nav-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            CONTACT US
+                        </button>
+                    </nav>
+
+                    <!-- User Info & Logout at Bottom -->
+                    <div class="mobile-user-section">
+                        <div class="divider"></div>
+                        <div class="user-card">
+                            <div class="user-card-left">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user" id="mobileAvatarIcon"></i>
+                                </div>
+                                <div class="user-card-info">
+                                    <h4 id="mobileUserName"></h4>
+                                    <div class="user-card-badge" id="mobileUserRole"></div>
+                                </div>
+                            </div>
+                            <button class="mobile-logout-button" id="mobileLogoutButton" title="Logout">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- DATA UPDATE NOTICE -->
+        <div class="container">
+            <div class="data-update-notice">
+                <div class="notice-text">
+                    <span class="notice-label"><i class="fas fa-clock"></i> DATA UPDATE NOTICE:</span>
+                    Visit after 
+                    <span class="update-time">10:00 PM - 11:00 PM</span>
+                    for updated post-market analysis.
+                </div>
+                <div class="data-update-note">
+                    <i class="fas fa-info-circle"></i> PREDICTION FOR: NIFTY || SENSEX || BANKNIFTY.
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <main class="container">
+            <!-- INDICATORS PAGE -->
+            <div class="page-content active" id="indicatorsPage">
+                <div class="page-header">
+                    <h2><i class="fas fa-crown"></i> Premium Trading Indicators</h2>
+                    <p>Professional-grade indicators for systematic trading. Each indicator comes with complete setup guide and support.</p>
+                </div>
+
+                <!-- Filter Tabs -->
+                <div class="filter-section">
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-group="all">All Indicators</button>
+                        <button class="filter-tab" data-group="group1">Bias & Structure</button>
+                        <button class="filter-tab" data-group="group2">Level-Based</button>
+                        <button class="filter-tab" data-group="group3">Reversal & Timing</button>
+                        <button class="filter-tab" data-group="group4">Trade Management</button>
+                        <button class="filter-tab" data-group="group5">Options</button>
+                        <button class="filter-tab" data-group="group6">Astro & Cycles</button>
+                        <button class="filter-tab" data-group="group7">Gann</button>
+                        <button class="filter-tab" data-group="group8">Scalping</button>
+                    </div>
+                </div>
+
+                <!-- GROUP 1: HERO BIAS & STRUCTURE INDICATORS -->
+                <div class="group-header" data-group="group1">
+                    <h3>
+                        <i class="fas fa-chess-king"></i>
+                        GROUP 1: HERO BIAS & STRUCTURE INDICATORS
+                        <span class="group-price">Price: ₹1499</span>
+                    </h3>
+                </div>
+
+                <div class="indicators-container">
+                    <!-- BiasPro Indicator -->
+                    <div class="indicator-card" data-group="group1">
+                        <div class="indicator-header">
+                            <h3 class="indicator-title">
+                                <i class="fas fa-brain"></i>
+                                BiasPro Indicator
+                            </h3>
+                            <div class="indicator-price">Price: <span>₹1499</span></div>
+                        </div>
+                        <div class="indicator-image">
+                            <img src="biaspro-indicator.png" alt="BiasPro Indicator Preview">
+                        </div>
+                        <div class="indicator-content">
+                            <p class="indicator-description">
+                                Advanced bias detection system that identifies market direction with high accuracy using multi-timeframe analysis.
+                            </p>
+                            <ul class="features-list">
+                                <li><i class="fas fa-check"></i> Multi-timeframe bias confirmation</li>
+                                <li><i class="fas fa-check"></i> Trend strength measurement</li>
+                                <li><i class="fas fa-check"></i> Visual alert system</li>
+                                <li><i class="fas fa-check"></i> Customizable sensitivity</li>
+                            </ul>
+                        </div>
+                        <div class="indicator-footer">
+                            <button class="buy-btn" data-indicator="BiasPro Indicator">
+                                <i class="fas fa-shopping-cart"></i>
+                                Buy Access
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Third Eye Indicator -->
+                    <div class="indicator-card" data-group="group1">
+                        <div class="indicator-header">
+                            <h3 class="indicator-title">
+                                <i class="fas fa-eye"></i>
+                                Third Eye Indicator
+                            </h3>
+                            <div class="indicator-price">Price: <span>₹1499</span></div>
+                        </div>
+                        <div class="indicator-image">
+                            <img src="thirdeye-indicator.png" alt="Third Eye Indicator Preview">
+                        </div>
+                        <div class="indicator-content">
+                            <p class="indicator-description">
+                                Predictive indicator that spots hidden market patterns and provides early warning signals for trend changes.
+                            </p>
+                            <ul class="features-list">
+                                <li><i class="fas fa-check"></i> Pattern recognition engine</li>
+                                <li><i class="fas fa-check"></i> Early reversal signals</li>
+                                <li><i class="fas fa-check"></i> Support/resistance prediction</li>
+                                <li><i class="fas fa-check"></i> Risk level assessment</li>
+                            </ul>
+                        </div>
+                        <div class="indicator-footer">
+                            <button class="buy-btn" data-indicator="Third Eye Indicator">
+                                <i class="fas fa-shopping-cart"></i>
+                                Buy Access
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GROUP 2: LEVEL-BASED INDICATORS -->
+                <div class="group-header" data-group="group2">
+                    <h3>
+                        <i class="fas fa-layer-group"></i>
+                        GROUP 2: LEVEL-BASED INDICATORS
+                        <span class="group-price">Price: ₹999</span>
+                    </h3>
+                </div>
+
+                <div class="indicators-container">
+                    <!-- Intraday S&R Indicator -->
+                    <div class="indicator-card" data-group="group2">
+                        <div class="indicator-header">
+                            <h3 class="indicator-title">
+                                <i class="fas fa-arrows-alt-v"></i>
+                                Intraday S&R Indicator
+                            </h3>
+                            <div class="indicator-price">Price: <span>₹999</span></div>
+                        </div>
+                        <div class="indicator-image">
+                            <img src="intraday-sr-indicator.png" alt="Intraday S&R Indicator Preview">
+                        </div>
+                        <div class="indicator-content">
+                            <p class="indicator-description">
+                                Dynamic support and resistance levels that adapt to market conditions for intraday trading.
+                            </p>
+                            <ul class="features-list">
+                                <li><i class="fas fa-check"></i> Dynamic level calculation</li>
+                                <li><i class="fas fa-check"></i> Multi-timeframe confluence</li>
+                                <li><i class="fas fa-check"></i> Breakout confirmation</li>
+                                <li><i class="fas fa-check"></i> Volume-based validation</li>
+                            </ul>
+                        </div>
+                        <div class="indicator-footer">
+                            <button class="buy-btn" data-indicator="Intraday S&R Indicator">
+                                <i class="fas fa-shopping-cart"></i>
+                                Buy Access
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Lock Levels Indicator -->
+                    <div class="indicator-card" data-group="group2">
+                        <div class="indicator-header">
+                            <h3 class="indicator-title">
+                                <i class="fas fa-lock"></i>
+                                Lock Levels Indicator
+                            </h3>
+                            <div class="indicator-price">Price: <span>₹999</span></div>
+                        </div>
+                        <div class="indicator-image">
+                            <img src="locklevels-indicator.png" alt="Lock Levels Indicator Preview">
+                        </div>
+                        <div class="indicator-content">
+                            <p class="indicator-description">
+                                Identifies key price levels where markets tend to stall or reverse with high probability.
+                            </p>
+                            <ul class="features-list">
+                                <li><i class="fas fa-check"></i> Key level identification</li>
+                                <li><i class="fas fa-check"></i> Historical significance rating</li>
+                                <li><i class="fas fa-check"></i> Real-time level strength</li>
+                                <li><i class="fas fa-check"></i> Breakout/breakdown signals</li>
+                            </ul>
+                        </div>
+                        <div class="indicator-footer">
+                            <button class="buy-btn" data-indicator="Lock Levels Indicator">
+                                <i class="fas fa-shopping-cart"></i>
+                                Buy Access
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Gann Equity Levels -->
+                    <div class="indicator-card" data-group="group2">
+                        <div class="indicator-header">
+                            <h3 class="indicator-title">
+                                <i class="fas fa-square-root-alt"></i>
+                                Gann Equity Levels
+                            </h3>
+                            <div class="indicator-price">Price: <span>₹999</span></div>
+                        </div>
+                        <div class="indicator-image">
+                            <img src="gannequity-indicator.png" alt="Gann Equity Levels Preview">
+                        </div>
+                        <div class="indicator-content">
+                            <p class="indicator-description">
+                                Gann-based price levels specifically designed for equity markets with high accuracy.
+                            </p>
+                            <ul class="features-list">
+                                <li><i class="fas fa-check"></i> Gann square of 9 levels</li>
+                                <li><i class="fas fa-check"></i> Time-price squaring</li>
+                                <li><i class="fas fa-check"></i> Natural support/resistance</li>
+                                <li><i class="fas fa-check"></i> Trend angle measurement</li>
+                            </ul>
+                        </div>
+                        <div class="indicator-footer">
+                            <button class="buy-btn" data-indicator="Gann Equity Levels">
+                                <i class="fas fa-shopping-cart"></i>
+                                Buy Access
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GROUP 3: REVERSAL & TIMING INDICATORS -->
+                <div class="group-header" data-group="group3">
+                    <h3>
+                        <i class="fas fa-retweet"></i>
+                        GROUP 3: REVERSAL & TIMING INDICATORS
+                        <span class="group-price">Price: ₹1199</span>
+                    </h3>
+                </div>
+
+                <div class="indicators-container">
+                    <!-- Intraday Reversal Indicator -->
+                    <div class="indicator-card" data-group="group3">
+                        <div class="indicator-header">
+                            <h3 class="indicator-title">
+                                <i class="fas fa-exchange-alt"></i>
+                                Intraday Reversal Indicator
+                            </h3>
+                            <div class="indicator-price">Price: <span>₹1199</span></div>
+                        </div>
+                        <div class="indicator-image">
+                            <img src="intraday-reversal-indicator.png" alt="Intraday Reversal Indicator Preview">
+                        </div>
+                        <div class="indicator-content">
+                            <p class="indicator-description">
+                                Detects potential reversal points in intraday markets using multiple confirmation signals.
+                            </p>
+                            <ul class="features-list">
+                                <li><i class="fas fa-check"></i> Multiple timeframe confirmation</li>
+                                <li><i class="fas fa-check"></i> Divergence detection</li>
+                                <li><i class="fas fa-check"></i> Momentum shift signals</li>
+                                <li><i class="fas fa-check"></i> False breakout filter</li>
+                            </ul>
+                        </div>
+                        <div class="indicator-footer">
+                            <button class="buy-btn" data-indicator="Intraday Reversal Indicator">
+                                <i class="fas fa-shopping-cart"></i>
+                                Buy Access
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Price-Time Reversal Engine -->
+                    <div class="indicator-card" data-group="group3">
+                        <div class="indicator-header">
+                            <h3 class="indicator-title">
+                                <i class="fas fa-cogs"></i>
+                                Price-Time Reversal Engine
+                            </h3>
+                            <div class="indicator-price">Price: <span>₹1199</span></div>
+                        </div>
+                        <div class="indicator-image">
+                            <img src="pricetime-engine.png" alt="Price-Time Reversal Engine Preview">
+                        </div>
+                        <div class="indicator-content">
+                            <p class="indicator-description">
+                                Advanced engine that combines price action with time cycles to predict reversal points.
+                            </p>
+                            <ul class="features-list">
+                                <li><i class="fas fa-check"></i> Price-time squaring</li>
+                                <li><i class="fas fa-check"></i> Cycle synchronization</li>
+                                <li><i class="fas fa-check"></i> Harmonic pattern recognition</li>
+                                <li><i class="fas fa-check"></i> Multi-asset compatibility</li>
+                            </ul>
+                        </div>
+                        <div class="indicator-footer">
+                            <button class="buy-btn" data-indicator="Price-Time Reversal Engine">
+                                <i class="fas fa-shopping-cart"></i>
+                                Buy Access
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Time Prediction Indicator -->
+                    <div class="indicator-card" data-group="group3">
+                        <div class="indicator-header">
+                            <h3 class="indicator-title">
+                                <i class="fas fa-clock"></i>
+                                Time Prediction Indicator
+                            </h3>
+                            <div class="indicator-price">Price: <span>₹1199</span></div>
+                        </div>
+                        <div class="indicator-image">
+                            <img src="timeprediction-indicator.png" alt="Time Prediction Indicator Preview">
+                        </div>
+                        <div class="indicator-content">
+                            <p class="indicator-description">
+                                Predicts market turning points based on time cycles and historical pattern analysis.
+                            </p>
+                            <ul class="features-list">
+                                <li><i class="fas fa-check"></i> Time cycle analysis</li>
+                                <li><i class="fas fa-check"></i> Seasonal pattern detection</li>
+                                <li><i class="fas fa-check"></i> Fibonacci time zones</li>
+                                <li><i class="fas fa-check"></i> Multiple timeframe alignment</li>
+                            </ul>
+                        </div>
+                        <div class="indicator-footer">
+                            <button class="buy-btn" data-indicator="Time Prediction Indicator">
+                                <i class="fas fa-shopping-cart"></i>
+                                Buy Access
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GROUP 4: TRADE MANAGEMENT INDICATORS -->
+                <div class="group-header" data-group="group4">
+                    <h3>
+                        <i class="fas fa-tasks"></i>
+                        GROUP 4: TRADE MANAGEMENT INDICATORS
+                        <span class="group-price">Price: ₹999</span>
+                    </h3>
+                </div>
+
+                <div class="indicators-container">
+                    <!-- Universal Stoploss System -->
+                    <div class="indicator-card" data-group="group4">
+                        <div class="indicator-header">
+                            <h3 class="indicator-title">
+                                <i class="fas fa-shield-alt"></i>
+                                Universal Stoploss System
+                            </h3>
+                            <div class="indicator-price">Price: <span>₹999</span></div>
+                        </div>
+                        <div class="indicator-image">
+                            <img src="stoploss-system.png" alt="Universal Stoploss System Preview">
+                        </div>
+                        <div class="indicator-content">
+                            <p class="indicator-description">
+                                Intelligent stop-loss placement system based on market volatility and support/resistance levels.
+                            </p>
+                            <ul class="features-list">
+                                <li><i class="fas fa-check"></i> Dynamic stop calculation</li>
+                                <li><i class="fas fa-check"></i> Volatility-based stops</li>
+                                <li><i class="fas fa-check"></i> Support/resistance stops</li>
+                                <li><i class="fas fa-check"></i> Trailing stop automation</li>
+                            </ul>
+                        </div>
+                        <div class="indicator-footer">
+                            <button class="buy-btn" data-indicator="Universal Stoploss System">
+                                <i class="fas fa-shopping-cart"></i>
+                                Buy Access
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Trail Profit Manager -->
+                    <div class="indicator-card" data-group="group4">
+                        <div class="indicator-header">
+                            <h3 class="indicator-title">
+                                <i class="fas fa-chart-line"></i>
+                                Trail Profit Manager
+                            </h3>
+                            <div class="indicator-price">Price: <span>₹999</span></div>
+                        </div>
+                        <div class="indicator-image">
+                            <img src="trailprofit-manager.png" alt="Trail Profit Manager Preview">
+                        </div>
+                        <div class="indicator-content">
+                            <p class="indicator-description">
+                                Advanced trailing stop system that maximizes profits while protecting gains.
+                            </p>
+                            <ul class="features-list">
+                                <li><i class="fas fa-check"></i> Dynamic trailing algorithm</li>
+                                <li><i class="fas fa-check"></i> Multiple trail methods</li>
+                                <li><i class="fas fa-check"></i> Profit protection levels</li>
+                                <li><i class="fas fa-check"></i> Customizable settings</li>
+                            </ul>
+                        </div>
+                        <div class="indicator-footer">
+                            <button class="buy-btn" data-indicator="Trail Profit Manager">
+                                <i class="fas fa-shopping-cart"></i>
+                                Buy Access
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GROUP 5: OPTIONS / DERIVATIVES INDICATORS -->
+                <div class="group-header" data-group="group5">
+                    <h3>
+                        <i class="fas fa-options"></i>
+                        GROUP 5: OPTIONS / DERIVATIVES INDICATORS
+                        <span class="group-price">Price: ₹999</span>
+                    </h3>
+                </div>
+
+                <div class="indicators-container">
+                    <!-- CE / PE Indicator -->
+                    <div class="indicator-card" data-group="group5">
+                        <div class="indicator-header">
+                            <h3 class="indicator-title">
+                                <i class="fas fa-balance-scale"></i>
+                                CE / PE Indicator
+                            </h3>
+                            <div class="indicator-price">Price: <span>₹999</span></div>
+                        </div>
+                        <div class="indicator-image">
+                            <img src="cepe-indicator.png" alt="CE / PE Indicator Preview">
+                        </div>
+                        <div class="indicator-content">
+                            <p class="indicator-description">
+                                Specialized indicator for options trading that identifies optimal CE/PE strike levels.
+                            </p>
+                            <ul class="features-list">
+                                <li><i class="fas fa-check"></i> Strike selection assistance</li>
+                                <li><i class="fas fa-check"></i> Premium calculation</li>
+                                <li><i class="fas fa-check"></i> Greeks visualization</li>
+                                <li><i class="fas fa-check"></i> Risk-reward assessment</li>
+                            </ul>
+                        </div>
+                        <div class="indicator-footer">
+                            <button class="buy-btn" data-indicator="CE / PE Indicator">
+                                <i class="fas fa-shopping-cart"></i>
+                                Buy Access
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GROUP 6: ASTRO & CYCLE-BASED INDICATORS -->
+                <div class="group-header" data-group="group6">
+                    <h3>
+                        <i class="fas fa-star-and-crescent"></i>
+                        GROUP 6: ASTRO & CYCLE-BASED INDICATORS
+                        <span class="group-price">Price: ₹2499</span>
+                    </h3>
+                </div>
+
+                <div class="indicators-container">
+                    <!-- Cosmic Cycle Indicator -->
+                    <div class="indicator-card" data-group="group6">
+                        <div class="indicator-header">
+                            <h3 class="indicator-title">
+                                <i class="fas fa-moon"></i>
+                                Cosmic Cycle Indicator
+                            </h3>
+                            <div class="indicator-price">Price: <span>₹1699</span></div>
+                        </div>
+                        <div class="indicator-image">
+                            <img src="cosmic-cycle-indicator.png" alt="Cosmic Cycle Indicator Preview">
+                        </div>
+                        <div class="indicator-content">
+                            <p class="indicator-description">
+                                Advanced astronomical cycle indicator that correlates cosmic events with market movements.
+                            </p>
+                            <ul class="features-list">
+                                <li><i class="fas fa-check"></i> Lunar cycle analysis</li>
+                                <li><i class="fas fa-check"></i> Planetary alignments</li>
+                                <li><i class="fas fa-check"></i> Solar activity correlation</li>
+                                <li><i class="fas fa-check"></i> Historical pattern matching</li>
+                            </ul>
+                        </div>
+                        <div class="indicator-footer">
+                            <button class="buy-btn" data-indicator="Cosmic Cycle Indicator">
+                                <i class="fas fa-shopping-cart"></i>
+                                Buy Access
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Astro Reversal Indicator -->
+                    <div class="indicator-card" data-group="group6">
+                        <div class="indicator-header">
+                            <h3 class="indicator-title">
+                                <i class="fas fa-sun"></i>
+                                Astro Reversal Indicator
+                            </h3>
+                            <div class="indicator-price">Price: <span>₹1699</span></div>
+                        </div>
+                        <div class="indicator-image">
+                            <img src="astro-reversal-indicator.png" alt="Astro Reversal Indicator Preview">
+                        </div>
+                        <div class="indicator-content">
+                            <p class="indicator-description">
+                                Predicts market reversals based on astrological events and celestial patterns.
+                            </p>
+                            <ul class="features-list">
+                                <li><i class="fas fa-check"></i> Astrological event tracking</li>
+                                <li><i class="fas fa-check"></i> Reversal probability scoring</li>
+                                <li><i class="fas fa-check"></i> Multiple time frame analysis</li>
+                                <li><i class="fas fa-check"></i> Historical accuracy display</li>
+                            </ul>
+                        </div>
+                        <div class="indicator-footer">
+                            <button class="buy-btn" data-indicator="Astro Reversal Indicator">
+                                <i class="fas fa-shopping-cart"></i>
+                                Buy Access
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GROUP 7: GANN INDICATORS -->
+                <div class="group-header" data-group="group7">
+                    <h3>
+                        <i class="fas fa-square-root-alt"></i>
+                        GROUP 7: GANN INDICATORS
+                        <span class="group-price">Price: ₹1699</span>
+                    </h3>
+                </div>
+
+                <div class="indicators-container">
+                    <!-- Gann Dynamic Price Levels -->
+                    <div class="indicator-card" data-group="group7">
+                        <div class="indicator-header">
+                            <h3 class="indicator-title">
+                                <i class="fas fa-chart-area"></i>
+                                Gann Dynamic Price Levels
+                            </h3>
+                            <div class="indicator-price">Price: <span>₹1699</span></div>
+                        </div>
+                        <div class="indicator-image">
+                            <img src="gann-dynamic-levels.png" alt="Gann Dynamic Price Levels Preview">
+                        </div>
+                        <div class="indicator-content">
+                            <p class="indicator-description">
+                                Dynamic Gann levels that adjust in real-time based on market conditions and volatility.
+                            </p>
+                            <ul class="features-list">
+                                <li><i class="fas fa-check"></i> Real-time level adjustment</li>
+                                <li><i class="fas fa-check"></i> Volatility-based scaling</li>
+                                <li><i class="fas fa-check"></i> Multiple Gann methods</li>
+                                <li><i class="fas fa-check"></i> Custom angle settings</li>
+                            </ul>
+                        </div>
+                        <div class="indicator-footer">
+                            <button class="buy-btn" data-indicator="Gann Dynamic Price Levels">
+                                <i class="fas fa-shopping-cart"></i>
+                                Buy Access
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Gann Multi-Timeframe Trend Levels -->
+                    <div class="indicator-card" data-group="group7">
+                        <div class="indicator-header">
+                            <h3 class="indicator-title">
+                                <i class="fas fa-layer-group"></i>
+                                Gann Multi-Timeframe Trend Levels
+                            </h3>
+                            <div class="indicator-price">Price: <span>₹1699</span></div>
+                        </div>
+                        <div class="indicator-image">
+                            <img src="gann-multitimeframe.png" alt="Gann Multi-Timeframe Trend Levels Preview">
+                        </div>
+                        <div class="indicator-content">
+                            <p class="indicator-description">
+                                Gann trend analysis across multiple timeframes for comprehensive market analysis.
+                            </p>
+                            <ul class="features-list">
+                                <li><i class="fas fa-check"></i> Multi-timeframe Gann analysis</li>
+                                <li><i class="fas fa-check"></i> Trend confluence identification</li>
+                                <li><i class="fas fa-check"></i> Support/resistance clusters</li>
+                                <li><i class="fas fa-check"></i> Time-price squaring zones</li>
+                            </ul>
+                        </div>
+                        <div class="indicator-footer">
+                            <button class="buy-btn" data-indicator="Gann Multi-Timeframe Trend Levels">
+                                <i class="fas fa-shopping-cart"></i>
+                                Buy Access
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GROUP 8: SCALPING INDICATOR -->
+                <div class="group-header" data-group="group8">
+                    <h3>
+                        <i class="fas fa-bolt"></i>
+                        GROUP 8: SCALPING INDICATOR
+                        <span class="group-price">Price: ₹499</span>
+                    </h3>
+                </div>
+
+                <div class="indicators-container">
+                    <!-- 5-Min Wizard Indicator -->
+                    <div class="indicator-card" data-group="group8">
+                        <div class="indicator-header">
+                            <h3 class="indicator-title">
+                                <i class="fas fa-hat-wizard"></i>
+                                5-Min Wizard Indicator
+                            </h3>
+                            <div class="indicator-price">Price: <span>₹499</span></div>
+                        </div>
+                        <div class="indicator-image">
+                            <img src="5min-wizard-indicator.png" alt="5-Min Wizard Indicator Preview">
+                        </div>
+                        <div class="indicator-content">
+                            <p class="indicator-description">
+                                Specialized scalping indicator optimized for 5-minute timeframe with high accuracy signals.
+                            </p>
+                            <ul class="features-list">
+                                <li><i class="fas fa-check"></i> 5-minute optimized signals</li>
+                                <li><i class="fas fa-check"></i> Quick entry/exit points</li>
+                                <li><i class="fas fa-check"></i> Low latency execution</li>
+                                <li><i class="fas fa-check"></i> Risk management overlay</li>
+                            </ul>
+                        </div>
+                        <div class="indicator-footer">
+                            <button class="buy-btn" data-indicator="5-Min Wizard Indicator">
+                                <i class="fas fa-shopping-cart"></i>
+                                Buy Access
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <!-- RESTORED ORIGINAL FOOTER -->
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-logo">
+                        <h3>DecodeXMarket</h3>
+                        <div class="footer-description">
+                            <p><strong>Where Data meets Time Cycles.</strong></p>
+                            <ul class="footer-features-list">
+                                <li><i class="fas fa-chart-line"></i> Daily FII/DII Decoding</li>
+                                <li><i class="fas fa-star"></i> AstroIndicator Reversals</li>
+                                <li><i class="fas fa-layer-group"></i> S&R Levels that Hold</li>
+                                <li><i class="fas fa-bullseye"></i> Nifty & BankNifty Predictions</li>
+                            </ul>
+                            <p style="margin-top: 15px;">An educational platform for market analysis enthusiasts</p>
+                        </div>
+                    </div>
+                    
+                    <div class="footer-links">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                            <li><a href="indicators.html"><i class="fas fa-crown"></i> Premium Indicators</a></li>
+                            <li><a href="oi.html"><i class="fas fa-chart-bar"></i> O.I Analysis</a></li>
+                            <li><a href="overview.html" class="admin-only" style="display: none;"><i class="fas fa-chart-line"></i> Market Overview</a></li>
+                            <li><a href="index.html#gann"><i class="fas fa-calculator"></i> Gann Calculator</a></li>
+                            <li><a href="index.html#links"><i class="fas fa-link"></i> Useful Links</a></li>
+                            <li><a href="index.html#contact"><i class="fas fa-phone"></i> Contact</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-links">
+                        <h4>Legal</h4>
+                        <ul>
+                            <li><a href="index.html#disclaimer"><i class="fas fa-exclamation-triangle"></i> Disclaimer</a></li>
+                            <li><a href="index.html#privacy"><i class="fas fa-shield-alt"></i> Privacy Policy</a></li>
+                            <li><a href="index.html#terms"><i class="fas fa-file-contract"></i> Terms & Conditions</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p>&copy; 2024 DecodeXMarket with RSK. All rights reserved.</p>
+                    <div class="footer-disclaimer">
+                        <p><i class="fas fa-exclamation-circle"></i> <strong>IMPORTANT:</strong> I am NOT SEBI registered. Trading is NOT my full-time career. All information is for educational purposes only. My market study should NOT be taken as buy/sell recommendations.</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- MODAL FOR INDICATOR DETAILS -->
+    <div class="modal-overlay" id="indicatorModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalIndicatorTitle"></h3>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-image-section">
+                    <div id="modalImagePlaceholder" style="width: 100%; height: 300px; border-radius: 12px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.2);">
+                        <!-- Image will be inserted here by JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="modal-description">
+                    <h4><i class="fas fa-info-circle"></i> Description</h4>
+                    <p id="modalDescription"></p>
+                    
+                    <h4><i class="fas fa-cogs"></i> How to Use</h4>
+                    <ul id="modalUsage">
+                        <!-- Filled by JavaScript -->
+                    </ul>
+                    
+                    <h4><i class="fas fa-download"></i> Steps to Access</h4>
+                    <ol id="modalSteps">
+                        <!-- Filled by JavaScript -->
+                    </ol>
+                </div>
+                
+                <div class="payment-section">
+                    <h4><i class="fas fa-credit-card"></i> Payment & Access Instructions</h4>
+                    
+                    <div class="payment-steps">
+                        <div class="payment-step">
+                            <div class="step-number">1</div>
+                            <div class="step-description">Make payment using UPI QR code or UPI ID below</div>
+                        </div>
+                        <div class="payment-step">
+                            <div class="step-number">2</div>
+                            <div class="step-description">Take screenshot of successful payment</div>
+                        </div>
+                        <div class="payment-step">
+                            <div class="step-number">3</div>
+                            <div class="step-description">Send screenshot via WhatsApp with your details</div>
+                        </div>
+                        <div class="payment-step">
+                            <div class="step-number">4</div>
+                            <div class="step-description">Receive indicator file within 24 hours</div>
+                        </div>
+                    </div>
+                    
+                    <div class="qr-section">
+                        <h5>Scan QR Code to Pay</h5>
+                        <div class="qr-image">
+                            <img src="upi-qr.png" alt="UPI QR Code" style="width: 200px; height: 200px;">
+                        </div>
+                        
+                        <div class="upi-details">
+                            <h5>Or Use UPI ID</h5>
+                            <div class="upi-info">
+                                <div class="upi-id">thersk@axl</div>
+                                <div class="upi-note">(Google Pay, PhonePe, Paytm, BHIM)</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="whatsapp-btn" id="whatsappButton">
+                        <i class="fab fa-whatsapp"></i>
+                        Send Payment Screenshot on WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // ===== AUTHENTICATION SYSTEM =====
+        let currentUser = null;
+        let users = [];
+        
+        // Admin credentials
+        const ADMIN_CREDENTIALS = {
+            id: "Ravi@Admin",
+            password: "RadheRadhe@2000"
+        };
+
+        // Google Apps Script URL for login authentication
+        const LOGIN_API_URL = "https://script.google.com/macros/s/AKfycbx75r_4U2RjpihxddZJulj1JkhaizxElBe2rv845586WnOgPbOjXOmVMt1MEfA2OIDt-w/exec";
+
+        // Initialize users from localStorage
+        function initializeUsers() {
+            const savedUsers = localStorage.getItem('decodexmarket_users');
+            if (savedUsers) {
+                users = JSON.parse(savedUsers);
+            }
+            
+            // Check if user is already logged in
+            const savedUser = localStorage.getItem('decodexmarket_current_user');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showMainApp();
+            }
+        }
+
+        // User login function
+        async function loginUser() {
+            const email = document.getElementById('userEmail').value.trim();
+            const password = document.getElementById('userPassword').value;
+            
+            if (!email || !password) {
+                showNotification('Please enter email and password!', 'error');
+                return;
+            }
+            
+            showNotification('Checking credentials...', 'info');
+            
+            try {
+                const response = await fetch(LOGIN_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const responseText = await response.text();
+                let result;
+                
+                try {
+                    result = JSON.parse(responseText);
+                } catch (e) {
+                    console.error('JSON parse error:', e);
+                    throw new Error('Invalid server response');
+                }
+                
+                if (result.success) {
+                    currentUser = {
+                        email: email,
+                        name: result.name || email.split('@')[0],
+                        role: result.role || "user",
+                        hasPurchased: result.purchased || false,
+                        status: result.status || "active"
+                    };
+                    
+                    localStorage.setItem('decodexmarket_current_user', JSON.stringify(currentUser));
+                    
+                    const localUsers = JSON.parse(localStorage.getItem('decodexmarket_users') || '[]');
+                    const userIndex = localUsers.findIndex(u => u.email === email);
+                    
+                    if (userIndex === -1) {
+                        localUsers.push({
+                            email: email,
+                            password: password,
+                            name: result.name || email.split('@')[0],
+                            role: result.role || "user",
+                            hasPurchased: result.purchased || false,
+                            status: result.status || "active"
+                        });
+                    } else {
+                        localUsers[userIndex] = {
+                            ...localUsers[userIndex],
+                            name: result.name || email.split('@')[0],
+                            role: result.role || "user",
+                            hasPurchased: result.purchased || false,
+                            status: result.status || "active"
+                        };
+                    }
+                    
+                    localStorage.setItem('decodexmarket_users', JSON.stringify(localUsers));
+                    
+                    showMainApp();
+                    showNotification(`Welcome back, ${currentUser.name}!`, 'success');
+                    
+                } else {
+                    const localUsers = JSON.parse(localStorage.getItem('decodexmarket_users') || '[]');
+                    const localUser = localUsers.find(u => u.email === email && u.password === password);
+                    
+                    if (localUser && localUser.status !== "inactive") {
+                        currentUser = localUser;
+                        localStorage.setItem('decodexmarket_current_user', JSON.stringify(currentUser));
+                        showMainApp();
+                        showNotification(`Welcome back, ${currentUser.name}!`, 'success');
+                    } else {
+                        showNotification(result.message || 'Invalid email or password!', 'error');
+                    }
+                }
+                
+            } catch (error) {
+                console.error('Login error:', error);
+                
+                const localUsers = JSON.parse(localStorage.getItem('decodexmarket_users') || '[]');
+                const localUser = localUsers.find(u => u.email === email && u.password === password);
+                
+                if (localUser && localUser.status !== "inactive") {
+                    currentUser = localUser;
+                    localStorage.setItem('decodexmarket_current_user', JSON.stringify(currentUser));
+                    showMainApp();
+                    showNotification(`Welcome back, ${currentUser.name}!`, 'success');
+                } else {
+                    showNotification('Cannot connect to server. Please try again later.', 'error');
+                }
+            }
+        }
+
+        // Admin login function
+        function loginAdmin() {
+            const id = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+            
+            if (id === ADMIN_CREDENTIALS.id && password === ADMIN_CREDENTIALS.password) {
+                currentUser = {
+                    email: ADMIN_CREDENTIALS.id,
+                    name: "Admin Ravi",
+                    role: "admin",
+                    hasPurchased: true,
+                    status: "active"
+                };
+                localStorage.setItem('decodexmarket_current_user', JSON.stringify(currentUser));
+                showMainApp();
+                showNotification('Welcome, Admin Ravi!', 'success');
+            } else {
+                showNotification('Invalid admin credentials!', 'error');
+            }
+        }
+
+        function showMainApp() {
+            document.getElementById('loginOverlay').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+            
+            updateUserInfo();
+            initializeNewHeader();
+            initializeIndicatorFilters();
+            initializeBuyButtons();
+        }
+
+        function updateUserInfo() {
+            const userNameEl = document.getElementById('userName');
+            const userRoleEl = document.getElementById('userRole');
+            const mobileUserName = document.getElementById('mobileUserName');
+            const mobileUserRole = document.getElementById('mobileUserRole');
+            const mobileAvatarIcon = document.getElementById('mobileAvatarIcon');
+            
+            if (currentUser) {
+                userNameEl.textContent = currentUser.name;
+                userRoleEl.textContent = currentUser.role === "admin" ? "Admin" : "User";
+                
+                mobileUserName.textContent = currentUser.name;
+                
+                let roleDisplay = '';
+                let iconClass = '';
+                
+                if (currentUser.role === "admin") {
+                    roleDisplay = "Administrator";
+                    iconClass = "fas fa-user-shield";
+                    
+                    // Show admin-only menu items
+                    document.querySelectorAll('.admin-only').forEach(item => {
+                        item.style.display = 'flex';
+                    });
+                    document.querySelectorAll('.footer-links .admin-only').forEach(item => {
+                        item.style.display = 'block';
+                    });
+                } else if (currentUser.hasPurchased) {
+                    roleDisplay = "Premium User";
+                    iconClass = "fas fa-crown";
+                    
+                    // Hide admin-only menu items for non-admin users
+                    document.querySelectorAll('.admin-only').forEach(item => {
+                        item.style.display = 'none';
+                    });
+                    document.querySelectorAll('.footer-links .admin-only').forEach(item => {
+                        item.style.display = 'none';
+                    });
+                } else {
+                    roleDisplay = "Standard User";
+                    iconClass = "fas fa-user";
+                    
+                    // Hide admin-only menu items for non-admin users
+                    document.querySelectorAll('.admin-only').forEach(item => {
+                        item.style.display = 'none';
+                    });
+                    document.querySelectorAll('.footer-links .admin-only').forEach(item => {
+                        item.style.display = 'none';
+                    });
+                }
+                
+                mobileUserRole.textContent = roleDisplay;
+                mobileAvatarIcon.className = iconClass;
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('decodexmarket_current_user');
+            document.getElementById('loginOverlay').style.display = 'flex';
+            document.getElementById('mainApp').style.display = 'none';
+            showNotification('Logged out successfully!', 'info');
+            
+            document.getElementById('userEmail').value = '';
+            document.getElementById('userPassword').value = '';
+            document.getElementById('adminEmail').value = '';
+            document.getElementById('adminPassword').value = '';
+            
+            closeMenu();
+        }
+
+        // ===== NEW HEADER FUNCTIONALITY =====
+        function initializeNewHeader() {
+            const logoButton = document.getElementById('logoButton');
+            const refreshButton = document.getElementById('refreshButton');
+            const logoutButton = document.getElementById('logoutButton');
+            const mobileLogoutButton = document.getElementById('mobileLogoutButton');
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuIcon = document.getElementById('menuIcon');
+            const navButtons = document.querySelectorAll('.mobile-menu .nav-button');
+            const premiumIndicatorsButton = document.getElementById('premiumIndicatorsButton');
+            
+            if (logoButton) {
+                logoButton.addEventListener('click', () => {
+                    window.location.href = 'index.html';
+                });
+            }
+            
+            if (refreshButton) {
+                refreshButton.addEventListener('click', handleManualRefresh);
+            }
+            
+            if (logoutButton) {
+                logoutButton.addEventListener('click', logout);
+            }
+            if (mobileLogoutButton) {
+                mobileLogoutButton.addEventListener('click', logout);
+            }
+            
+            if (menuToggle) {
+                menuToggle.addEventListener('click', toggleMenu);
+            }
+            
+            // Navigation button handlers
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const page = button.getAttribute('data-page');
+                    
+                    // Special handling for premium indicators (stays on current page)
+                    if (page === 'indicators' || button.id === 'premiumIndicatorsButton') {
+                        // Already on indicators page, just close menu
+                        closeMenu();
+                        return;
+                    }
+                    
+                    // Handle OI page - redirect to oi.html
+                    if (page === 'oi') {
+                        window.location.href = 'oi.html';
+                        return;
+                    }
+                    
+                    // Handle overview page - redirect to overview.html
+                    if (page === 'overview') {
+                        window.location.href = 'overview.html';
+                        return;
+                    }
+                    
+                    // Handle other pages - redirect to index.html with hash
+                    if (page === 'gann' || page === 'links' || page === 'contact' || page === 'home') {
+                        if (page === 'home') {
+                            window.location.href = 'index.html';
+                        } else {
+                            window.location.href = `index.html#${page}`;
+                        }
+                        return;
+                    }
+                    
+                    closeMenu();
+                });
+            });
+            
+            // Handle logo click
+            if (logoButton) {
+                logoButton.addEventListener('click', () => {
+                    window.location.href = 'index.html';
+                });
+            }
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                const mobileMenu = document.getElementById('mobileMenu');
+                const menuToggle = document.getElementById('menuToggle');
+                
+                if (mobileMenu && mobileMenu.classList.contains('open') && 
+                    !mobileMenu.contains(event.target) && 
+                    !menuToggle.contains(event.target)) {
+                    closeMenu();
+                }
+            });
+            
+            // Close menu with Escape key
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeMenu();
+                }
+            });
+        }
+
+        function toggleMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuToggle = document.getElementById('menuToggle');
+            const menuIcon = document.getElementById('menuIcon');
+            
+            if (mobileMenu && menuToggle && menuIcon) {
+                const isOpen = mobileMenu.classList.contains('open');
+                
+                if (isOpen) {
+                    mobileMenu.classList.remove('open');
+                    menuToggle.classList.remove('active');
+                    menuIcon.className = 'fas fa-bars';
+                } else {
+                    mobileMenu.classList.add('open');
+                    menuToggle.classList.add('active');
+                    menuIcon.className = 'fas fa-times';
+                }
+            }
+        }
+
+        function closeMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuToggle = document.getElementById('menuToggle');
+            const menuIcon = document.getElementById('menuIcon');
+            
+            if (mobileMenu && menuToggle && menuIcon) {
+                mobileMenu.classList.remove('open');
+                menuToggle.classList.remove('active');
+                menuIcon.className = 'fas fa-bars';
+            }
+        }
+
+        // Handle refresh
+        function handleManualRefresh() {
+            const refreshButton = document.getElementById('refreshButton');
+            const lastUpdateEl = document.getElementById('lastUpdate');
+            
+            if (!refreshButton) return;
+            
+            if (refreshButton.classList.contains('refreshing')) return;
+            
+            refreshButton.classList.add('refreshing');
+            refreshButton.innerHTML = '<i class="fas fa-spinner"></i>';
+            
+            setTimeout(() => {
+                refreshButton.classList.remove('refreshing');
+                refreshButton.innerHTML = '<i class="fas fa-sync-alt"></i>';
+                
+                if (lastUpdateEl) {
+                    const now = new Date();
+                    lastUpdateEl.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                }
+                
+                showNotification('Page refreshed!', 'success');
+            }, 500);
+        }
+
+        // ===== INDICATOR FILTER SYSTEM =====
+        function initializeIndicatorFilters() {
+            const filterTabs = document.querySelectorAll('.filter-tab');
+            const indicatorCards = document.querySelectorAll('.indicator-card');
+            const groupHeaders = document.querySelectorAll('.group-header');
+            
+            filterTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const group = tab.getAttribute('data-group');
+                    
+                    filterTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    if (group === 'all') {
+                        indicatorCards.forEach(card => card.style.display = '');
+                        groupHeaders.forEach(header => header.style.display = '');
+                    } else {
+                        indicatorCards.forEach(card => {
+                            if (card.getAttribute('data-group') === group) {
+                                card.style.display = '';
+                            } else {
+                                card.style.display = 'none';
+                            }
+                        });
+                        
+                        groupHeaders.forEach(header => {
+                            if (header.getAttribute('data-group') === group) {
+                                header.style.display = '';
+                            } else {
+                                header.style.display = 'none';
+                            }
+                        });
+                    }
+                    
+                    // Scroll to first visible group
+                    setTimeout(() => {
+                        const firstVisible = document.querySelector('.group-header[style=""]') || 
+                                            document.querySelector('.group-header:not([style*="display: none"])');
+                        if (firstVisible) {
+                            firstVisible.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    }, 100);
+                });
+            });
+        }
+
+        // ===== INDICATOR MODAL SYSTEM =====
+        function initializeBuyButtons() {
+            const buyButtons = document.querySelectorAll('.buy-btn');
+            const modal = document.getElementById('indicatorModal');
+            const closeModal = document.getElementById('closeModal');
+            const whatsappButton = document.getElementById('whatsappButton');
+            
+            // Indicator data
+            const indicatorData = {
+                "BiasPro Indicator": {
+                    description: "Advanced bias detection system that identifies market direction with high accuracy using multi-timeframe analysis. Perfect for trend followers and swing traders.",
+                    usage: [
+                        "Wait for the bias color to turn green for bullish or red for bearish",
+                        "Confirm with multiple timeframe alignment",
+                        "Enter trades in the direction of the bias",
+                        "Use bias strength indicator to gauge trend momentum"
+                    ],
+                    steps: [
+                        "Complete payment using UPI",
+                        "Send payment screenshot via WhatsApp",
+                        "Receive indicator file (.tpl or .ex4)",
+                        "Install in your trading platform",
+                        "Configure settings as per guide"
+                    ],
+                    price: "1499",
+                    image: "biaspro-indicator.png"
+                },
+                "Third Eye Indicator": {
+                    description: "Predictive indicator that spots hidden market patterns and provides early warning signals for trend changes. Based on advanced pattern recognition algorithms.",
+                    usage: [
+                        "Look for the 'eye' symbol on chart",
+                        "Blue eye indicates potential bullish reversal",
+                        "Red eye indicates potential bearish reversal",
+                        "Combine with volume confirmation for best results"
+                    ],
+                    steps: [
+                        "Complete payment using UPI",
+                        "Send payment screenshot via WhatsApp",
+                        "Receive indicator file (.tpl or .ex4)",
+                        "Install in your trading platform",
+                        "Configure alert settings"
+                    ],
+                    price: "1499",
+                    image: "thirdeye-indicator.png"
+                },
+                "Intraday S&R Indicator": {
+                    description: "Dynamic support and resistance levels that adapt to market conditions for intraday trading. Automatically adjusts based on volatility and volume.",
+                    usage: [
+                        "Identify key support (green) and resistance (red) lines",
+                        "Trade bounces from support or breakouts from resistance",
+                        "Watch for level strength indicators",
+                        "Use confluence with other timeframes"
+                    ],
+                    steps: [
+                        "Complete payment using UPI",
+                        "Send payment screenshot via WhatsApp",
+                        "Receive indicator file (.tpl or .ex4)",
+                        "Install in your trading platform",
+                        "Set timeframe preferences"
+                    ],
+                    price: "999",
+                    image: "intraday-sr-indicator.png"
+                },
+                "Lock Levels Indicator": {
+                    description: "Identifies key price levels where markets tend to stall or reverse with high probability. Based on historical price action and order flow analysis.",
+                    usage: [
+                        "Identify 'lock' levels (marked with padlock icon)",
+                        "Trade reversals from these levels",
+                        "Use level strength percentage for confidence",
+                        "Combine with price action confirmation"
+                    ],
+                    steps: [
+                        "Complete payment using UPI",
+                        "Send payment screenshot via WhatsApp",
+                        "Receive indicator file (.tpl or .ex4)",
+                        "Install in your trading platform",
+                        "Adjust sensitivity settings"
+                    ],
+                    price: "999",
+                    image: "locklevels-indicator.png"
+                },
+                "Gann Equity Levels": {
+                    description: "Gann-based price levels specifically designed for equity markets with high accuracy. Incorporates square of 9 and angle theory.",
+                    usage: [
+                        "Identify Gann support and resistance levels",
+                        "Trade bounces from key Gann angles (45°, 90°, etc.)",
+                        "Watch for time-price squaring zones",
+                        "Use in combination with trend analysis"
+                    ],
+                    steps: [
+                        "Complete payment using UPI",
+                        "Send payment screenshot via WhatsApp",
+                        "Receive indicator file (.tpl or .ex4)",
+                        "Install in your trading platform",
+                        "Configure equity-specific settings"
+                    ],
+                    price: "999",
+                    image: "gannequity-indicator.png"
+                },
+                "Intraday Reversal Indicator": {
+                    description: "Detects potential reversal points in intraday markets using multiple confirmation signals including divergence, momentum, and volume.",
+                    usage: [
+                        "Watch for reversal arrows on chart",
+                        "Green arrow = bullish reversal signal",
+                        "Red arrow = bearish reversal signal",
+                        "Confirm with volume and momentum indicators"
+                    ],
+                    steps: [
+                        "Complete payment using UPI",
+                        "Send payment screenshot via WhatsApp",
+                        "Receive indicator file (.tpl or .ex4)",
+                        "Install in your trading platform",
+                        "Set reversal confirmation criteria"
+                    ],
+                    price: "1199",
+                    image: "intraday-reversal-indicator.png"
+                },
+                "Price-Time Reversal Engine": {
+                    description: "Advanced engine that combines price action with time cycles to predict reversal points. Uses harmonic patterns and Fibonacci time zones.",
+                    usage: [
+                        "Identify price-time squaring zones",
+                        "Watch for cycle completion signals",
+                        "Trade harmonic pattern completions",
+                        "Use multiple timeframe alignment"
+                    ],
+                    steps: [
+                        "Complete payment using UPI",
+                        "Send payment screenshot via WhatsApp",
+                        "Receive indicator file (.tpl or .ex4)",
+                        "Install in your trading platform",
+                        "Configure cycle parameters"
+                    ],
+                    price: "1199",
+                    image: "pricetime-engine.png"
+                },
+                "Time Prediction Indicator": {
+                    description: "Predicts market turning points based on time cycles and historical pattern analysis. Incorporates Fibonacci time zones and seasonal patterns.",
+                    usage: [
+                        "Identify predicted turning points (marked on chart)",
+                        "Watch for cycle completion alerts",
+                        "Combine with price action confirmation",
+                        "Use for swing trading position timing"
+                    ],
+                    steps: [
+                        "Complete payment using UPI",
+                        "Send payment screenshot via WhatsApp",
+                        "Receive indicator file (.tpl or .ex4)",
+                        "Install in your trading platform",
+                        "Set time cycle preferences"
+                    ],
+                    price: "1199",
+                    image: "timeprediction-indicator.png"
+                },
+                "Universal Stoploss System": {
+                    description: "Intelligent stop-loss placement system based on market volatility and support/resistance levels. Automatically adjusts stops based on market conditions.",
+                    usage: [
+                        "System suggests optimal stop loss levels",
+                        "Dynamic stops adjust with volatility",
+                        "Multiple stop methods available",
+                        "Visual stop levels on chart"
+                    ],
+                    steps: [
+                        "Complete payment using UPI",
+                        "Send payment screenshot via WhatsApp",
+                        "Receive indicator file (.tpl or .ex4)",
+                        "Install in your trading platform",
+                        "Configure risk parameters"
+                    ],
+                    price: "999",
+                    image: "stoploss-system.png"
+                },
+                "Trail Profit Manager": {
+                    description: "Advanced trailing stop system that maximizes profits while protecting gains. Multiple trailing methods including ATR, percentage, and support/resistance based.",
+                    usage: [
+                        "Set initial trail parameters",
+                        "System automatically trails profitable positions",
+                        "Multiple trail methods to choose from",
+                        "Visual trail line on chart"
+                    ],
+                    steps: [
+                        "Complete payment using UPI",
+                        "Send payment screenshot via WhatsApp",
+                        "Receive indicator file (.tpl or .ex4)",
+                        "Install in your trading platform",
+                        "Configure trail settings"
+                    ],
+                    price: "999",
+                    image: "trailprofit-manager.png"
+                },
+                "CE / PE Indicator": {
+                    description: "Specialized indicator for options trading that identifies optimal CE/PE strike levels. Includes Greeks visualization and premium calculation.",
+                    usage: [
+                        "Identify optimal strike levels",
+                        "View Greeks (Delta, Gamma, Theta, Vega)",
+                        "Calculate option premiums",
+                        "Assess risk-reward ratios"
+                    ],
+                    steps: [
+                        "Complete payment using UPI",
+                        "Send payment screenshot via WhatsApp",
+                        "Receive indicator file (.tpl or .ex4)",
+                        "Install in your trading platform",
+                        "Configure options parameters"
+                    ],
+                    price: "999",
+                    image: "cepe-indicator.png"
+                },
+                "Cosmic Cycle Indicator": {
+                    description: "Advanced astronomical cycle indicator that correlates cosmic events with market movements. Includes lunar cycles, planetary alignments, and solar activity.",
+                    usage: [
+                        "Identify cosmic cycle turning points",
+                        "Watch for lunar phase alerts",
+                        "Planetary alignment signals",
+                        "Solar activity correlation"
+                    ],
+                    steps: [
+                        "Complete payment using UPI",
+                        "Send payment screenshot via WhatsApp",
+                        "Receive indicator file (.tpl or .ex4)",
+                        "Install in your trading platform",
+                        "Set astronomical preferences"
+                    ],
+                    price: "1699",
+                    image: "cosmic-cycle-indicator.png"
+                },
+                "Astro Reversal Indicator": {
+                    description: "Predicts market reversals based on astrological events and celestial patterns. Historical accuracy tracking and probability scoring.",
+                    usage: [
+                        "Identify astro reversal signals",
+                        "Check reversal probability score",
+                        "Multiple timeframe confirmation",
+                        "Historical accuracy display"
+                    ],
+                    steps: [
+                        "Complete payment using UPI",
+                        "Send payment screenshot via WhatsApp",
+                        "Receive indicator file (.tpl or .ex4)",
+                        "Install in your trading platform",
+                        "Configure astro event settings"
+                    ],
+                    price: "1699",
+                    image: "astro-reversal-indicator.png"
+                },
+                "Gann Dynamic Price Levels": {
+                    description: "Dynamic Gann levels that adjust in real-time based on market conditions and volatility. Multiple Gann methods including square of 9, angles, and squares.",
+                    usage: [
+                        "Identify dynamic Gann levels",
+                        "Trade from key Gann angles",
+                        "Watch for level confluence",
+                        "Adjust with market volatility"
+                    ],
+                    steps: [
+                        "Complete payment using UPI",
+                        "Send payment screenshot via WhatsApp",
+                        "Receive indicator file (.tpl or .ex4)",
+                        "Install in your trading platform",
+                        "Configure Gann method preferences"
+                    ],
+                    price: "1699",
+                    image: "gann-dynamic-levels.png"
+                },
+                "Gann Multi-Timeframe Trend Levels": {
+                    description: "Gann trend analysis across multiple timeframes for comprehensive market analysis. Identifies trend confluence and support/resistance clusters.",
+                    usage: [
+                        "View Gann levels across timeframes",
+                        "Identify trend confluence zones",
+                        "Support/resistance clusters",
+                        "Time-price squaring areas"
+                    ],
+                    steps: [
+                        "Complete payment using UPI",
+                        "Send payment screenshot via WhatsApp",
+                        "Receive indicator file (.tpl or .ex4)",
+                        "Install in your trading platform",
+                        "Set multi-timeframe parameters"
+                    ],
+                    price: "1699",
+                    image: "gann-multitimeframe.png"
+                },
+                "5-Min Wizard Indicator": {
+                    description: "Specialized scalping indicator optimized for 5-minute timeframe with high accuracy signals. Low latency execution and risk management overlay.",
+                    usage: [
+                        "Use on 5-minute timeframe only",
+                        "Follow entry/exit signals",
+                        "Quick scalping opportunities",
+                        "Risk management overlay"
+                    ],
+                    steps: [
+                        "Complete payment using UPI",
+                        "Send payment screenshot via WhatsApp",
+                        "Receive indicator file (.tpl or .ex4)",
+                        "Install in your trading platform",
+                        "Configure for 5-minute charts"
+                    ],
+                    price: "499",
+                    image: "5min-wizard-indicator.png"
+                }
+            };
+            
+            buyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const indicatorName = this.getAttribute('data-indicator');
+                    const data = indicatorData[indicatorName];
+                    
+                    if (data) {
+                        openIndicatorModal(indicatorName, data);
+                    }
+                });
+            });
+            
+            if (closeModal) {
+                closeModal.addEventListener('click', closeIndicatorModal);
+            }
+            
+            if (whatsappButton) {
+                whatsappButton.addEventListener('click', () => {
+                    const indicatorName = document.getElementById('modalIndicatorTitle').textContent;
+                    const message = `Hello! I have made payment for ${indicatorName}. Please find the payment screenshot attached. My details:\n\nName: \nEmail: \nPhone: \nTrading Platform: \n\nPlease send me the indicator file.`;
+                    const encodedMessage = encodeURIComponent(message);
+                    window.open(`https://wa.me/918271890090?text=${encodedMessage}`, '_blank');
+                });
+            }
+            
+            // Close modal when clicking outside
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeIndicatorModal();
+                }
+            });
+            
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    closeIndicatorModal();
+                }
+            });
+        }
+
+        function openIndicatorModal(indicatorName, data) {
+            const modal = document.getElementById('indicatorModal');
+            const title = document.getElementById('modalIndicatorTitle');
+            const description = document.getElementById('modalDescription');
+            const usageList = document.getElementById('modalUsage');
+            const stepsList = document.getElementById('modalSteps');
+            const imagePlaceholder = document.getElementById('modalImagePlaceholder');
+            const whatsappButton = document.getElementById('whatsappButton');
+            
+            title.textContent = indicatorName;
+            description.textContent = data.description;
+            
+            // Update image in modal
+            const modalImage = document.createElement('img');
+            modalImage.src = data.image;
+            modalImage.alt = `${indicatorName} Preview`;
+            modalImage.style.maxWidth = '100%';
+            modalImage.style.maxHeight = '400px';
+            modalImage.style.borderRadius = '12px';
+            modalImage.style.border = '1px solid var(--border)';
+
+            // Clear the placeholder and add the image
+            imagePlaceholder.innerHTML = '';
+            imagePlaceholder.appendChild(modalImage);
+            
+            // Populate usage list
+            usageList.innerHTML = '';
+            data.usage.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                usageList.appendChild(li);
+            });
+            
+            // Populate steps list
+            stepsList.innerHTML = '';
+            data.steps.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                stepsList.appendChild(li);
+            });
+            
+            // Update WhatsApp button message
+            const message = `Hello! I have made payment for ${indicatorName} (₹${data.price}). Please find the payment screenshot attached. My details:\n\nName: \nEmail: \nPhone: \nTrading Platform: \n\nPlease send me the indicator file.`;
+            const encodedMessage = encodeURIComponent(message);
+            whatsappButton.onclick = () => {
+                window.open(`https://wa.me/918271890090?text=${encodedMessage}`, '_blank');
+            };
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeIndicatorModal() {
+            const modal = document.getElementById('indicatorModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // ===== NOTIFICATION SYSTEM =====
+        function showNotification(message, type = "success") {
+            document.querySelectorAll('.notification').forEach(n => n.remove());
+            
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 90px;
+                right: 20px;
+                background: ${type === 'error' ? '#f43f5e' : type === 'warning' ? '#f39c12' : '#10b981'};
+                color: white;
+                padding: 15px 25px;
+                border-radius: 12px;
+                z-index: 10000;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                animation: slideIn 0.3s ease;
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255,255,255,0.2);
+                max-width: 300px;
+                font-weight: 600;
+            `;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'error' ? 'exclamation-triangle' : type === 'warning' ? 'exclamation-circle' : 'check-circle'}"></i> 
+                ${message}
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+            
+            /* DATA UPDATE NOTICE STYLES */
+            .data-update-notice {
+                background: rgba(16, 185, 129, 0.08);
+                border: 1px solid rgba(16, 185, 129, 0.2);
+                border-radius: 8px;
+                padding: 10px 15px;
+                margin: 12px 0 20px 0;
+                text-align: center;
+                position: relative;
+                backdrop-filter: blur(5px);
+                line-height: 1.4;
+            }
+            
+            .data-update-notice .notice-text {
+                display: inline-block;
+                color: var(--light);
+                font-size: 0.9rem;
+                margin: 0;
+                padding: 0;
+            }
+            
+            .data-update-notice .notice-label {
+                color: var(--warning);  
+                font-weight: 700;
+                font-size: 0.95rem;
+                display: inline;
+                margin-right: 5px;
+            }
+            
+            .data-update-notice .notice-label i {
+                margin-right: 5px;
+            }
+            
+            .update-time {
+                display: inline-block;
+                background: rgba(16, 185, 129, 0.15);
+                padding: 3px 10px;
+                border-radius: 12px;
+                margin: 0 4px;
+                font-weight: 700;
+                color: var(--primary);
+                font-size: 0.9rem;
+                border: 1px solid rgba(16, 185, 129, 0.3);
+            }
+            
+            .data-update-note {
+                font-size: 0.8rem;
+                color: var(--gray);
+                margin-top: 8px;
+                opacity: 0.8;
+                font-style: italic;
+                text-align: center;
+            }
+            
+            @media (max-width: 768px) {
+                .data-update-notice {
+                    margin: 10px 0 15px 0;
+                    padding: 8px 12px;
+                }
+                
+                .data-update-notice .notice-text {
+                    font-size: 0.85rem;
+                }
+                
+                .data-update-notice .notice-label {
+                    font-size: 0.9rem;
+                }
+                
+                .update-time {
+                    padding: 2px 8px;
+                    font-size: 0.84rem;
+                }
+                
+                .data-update-note {
+                    font-size: 0.75rem;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // ===== INITIALIZATION =====
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeUsers();
+            
+            // Tab switching for login forms
+            document.querySelectorAll('.login-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    document.querySelectorAll('.login-form').forEach(form => form.classList.remove('active'));
+                    document.getElementById(`${tabId}LoginForm`).classList.add('active');
+                });
+            });
+            
+            // Set initial active nav button
+            const premiumButton = document.querySelector('#premiumIndicatorsButton');
+            if (premiumButton) {
+                premiumButton.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>
