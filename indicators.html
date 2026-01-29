@@ -409,15 +409,6 @@
             transform: rotate(180deg);
         }
 
-        /* Desktop Navigation (Hidden in new design) */
-        .desktop-nav {
-            display: none;
-        }
-
-        .daily-update-note {
-            display: none;
-        }
-
         /* Mobile Menu */
         .mobile-menu {
             position: fixed;
@@ -1238,12 +1229,12 @@
             line-height: 1.7;
         }
 
-        .features-list {
+        .footer-features-list {
             list-style: none;
             margin-top: 15px;
         }
 
-        .features-list li {
+        .footer-features-list li {
             margin-bottom: 10px;
             color: var(--light);
             display: flex;
@@ -1252,7 +1243,7 @@
             font-size: 0.95rem;
         }
 
-        .features-list i {
+        .footer-features-list i {
             color: var(--primary);
             margin-top: 3px;
             flex-shrink: 0;
@@ -1386,7 +1377,16 @@
 
                 <!-- Action Buttons -->
                 <div class="header-actions">
+                    <!-- Last Updated Time Display -->
+                    <div class="last-updated">
+                        <i class="fas fa-clock"></i>
+                        Last: <span id="lastUpdate">Never</span>
+                    </div>
                     
+                    <!-- Refresh Button -->
+                    <button class="action-button refresh-button" id="refreshButton" title="Refresh Data">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
 
                     <!-- User Info & Logout -->
                     <div class="user-info">
@@ -1409,7 +1409,7 @@
             <!-- Mobile Menu -->
             <div class="mobile-menu" id="mobileMenu">
                 <div class="mobile-menu-container">
-                    <!-- NAVIGATION -->
+                    <!-- UPDATED NAVIGATION (SAME AS INDEX.HTML) -->
                     <nav class="nav-items">
                         <button class="nav-button" data-page="home">
                             <div class="nav-icon">
@@ -1417,30 +1417,43 @@
                             </div>
                             DASHBOARD
                         </button>
-                        <button class="nav-button active" data-page="indicators">
+                        
+                        <!-- ADMIN ONLY: Overview Page -->
+                        <button class="nav-button admin-only" data-page="overview" style="display: none;">
+                            <div class="nav-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            MARKET OVERVIEW
+                        </button>
+                        
+                        <button class="nav-button active" id="premiumIndicatorsButton">
                             <div class="nav-icon">
                                 <i class="fas fa-crown"></i>
                             </div>
                             PREMIUM INDICATORS
                         </button>
+                        
                         <button class="nav-button" data-page="oi">
                             <div class="nav-icon">
                                 <i class="fas fa-chart-bar"></i>
                             </div>
                             O.I ANALYSIS
                         </button>
+                        
                         <button class="nav-button" data-page="gann">
                             <div class="nav-icon">
                                 <i class="fas fa-bullseye"></i>
                             </div>
                             GANN TOOL(SCALPING)
                         </button>
+                        
                         <button class="nav-button" data-page="links">
                             <div class="nav-icon">
                                 <i class="fas fa-link"></i>
                             </div>
                             USEFUL LINKS
                         </button>
+                        
                         <button class="nav-button" data-page="contact">
                             <div class="nav-icon">
                                 <i class="fas fa-envelope"></i>
@@ -1471,7 +1484,7 @@
             </div>
         </header>
 
-        <!-- MAIN CONTENT -->
+        <!-- MAIN CONTENT (NO DATA UPDATE NOTICE HERE) -->
         <main class="container">
             <!-- INDICATORS PAGE -->
             <div class="page-content active" id="indicatorsPage">
@@ -2088,7 +2101,7 @@
                         <h3>DecodeXMarket</h3>
                         <div class="footer-description">
                             <p><strong>Where Data meets Time Cycles.</strong></p>
-                            <ul class="features-list">
+                            <ul class="footer-features-list">
                                 <li><i class="fas fa-chart-line"></i> Daily FII/DII Decoding</li>
                                 <li><i class="fas fa-star"></i> AstroIndicator Reversals</li>
                                 <li><i class="fas fa-layer-group"></i> S&R Levels that Hold</li>
@@ -2102,11 +2115,12 @@
                         <h4>Quick Links</h4>
                         <ul>
                             <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-                            <li><a href="#" class="nav-link" data-page="indicators"><i class="fas fa-crown"></i> Premium Indicators</a></li>
+                            <li><a href="indicators.html"><i class="fas fa-crown"></i> Premium Indicators</a></li>
                             <li><a href="oi.html"><i class="fas fa-chart-bar"></i> O.I Analysis</a></li>
+                            <li><a href="overview.html" class="admin-only" style="display: none;"><i class="fas fa-chart-line"></i> Market Overview</a></li>
                             <li><a href="index.html#gann"><i class="fas fa-calculator"></i> Gann Calculator</a></li>
                             <li><a href="index.html#links"><i class="fas fa-link"></i> Useful Links</a></li>
-                            <li><a href="#" class="nav-link" data-page="contact"><i class="fas fa-phone"></i> Contact</a></li>
+                            <li><a href="index.html#contact"><i class="fas fa-phone"></i> Contact</a></li>
                         </ul>
                     </div>
                     
@@ -2389,12 +2403,36 @@
                 if (currentUser.role === "admin") {
                     roleDisplay = "Administrator";
                     iconClass = "fas fa-user-shield";
+                    
+                    // Show admin-only menu items
+                    document.querySelectorAll('.admin-only').forEach(item => {
+                        item.style.display = 'flex';
+                    });
+                    document.querySelectorAll('.footer-links .admin-only').forEach(item => {
+                        item.style.display = 'block';
+                    });
                 } else if (currentUser.hasPurchased) {
                     roleDisplay = "Premium User";
                     iconClass = "fas fa-crown";
+                    
+                    // Hide admin-only menu items for non-admin users
+                    document.querySelectorAll('.admin-only').forEach(item => {
+                        item.style.display = 'none';
+                    });
+                    document.querySelectorAll('.footer-links .admin-only').forEach(item => {
+                        item.style.display = 'none';
+                    });
                 } else {
                     roleDisplay = "Standard User";
                     iconClass = "fas fa-user";
+                    
+                    // Hide admin-only menu items for non-admin users
+                    document.querySelectorAll('.admin-only').forEach(item => {
+                        item.style.display = 'none';
+                    });
+                    document.querySelectorAll('.footer-links .admin-only').forEach(item => {
+                        item.style.display = 'none';
+                    });
                 }
                 
                 mobileUserRole.textContent = roleDisplay;
@@ -2427,6 +2465,7 @@
             const mobileMenu = document.getElementById('mobileMenu');
             const menuIcon = document.getElementById('menuIcon');
             const navButtons = document.querySelectorAll('.mobile-menu .nav-button');
+            const premiumIndicatorsButton = document.getElementById('premiumIndicatorsButton');
             
             if (logoButton) {
                 logoButton.addEventListener('click', () => {
@@ -2435,13 +2474,7 @@
             }
             
             if (refreshButton) {
-                refreshButton.addEventListener('click', () => {
-                    refreshButton.classList.add('refreshing');
-                    setTimeout(() => {
-                        refreshButton.classList.remove('refreshing');
-                        showNotification('Page refreshed!', 'success');
-                    }, 1000);
-                });
+                refreshButton.addEventListener('click', handleManualRefresh);
             }
             
             if (logoutButton) {
@@ -2455,21 +2488,53 @@
                 menuToggle.addEventListener('click', toggleMenu);
             }
             
+            // Navigation button handlers
             navButtons.forEach(button => {
-                button.addEventListener('click', (e) => {
+                button.addEventListener('click', () => {
                     const page = button.getAttribute('data-page');
-                    if (page === 'indicators') {
-                        e.preventDefault();
-                        setActivePage(page);
-                    } else if (page === 'contact') {
-                        setActivePage(page);
-                    } else {
-                        window.location.href = `index.html#${page}`;
+                    
+                    // Special handling for premium indicators (stays on current page)
+                    if (page === 'indicators' || button.id === 'premiumIndicatorsButton') {
+                        // Already on indicators page, just close menu
+                        closeMenu();
+                        return;
                     }
+                    
+                    // Handle OI page - redirect to oi.html
+                    if (page === 'oi') {
+                        window.location.href = 'oi.html';
+                        return;
+                    }
+                    
+                    // Handle overview page - redirect to overview.html
+                    if (page === 'overview') {
+                        window.location.href = 'overview.html';
+                        return;
+                    }
+                    
+                    // Handle home page - redirect to index.html
+                    if (page === 'home') {
+                        window.location.href = 'index.html';
+                        return;
+                    }
+                    
+                    // Handle Gann, Links, Contact pages - redirect to index.html with hash
+                    if (page === 'gann' || page === 'links' || page === 'contact') {
+                        window.location.href = `index.html#${page}`;
+                        return;
+                    }
+                    
+                    // Handle legal pages - redirect to index.html with hash
+                    if (page === 'disclaimer' || page === 'privacy' || page === 'terms') {
+                        window.location.href = `index.html#${page}`;
+                        return;
+                    }
+                    
                     closeMenu();
                 });
             });
             
+            // Close menu when clicking outside
             document.addEventListener('click', function(event) {
                 const mobileMenu = document.getElementById('mobileMenu');
                 const menuToggle = document.getElementById('menuToggle');
@@ -2481,6 +2546,7 @@
                 }
             });
             
+            // Close menu with Escape key
             document.addEventListener('keydown', function(event) {
                 if (event.key === 'Escape') {
                     closeMenu();
@@ -2518,6 +2584,31 @@
                 menuToggle.classList.remove('active');
                 menuIcon.className = 'fas fa-bars';
             }
+        }
+
+        // Handle refresh
+        function handleManualRefresh() {
+            const refreshButton = document.getElementById('refreshButton');
+            const lastUpdateEl = document.getElementById('lastUpdate');
+            
+            if (!refreshButton) return;
+            
+            if (refreshButton.classList.contains('refreshing')) return;
+            
+            refreshButton.classList.add('refreshing');
+            refreshButton.innerHTML = '<i class="fas fa-spinner"></i>';
+            
+            setTimeout(() => {
+                refreshButton.classList.remove('refreshing');
+                refreshButton.innerHTML = '<i class="fas fa-sync-alt"></i>';
+                
+                if (lastUpdateEl) {
+                    const now = new Date();
+                    lastUpdateEl.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                }
+                
+                showNotification('Page refreshed!', 'success');
+            }, 500);
         }
 
         // ===== INDICATOR FILTER SYSTEM =====
@@ -2962,20 +3053,6 @@
             document.body.style.overflow = 'auto';
         }
 
-        // ===== NAVIGATION =====
-        function setActivePage(page) {
-            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
-            
-            const pageElement = document.getElementById(`${page}Page`);
-            const navButton = document.querySelector(`.nav-button[data-page="${page}"]`);
-            
-            if (pageElement) pageElement.classList.add('active');
-            if (navButton) navButton.classList.add('active');
-            
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
         // ===== NOTIFICATION SYSTEM =====
         function showNotification(message, type = "success") {
             document.querySelectorAll('.notification').forEach(n => n.remove());
@@ -3046,23 +3123,11 @@
                 });
             });
             
-            // Initialize footer navigation
-            document.querySelectorAll('.footer-links .nav-link').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const page = this.getAttribute('data-page');
-                    setActivePage(page);
-                });
-            });
-            
-            // Initialize contact page navigation
-            const contactLinks = document.querySelectorAll('a[href="#contact"]');
-            contactLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    setActivePage('contact');
-                });
-            });
+            // Set initial active nav button
+            const premiumButton = document.querySelector('#premiumIndicatorsButton');
+            if (premiumButton) {
+                premiumButton.classList.add('active');
+            }
         });
     </script>
 </body>
