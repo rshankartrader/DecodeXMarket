@@ -1812,21 +1812,21 @@
                         <ul>
                             <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
                             <li><a href="indicators.html"><i class="fas fa-crown"></i> Premium Indicators</a></li>
-                            <li><a href="#" class="nav-link" data-page="timecycles"><i class="fas fa-clock"></i> Time Cycles</a></li>
+                            <li><a href="index.html#timecycles"><i class="fas fa-clock"></i> Time Cycles</a></li>
                             <li><a href="overview.html" class="admin-only"><i class="fas fa-chart-line"></i> Market Overview</a></li>
                             <li><a href="oi.html" class="active"><i class="fas fa-chart-bar"></i> O.I Analysis</a></li>
-                            <li><a href="#" class="nav-link" data-page="gann"><i class="fas fa-calculator"></i> Gann Calculator</a></li>
-                            <li><a href="#" class="nav-link" data-page="links"><i class="fas fa-link"></i> Useful Links</a></li>
-                            <li><a href="#" class="nav-link" data-page="contact"><i class="fas fa-phone"></i> Contact</a></li>
+                            <li><a href="index.html#gann"><i class="fas fa-calculator"></i> Gann Calculator</a></li>
+                            <li><a href="index.html#links"><i class="fas fa-link"></i> Useful Links</a></li>
+                            <li><a href="index.html#contact"><i class="fas fa-phone"></i> Contact</a></li>
                         </ul>
                     </div>
                     
                     <div class="footer-links">
                         <h4>Legal</h4>
                         <ul>
-                            <li><a href="#" class="nav-link" data-page="disclaimer"><i class="fas fa-exclamation-triangle"></i> Disclaimer</a></li>
-                            <li><a href="#" class="nav-link" data-page="privacy"><i class="fas fa-shield-alt"></i> Privacy Policy</a></li>
-                            <li><a href="#" class="nav-link" data-page="terms"><i class="fas fa-file-contract"></i> Terms & Conditions</a></li>
+                            <li><a href="index.html#disclaimer"><i class="fas fa-exclamation-triangle"></i> Disclaimer</a></li>
+                            <li><a href="index.html#privacy"><i class="fas fa-shield-alt"></i> Privacy Policy</a></li>
+                            <li><a href="index.html#terms"><i class="fas fa-file-contract"></i> Terms & Conditions</a></li>
                         </ul>
                     </div>
                 </div>
@@ -1841,7 +1841,7 @@
         </footer>
     </div>
 
-    <!-- JAVASCRIPT - UPDATED FOR NEW LAYOUT -->
+    <!-- JAVASCRIPT - UPDATED FOR COMPLETE NAVIGATION -->
     <script>
         // ===== AUTHENTICATION SYSTEM (SAME AS INDEX) =====
         let currentUser = null;
@@ -2057,33 +2057,25 @@
             closeMenu();
         }
 
-        // ===== FOOTER NAVIGATION FUNCTION =====
+        // ===== UPDATED: FOOTER NAVIGATION WITH HASH LINKS =====
         function initializeFooterNavigation() {
-            const footerLinks = document.querySelectorAll('.footer-links .nav-link');
+            const footerLinks = document.querySelectorAll('.footer-links a');
             
             footerLinks.forEach(link => {
+                // Skip active OI link to prevent unnecessary navigation
+                if (link.classList.contains('active')) {
+                    return;
+                }
+                
                 link.addEventListener('click', function(e) {
-                    const page = this.getAttribute('data-page');
+                    const href = this.getAttribute('href');
                     
-                    // For OI page, just stay on current page
-                    if (page === 'oi') {
-                        return; // Already on OI page
-                    }
-                    
-                    // For other pages, redirect
-                    if (page) {
-                        if (page === 'home') {
-                            window.location.href = 'index.html';
-                        } else if (page === 'premium') {
-                            window.location.href = 'indicators.html';
-                        } else if (page === 'overview') {
-                            window.location.href = 'overview.html';
-                        } else {
-                            // For gann, links, contact - redirect to index.html with hash
-                            window.location.href = `index.html#${page}`;
-                        }
+                    // Check if it's a hash link to index.html
+                    if (href && href.includes('index.html#')) {
                         e.preventDefault();
+                        window.location.href = href;
                     }
+                    // For direct HTML files, let them navigate normally
                 });
             });
         }
@@ -2114,6 +2106,7 @@
                 menuToggle.addEventListener('click', toggleMenu);
             }
 
+            // ===== UPDATED: NAV BUTTON CLICK HANDLER FOR HASH PAGES =====
             navButtons.forEach(button => {
                 button.addEventListener('click', function(e) {
                     const page = this.getAttribute('data-page');
@@ -2135,8 +2128,9 @@
                         window.location.href = 'overview.html';
                     } else if (page === 'oi') {
                         // Already on OI page, do nothing
-                    } else if (page) {
-                        // For other pages (gann, links, contact) redirect to index.html
+                    } else {
+                        // For hash pages (gann, links, contact, timecycles, disclaimer, privacy, terms)
+                        // Navigate to index.html with hash
                         window.location.href = `index.html#${page}`;
                     }
                     
