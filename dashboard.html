@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DecodeXMarket - Overview & Reel Creator</title>
+    <title>DecodeXMarket - Tomorrow Market Overview</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* ===== CSS RESET & VARIABLES ===== */
@@ -30,171 +30,283 @@
             background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
             color: var(--light);
             min-height: 100vh;
-            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
 
-        .main-container {
+        .container {
             width: 100%;
             max-width: 1400px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-
-        @media (max-width: 1024px) {
-            .main-container {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* ===== LEFT PANEL: OVERVIEW BOX ===== */
-        .panel-left {
+            margin: 0 auto;
             display: flex;
             flex-direction: column;
             align-items: center;
+            gap: 25px;
         }
 
-        .panel-title {
-            color: var(--primary);
-            font-size: 20px;
-            margin-bottom: 15px;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
+        /* ===== COMPACT 9:16 RECTANGLE BOX ===== */
         .rectangle-box {
-            width: 337.5px;
-            height: 600px;
+            width: 337.5px; /* 9 units */
+            height: 600px; /* 16 units */
             background: linear-gradient(145deg, #0d1525, #111a2d);
             border-radius: 18px;
             border: 3px solid var(--primary);
             padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 10px; /* Reduced from 12px */
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
             position: relative;
             overflow: hidden;
         }
 
-        /* [Keep ALL your original rectangle-box styles here - .box-header, .section, .levels-row, .contact-info, .disclaimer-box, etc.] */
-        /* IMPORTANT: Copy all the CSS styles for the rectangle box from your previous code and paste them right here. */
-        /* This includes: .box-header, .section, .prediction-box, .levels-section, .level-value, .reversal-section, .contact-info, .disclaimer-box */
-        /* I am omitting them here to avoid duplication, but they MUST be in your final file. */
+        /* Compact Header */
+        .box-header {
+            text-align: center;
+            padding-bottom: 10px; /* Reduced from 12px */
+            border-bottom: 2px solid var(--primary);
+            margin-bottom: 4px; /* Reduced from 5px */
+        }
 
-        /* ===== RIGHT PANEL: REEL CREATOR ===== */
-        .panel-right {
+        .box-header h1 {
+            color: white;
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: -0.3px;
+            margin-bottom: 3px; /* Reduced from 4px */
+            line-height: 1.2;
+        }
+
+        .box-date {
+            color: var(--gray);
+            font-size: 11px; /* Reduced from 12px */
+            font-weight: 600;
+        }
+
+        /* Compact Content Sections */
+        .section {
             background: rgba(255, 255, 255, 0.03);
-            border-radius: 18px;
-            border: 2px solid var(--border);
-            padding: 25px;
+            border-radius: 9px; /* Reduced from 10px */
+            padding: 10px; /* Reduced from 12px */
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
+            flex-shrink: 0;
+        }
+
+        .section-title {
+            color: var(--primary);
+            font-size: 12px; /* Reduced from 13px */
+            font-weight: 800;
+            margin-bottom: 8px; /* Reduced from 10px */
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            gap: 5px; /* Reduced from 6px */
         }
 
-        .preview-container {
-            width: 100%;
-            aspect-ratio: 9/16;
-            max-height: 500px;
-            background-color: #111a2d;
-            border-radius: 12px;
-            overflow: hidden;
-            position: relative;
-            margin-bottom: 20px;
-            border: 2px solid var(--border);
+        .section-title i {
+            font-size: 13px; /* Reduced from 14px */
         }
 
-        #backgroundPreview {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .text-overlay-preview {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            padding: 20px;
+        /* Expected Move - Compact */
+        .prediction-box {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 8px 10px; /* Reduced from 10px 12px */
+            min-height: 60px; /* Reduced from 65px */
             display: flex;
             flex-direction: column;
             justify-content: center;
+        }
+
+        #finalPrediction {
+            font-size: 19px; /* Reduced from 20px */
             font-weight: 900;
-            text-align: center;
             color: white;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9);
-        }
-
-        .bg-selector {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .bg-option {
-            flex: 1;
-            min-width: 120px;
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            border: 2px solid transparent;
-            cursor: pointer;
             text-align: center;
-            transition: all 0.3s;
+            text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+            line-height: 1.2;
+            min-height: 26px; /* Reduced from 28px */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .bg-option:hover {
-            background: rgba(255, 255, 255, 0.1);
+        /* Support & Resistance - Ultra Compact Horizontal */
+        .levels-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px; /* Reduced from 10px */
+            margin-top: 4px; /* Reduced from 5px */
         }
 
-        .bg-option.active {
-            border-color: var(--primary);
-            background: rgba(16, 185, 129, 0.15);
+        .levels-row {
+            display: flex;
+            align-items: center;
+            gap: 6px; /* Reduced from 8px */
+            margin-bottom: 1px; /* Reduced from 2px */
         }
 
-        .bg-option-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--light);
-            margin-bottom: 5px;
+        .level-label {
+            min-width: 65px; /* Reduced from 70px */
+            font-size: 11px; /* Reduced from 12px */
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 3px; /* Reduced from 4px */
         }
 
-        .bg-option-desc {
-            font-size: 11px;
-            color: var(--gray);
+        .resistance-label {
+            color: var(--accent);
         }
 
-        /* ===== STORYBOARD & CONTROLS ===== */
-        .storyboard-box {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 20px;
-            border: 1px solid var(--border);
-            font-size: 13px;
-            line-height: 1.6;
-            color: var(--gray);
-            white-space: pre-line;
-            max-height: 250px;
-            overflow-y: auto;
-        }
-
-        .storyboard-box strong {
+        .support-label {
             color: var(--primary);
         }
 
+        .levels-container {
+            flex: 1;
+            display: flex;
+            gap: 5px; /* Reduced from 6px */
+            flex-wrap: wrap;
+        }
+
+        .level-value {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px 6px; /* Reduced from 5px 8px */
+            border-radius: 5px; /* Reduced from 6px */
+            font-size: 11px; /* Reduced from 12px */
+            font-weight: 700;
+            min-width: 55px; /* Reduced from 58px */
+            text-align: center;
+            border: 1px solid;
+            flex-shrink: 0;
+        }
+
+        .resistance-value {
+            border-color: rgba(244, 63, 94, 0.3);
+            color: #ff6b8b;
+        }
+
+        .support-value {
+            border-color: rgba(16, 185, 129, 0.3);
+            color: #34d399;
+        }
+
+        /* Expected Reversal Times - ULTRA COMPACT */
+        .reversal-section {
+            background: linear-gradient(135deg, rgba(243, 156, 18, 0.15) 0%, rgba(231, 76, 60, 0.15) 100%);
+            border: 1px solid rgba(243, 156, 18, 0.3);
+            padding: 7px 9px; /* Reduced from 8px 10px */
+            min-height: 80px; /* Reduced from 85px */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .reversal-times {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 5px; /* Reduced from 6px */
+            margin-top: 1px; /* Reduced from 2px */
+        }
+
+        .time-item {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px; /* Reduced from 5px */
+            padding: 5px; /* Reduced from 6px */
+            text-align: center;
+            border: 1px solid rgba(243, 156, 18, 0.2);
+            min-height: 35px; /* Reduced from 38px */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .time-bar {
+            font-size: 8px; /* Reduced from 9px */
+            color: var(--warning);
+            margin-bottom: 1px; /* Reduced from 2px */
+            font-weight: 600;
+        }
+
+        .time-value {
+            font-size: 10px; /* Reduced from 11px */
+            font-weight: 800;
+            color: white;
+            line-height: 1.2;
+        }
+
+        /* Contact Information - Semi Transparent Brand Labels */
+        .contact-info {
+            background: rgba(148, 163, 184, 0.1); /* 60% opacity gray */
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 8px;
+            padding: 8px;
+            margin: 5px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: center;
+            flex-shrink: 0;
+            backdrop-filter: blur(4px);
+        }
+
+        .contact-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .contact-icon {
+            color: var(--primary);
+            font-size: 11px;
+            width: 16px;
+            text-align: center;
+        }
+
+        .contact-text {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+        }
+
+        .instagram-text {
+            color: #E4405F; /* Instagram pink color */
+        }
+
+        .whatsapp-text {
+            color: #4ADE80; /* WhatsApp bright green color */
+        }
+
+        /* Disclaimer - Fits perfectly at bottom */
+        .disclaimer-box {
+            margin-top: auto;
+            padding: 7px 9px; /* Reduced from 8px 10px */
+            background: rgba(244, 63, 94, 0.1);
+            border: 1px solid rgba(244, 63, 94, 0.3);
+            border-radius: 5px; /* Reduced from 6px */
+            font-size: 7.5px; /* Reduced from 8px */
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            line-height: 1.2;
+            flex-shrink: 0;
+        }
+
+        .disclaimer-box strong {
+            color: var(--accent);
+            font-size: 8px; /* Reduced from 8.5px */
+        }
+
+        /* Controls */
         .controls {
             display: flex;
             gap: 12px;
-            margin-top: 25px;
+            margin-top: 15px;
             flex-wrap: wrap;
             justify-content: center;
         }
@@ -203,19 +315,17 @@
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
             border: none;
-            padding: 12px 24px;
+            padding: 10px 20px;
             border-radius: 10px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
+            gap: 6px;
             box-shadow: 0 6px 15px rgba(16, 185, 129, 0.3);
-            flex: 1;
-            min-width: 180px;
+            flex-shrink: 0;
         }
 
         .control-btn:hover {
@@ -224,26 +334,53 @@
         }
 
         .control-btn.secondary {
+            background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+        }
+
+        .control-btn.video {
             background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
         }
 
-        .control-btn.export {
-            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+        /* Loading */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+            position: relative;
         }
 
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Notification */
         .notification {
             position: fixed;
             top: 15px;
             right: 15px;
             background: var(--primary);
             color: white;
-            padding: 12px 18px;
+            padding: 10px 16px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             z-index: 1000;
             animation: slideIn 0.3s ease;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             max-width: 300px;
         }
 
@@ -251,129 +388,639 @@
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
+
+        /* Video Export Modal */
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+        }
+
+        .video-modal-content {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 20px;
+            padding: 25px;
+            width: 90%;
+            max-width: 500px;
+            border: 3px solid var(--primary);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            color: white;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close-modal {
+            background: var(--accent);
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-script-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            border: 1px solid var(--border);
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--gray);
+            white-space: pre-line;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .video-script-box strong {
+            color: var(--primary);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .modal-btn.copy {
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+            color: white;
+        }
+
+        .modal-btn.close {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            border: 1px solid var(--border);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .rectangle-box {
+                width: 90vw;
+                height: 160vw; /* Maintain 9:16 aspect ratio */
+                padding: 15px;
+            }
+            
+            .box-header h1 {
+                font-size: 16px;
+            }
+            
+            #finalPrediction {
+                font-size: 18px;
+            }
+            
+            .level-value {
+                min-width: 52px;
+                font-size: 11px;
+                padding: 4px 6px;
+            }
+            
+            .time-item {
+                padding: 5px;
+                min-height: 35px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                width: 90vw;
+            }
+            
+            .control-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .video-modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="main-container">
-        <!-- LEFT PANEL: Original Overview Box -->
-        <div class="panel-left">
-            <h1 class="panel-title"><i class="fas fa-chart-line"></i> Market Overview Generator</h1>
-            <div class="rectangle-box" id="overviewBox">
-                <!-- [Keep your entire rectangle box HTML structure from the previous code here] -->
-                <!-- This includes the box-header, sections for prediction, support/resistance, reversal times, contact info, and disclaimer. -->
+    <div class="container">
+        <h1 style="color: var(--primary); text-align: center; margin-bottom: 5px; font-size: 20px;">
+            <i class="fas fa-chart-line"></i> Market Overview Generator
+        </h1>
+        <p style="color: var(--gray); text-align: center; margin-bottom: 15px; font-size: 12px;">
+            9:16 Instagram Format • All Data in One View
+        </p>
+
+        <!-- 9:16 Rectangle Box -->
+        <div class="rectangle-box" id="overviewBox">
+            <!-- Header -->
+            <div class="box-header">
+                <h1>Tomorrow Market Overview</h1>
+                <div class="box-date" id="currentDate">Loading...</div>
             </div>
-            <div class="controls">
-                <button class="control-btn" onclick="refreshData()"><i class="fas fa-sync-alt"></i> Refresh Data</button>
-                <button class="control-btn" onclick="exportAsImage()"><i class="fas fa-download"></i> Export Image</button>
+
+            <!-- Expected Move -->
+            <div class="section prediction-box">
+                <div class="section-title">
+                    <i class="fas fa-bullhorn"></i> Expected Move
+                </div>
+                <div id="finalPrediction">Loading prediction...</div>
+            </div>
+
+            <!-- Support & Resistance -->
+            <div class="section">
+                <div class="section-title">
+                    <i class="fas fa-layer-group"></i> Support & Resistance
+                </div>
+                <div class="levels-section">
+                    <!-- Resistance -->
+                    <div class="levels-row">
+                        <div class="level-label resistance-label">
+                            <i class="fas fa-arrow-up"></i> R:
+                        </div>
+                        <div class="levels-container" id="resistanceLevels">
+                            <!-- Filled by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Support -->
+                    <div class="levels-row">
+                        <div class="level-label support-label">
+                            <i class="fas fa-arrow-down"></i> S:
+                        </div>
+                        <div class="levels-container" id="supportLevels">
+                            <!-- Filled by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expected Reversal Times - ULTRA COMPACT -->
+            <div class="section reversal-section">
+                <div class="section-title">
+                    <i class="fas fa-retweet"></i> Expected Reversal @15min
+                </div>
+                <div class="reversal-times" id="reversalTimes">
+                    <!-- Filled by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Contact Information - Semi Transparent -->
+            <div class="contact-info">
+                <div class="contact-row">
+                    <div class="contact-icon">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <div class="contact-text instagram-text">
+                        @DecodeXMarket
+                    </div>
+                </div>
+                <div class="contact-row">
+                    <div class="contact-icon">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <div class="contact-text whatsapp-text">
+                        WhatsApp: 8271890090
+                    </div>
+                </div>
+            </div>
+
+            <!-- Disclaimer - Now fits perfectly -->
+            <div class="disclaimer-box">
+                <strong>Disclaimer:</strong> I am not SEBI registered, provided info is only for educational purposes and don't consider it as buy or sell signal.
             </div>
         </div>
 
-        <!-- RIGHT PANEL: Reel Creator -->
-        <div class="panel-right">
-            <h1 class="panel-title"><i class="fas fa-video"></i> Reel Storyboard Creator</h1>
+        <!-- Controls -->
+        <div class="controls">
+            <button class="control-btn" onclick="refreshData()">
+                <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+            <button class="control-btn" onclick="exportAsImage()">
+                <i class="fas fa-download"></i> Export Image
+            </button>
+            <button class="control-btn video" onclick="generateVideoScript()">
+                <i class="fas fa-video"></i> Create Reel Script
+            </button>
+            <button class="control-btn secondary" onclick="window.location.href='index.html'">
+                <i class="fas fa-arrow-left"></i> Dashboard
+            </button>
+        </div>
+
+        <p style="color: var(--gray); text-align: center; margin-top: 10px; font-size: 11px;">
+            <i class="fas fa-info-circle"></i> Perfect for Instagram • All data fits in 9:16 frame
+        </p>
+    </div>
+
+    <!-- Video Export Modal -->
+    <div class="video-modal" id="videoModal">
+        <div class="video-modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-film"></i> Reel Video Script</h2>
+                <button class="close-modal" onclick="closeVideoModal()">&times;</button>
+            </div>
             
-            <!-- Background Preview & Selector -->
-            <div class="preview-container">
-                <video id="backgroundPreview" autoplay loop muted playsinline>
-                    <!-- Video source will be set by JavaScript -->
-                </video>
-                <div class="text-overlay-preview" id="textOverlay">
-                    <div style="font-size: 34px; margin-bottom: 10px;">Preview Text</div>
-                    <div style="font-size: 18px;">This is how your titles will look.</div>
-                </div>
+            <p style="color: var(--gray); margin-bottom: 15px; font-size: 14px;">
+                Use this script to create your Reel in CapCut/InShot. Copy and paste into your video editor.
+            </p>
+            
+            <div class="video-script-box" id="videoScript">
+                Script will be generated here...
             </div>
-
-            <div class="bg-selector">
-                <div class="bg-option active" data-bg="1" data-title="Candlestick Chart" data-desc="Classic market look">
-                    <div class="bg-option-title">Chart Style 1</div>
-                    <div class="bg-option-desc">Dynamic Candlesticks</div>
-                </div>
-                <div class="bg-option" data-bg="2" data-title="Multi Chart" data-desc="Energetic & fast-paced">
-                    <div class="bg-option-title">Chart Style 2</div>
-                    <div class="bg-option-desc">Multiple Charts</div>
-                </div>
-                <div class="bg-option" data-bg="3" data-title="Abstract Data" data-desc="Modern & clean">
-                    <div class="bg-option-title">Abstract Style</div>
-                    <div class="bg-option-desc">Gradient & Flow</div>
-                </div>
-            </div>
-
-            <!-- Generated Storyboard -->
-            <div class="storyboard-box" id="storyboard">
-                <strong>Your 60-Second Reel Script:</strong>
-                <br>Click "Generate Storyboard" to create a timed script based on today's data.
-            </div>
-
-            <!-- Reel Controls -->
-            <div class="controls">
-                <button class="control-btn secondary" onclick="generateStoryboard()">
-                    <i class="fas fa-clipboard-list"></i> Generate Storyboard
-                </button>
-                <button class="control-btn export" onclick="copyStoryboardToClipboard()">
+            
+            <div class="modal-actions">
+                <button class="modal-btn copy" onclick="copyVideoScript()">
                     <i class="far fa-copy"></i> Copy Script
                 </button>
-                <button class="control-btn" onclick="window.location.href='index.html'">
-                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                <button class="modal-btn close" onclick="closeVideoModal()">
+                    <i class="fas fa-times"></i> Close
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Load html2canvas from CDN -->
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <!-- JAVASCRIPT -->
     <script>
-        // ========================
-        // 1. ORIGINAL DATA & LOGIC
-        // ========================
-        // [Copy the ENTIRE original JavaScript from your previous overview.html file here]
-        // This includes: checkAdminAccess(), parseCSV(), fetchData(), updateOverview(), 
-        // updateLevels(), updateReversalTimes(), exportAsImage(), showNotification(), etc.
-        // Paste it starting here.
+        // Check if user is admin
+        function checkAdminAccess() {
+            const savedUser = localStorage.getItem('decodexmarket_current_user');
+            if (savedUser) {
+                const user = JSON.parse(savedUser);
+                if (user.role === "admin") {
+                    return true;
+                }
+            }
+            return false;
+        }
 
-        // ========================
-        // 2. REEL CREATOR LOGIC
-        // ========================
-        const bgVideos = {
-            1: "https://drive.google.com/uc?export=download&id=1BBkBnG3nH9Q6bm0jx_tdhiwiiLmSCksw",
-            2: "https://drive.google.com/uc?export=download&id=1f3O6G0E1OxUQCsmd6cEPVUOOz8bXMmP6",
-            3: "https://drive.google.com/uc?export=download&id=1EL98jvH3KXMdFuoJIuzb7fZhBDF053qh"
-        };
-
-        let currentBgId = 1;
-        const previewVideo = document.getElementById('backgroundPreview');
-        const textOverlay = document.getElementById('textOverlay');
-        const storyboardEl = document.getElementById('storyboard');
-
-        // Initialize Background Selector
-        document.querySelectorAll('.bg-option').forEach(option => {
-            option.addEventListener('click', function() {
-                document.querySelectorAll('.bg-option').forEach(opt => opt.classList.remove('active'));
-                this.classList.add('active');
-                
-                currentBgId = this.getAttribute('data-bg');
-                const title = this.getAttribute('data-title');
-                
-                // Update preview video
-                previewVideo.src = bgVideos[currentBgId];
-                previewVideo.load();
-                
-                // Update preview text
-                textOverlay.innerHTML = `<div style="font-size: 38px; margin-bottom: 15px; color: #10b981;">${title}</div>
-                                         <div style="font-size: 20px;">Your data will appear here</div>
-                                         <div style="font-size: 16px; margin-top: 20px; opacity: 0.9;">Choose "Generate Storyboard"</div>`;
-                                         
-                showNotification(`Background switched to: ${title}`);
-            });
+        // On page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if user is admin
+            if (!checkAdminAccess()) {
+                alert("Access Denied. This page is for admin users only.");
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // If admin, proceed with initialization
+            fetchData();
+            setInterval(fetchData, 5 * 60 * 1000);
         });
 
-        // Set first background as active on load
-        document.querySelector('.bg-option[data-bg="1"]').click();
+        // Data configuration
+        const MARKET_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQgqBUGz6xFmT2Pd5qdvTZGYm3H3d-KgZlL65PHanPKDz3b9mp1rx7ZQNlV8BUJnYY0nfk-jyYvjWNY/pub?gid=658749771&single=true&output=csv";
+        
+        // Sample data fallback
+        const sampleData = {
+            date: "Thursday, 25 January 2024",
+            prediction: "Market May Go Up",
+            resistance: ["25128", "25208", "25288", "25367", "25447"],
+            support: ["24800", "24720", "24640", "24560", "24480"],
+            reversalBars: ["4", "8", "12", "13", "18"] // Number of 15-min bars
+        };
 
-        // ========================
-        // 3. GENERATE STORYBOARD
-        // ========================
-        function generateStoryboard() {
-            // Get current data from the overview box
+        // DOM Elements
+        const currentDateEl = document.getElementById('currentDate');
+        const finalPredictionEl = document.getElementById('finalPrediction');
+        const resistanceLevelsEl = document.getElementById('resistanceLevels');
+        const supportLevelsEl = document.getElementById('supportLevels');
+        const reversalTimesEl = document.getElementById('reversalTimes');
+        const videoModal = document.getElementById('videoModal');
+        const videoScriptEl = document.getElementById('videoScript');
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchData();
+            // Auto-refresh every 5 minutes
+            setInterval(fetchData, 5 * 60 * 1000);
+        });
+
+        // Parse CSV
+        function parseCSV(csvText) {
+            const rows = [];
+            const lines = csvText.split('\n');
+            
+            lines.forEach(line => {
+                if (line.trim()) {
+                    const row = [];
+                    let inQuotes = false;
+                    let currentValue = '';
+                    
+                    for (let i = 0; i < line.length; i++) {
+                        const char = line[i];
+                        const nextChar = line[i + 1];
+                        
+                        if (char === '"' && inQuotes && nextChar === '"') {
+                            currentValue += '"';
+                            i++;
+                        } else if (char === '"') {
+                            inQuotes = !inQuotes;
+                        } else if (char === ',' && !inQuotes) {
+                            row.push(currentValue);
+                            currentValue = '';
+                        } else {
+                            currentValue += char;
+                        }
+                    }
+                    
+                    row.push(currentValue);
+                    rows.push(row);
+                }
+            });
+            
+            return rows;
+        }
+
+        // Fetch data from Google Sheets
+        async function fetchData() {
+            try {
+                showLoading(true);
+                
+                const response = await fetch(MARKET_SHEET_URL);
+                if (!response.ok) throw new Error('Network error');
+                
+                const csvText = await response.text();
+                const rows = parseCSV(csvText);
+                
+                if (rows.length > 0) {
+                    updateOverview(rows);
+                    showNotification('Data updated!', 'success');
+                } else {
+                    throw new Error("No data received");
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                updateWithSampleData();
+                showNotification('Using sample data', 'warning');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Update overview with actual data
+        function updateOverview(rows) {
+            // Date
+            if (rows[2] && rows[2][0]) {
+                const dateValue = rows[2][0];
+                currentDateEl.textContent = dateValue;
+            } else {
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                currentDateEl.textContent = tomorrow.toLocaleDateString('en-IN', {
+                    weekday: 'long',
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+            }
+            
+            // Prediction
+            if (rows[0] && (rows[0][3] || rows[0][4])) {
+                const prediction = (rows[0][3] || rows[0][4]).trim();
+                finalPredictionEl.textContent = prediction;
+                
+                // Color based on prediction
+                if (prediction.toLowerCase().includes('up') || prediction.toLowerCase().includes('bull')) {
+                    finalPredictionEl.style.color = '#10b981';
+                } else if (prediction.toLowerCase().includes('down') || prediction.toLowerCase().includes('bear')) {
+                    finalPredictionEl.style.color = '#f43f5e';
+                } else {
+                    finalPredictionEl.style.color = '#f39c12';
+                }
+            }
+            
+            // Support & Resistance Levels (first 5 from rows 13-17)
+            updateLevels(rows.slice(13, 18));
+            
+            // Reversal bars and times (from column D rows 7-11)
+            updateReversalTimes(rows.slice(7, 12));
+        }
+
+        // Update Support & Resistance levels
+        function updateLevels(levelRows) {
+            resistanceLevelsEl.innerHTML = '';
+            supportLevelsEl.innerHTML = '';
+            
+            // Get first 5 resistance levels (column B)
+            for (let i = 0; i < 5; i++) {
+                const row = levelRows[i];
+                const value = row && row[1] ? row[1] : `R${i+1}`;
+                
+                const levelEl = document.createElement('div');
+                levelEl.className = 'level-value resistance-value';
+                levelEl.textContent = value;
+                resistanceLevelsEl.appendChild(levelEl);
+            }
+            
+            // Get first 5 support levels (column A)
+            for (let i = 0; i < 5; i++) {
+                const row = levelRows[i];
+                const value = row && row[0] ? row[0] : `S${i+1}`;
+                
+                const levelEl = document.createElement('div');
+                levelEl.className = 'level-value support-value';
+                levelEl.textContent = value;
+                supportLevelsEl.appendChild(levelEl);
+            }
+        }
+
+        // Update reversal times (15-minute bars to time conversion)
+        function updateReversalTimes(reversalRows) {
+            reversalTimesEl.innerHTML = '';
+            
+            // Get reversal bars from column D (index 3)
+            const bars = [];
+            for (let i = 0; i < reversalRows.length; i++) {
+                if (reversalRows[i] && reversalRows[i][3]) {
+                    const bar = parseInt(reversalRows[i][3]);
+                    if (!isNaN(bar) && bar > 0) {
+                        bars.push(bar);
+                    }
+                }
+            }
+            
+            // If no data, use sample
+            if (bars.length === 0) {
+                bars.push(...sampleData.reversalBars.map(Number));
+            }
+            
+            // Sort ascending and take unique values
+            const uniqueBars = [...new Set(bars)].sort((a, b) => a - b);
+            
+            // Take first 4 bars for display
+            const displayBars = uniqueBars.slice(0, 4);
+            
+            // Calculate times (Market opens at 9:15 AM)
+            const marketOpen = new Date();
+            marketOpen.setHours(9, 15, 0, 0);
+            
+            // Create time items
+            displayBars.forEach(bar => {
+                const time = new Date(marketOpen.getTime() + (bar * 15 * 60 * 1000));
+                const timeStr = time.toLocaleTimeString('en-IN', { 
+                    hour: '2-digit', 
+                    minute: '2-digit',
+                    hour12: true 
+                }).toUpperCase();
+                
+                const timeItem = document.createElement('div');
+                timeItem.className = 'time-item';
+                timeItem.innerHTML = `
+                    <div class="time-bar">${bar} Bars</div>
+                    <div class="time-value">${timeStr}</div>
+                `;
+                reversalTimesEl.appendChild(timeItem);
+            });
+            
+            // Fill remaining slots if needed
+            for (let i = displayBars.length; i < 4; i++) {
+                const timeItem = document.createElement('div');
+                timeItem.className = 'time-item';
+                timeItem.innerHTML = `
+                    <div class="time-bar">--</div>
+                    <div class="time-value">--:--</div>
+                `;
+                reversalTimesEl.appendChild(timeItem);
+            }
+        }
+
+        // Fallback to sample data
+        function updateWithSampleData() {
+            currentDateEl.textContent = sampleData.date;
+            finalPredictionEl.textContent = sampleData.prediction;
+            finalPredictionEl.style.color = '#10b981';
+            
+            // Update levels
+            resistanceLevelsEl.innerHTML = '';
+            supportLevelsEl.innerHTML = '';
+            
+            sampleData.resistance.forEach(value => {
+                const levelEl = document.createElement('div');
+                levelEl.className = 'level-value resistance-value';
+                levelEl.textContent = value;
+                resistanceLevelsEl.appendChild(levelEl);
+            });
+            
+            sampleData.support.forEach(value => {
+                const levelEl = document.createElement('div');
+                levelEl.className = 'level-value support-value';
+                levelEl.textContent = value;
+                supportLevelsEl.appendChild(levelEl);
+            });
+            
+            // Update reversal times
+            const marketOpen = new Date();
+            marketOpen.setHours(9, 15, 0, 0);
+            
+            reversalTimesEl.innerHTML = '';
+            sampleData.reversalBars.slice(0, 4).forEach(bar => {
+                const time = new Date(marketOpen.getTime() + (bar * 15 * 60 * 1000));
+                const timeStr = time.toLocaleTimeString('en-IN', { 
+                    hour: '2-digit', 
+                    minute: '2-digit',
+                    hour12: true 
+                }).toUpperCase();
+                
+                const timeItem = document.createElement('div');
+                timeItem.className = 'time-item';
+                timeItem.innerHTML = `
+                    <div class="time-bar">${bar} Bars</div>
+                    <div class="time-value">${timeStr}</div>
+                `;
+                reversalTimesEl.appendChild(timeItem);
+            });
+        }
+
+        // Refresh data manually
+        function refreshData() {
+            fetchData();
+        }
+
+        // Export as image
+        function exportAsImage() {
+            const box = document.getElementById('overviewBox');
+            
+            // Check if html2canvas is available
+            if (typeof html2canvas === 'undefined') {
+                // Load html2canvas
+                const script = document.createElement('script');
+                script.src = 'https://html2canvas.hertzen.com/dist/html2canvas.min.js';
+                script.onload = function() {
+                    captureImage();
+                };
+                document.head.appendChild(script);
+                showNotification('Loading export tool...', 'info');
+            } else {
+                captureImage();
+            }
+            
+            function captureImage() {
+                showNotification('Creating image...', 'info');
+                
+                html2canvas(box, {
+                    scale: 3, // High resolution
+                    backgroundColor: '#0d1525',
+                    useCORS: true,
+                    logging: false,
+                    width: box.offsetWidth,
+                    height: box.offsetHeight
+                }).then(canvas => {
+                    // Create download link
+                    const link = document.createElement('a');
+                    const dateStr = new Date().toLocaleDateString('en-IN').replace(/\//g, '-');
+                    link.download = `Market_Overview_${dateStr}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                    
+                    showNotification('Image downloaded!', 'success');
+                }).catch(error => {
+                    console.error('Error:', error);
+                    showNotification('Export failed. Try again.', 'error');
+                });
+            }
+        }
+
+        // Generate Video Script
+        function generateVideoScript() {
+            // Get current data
             const prediction = document.getElementById('finalPrediction').textContent;
             const dateStr = document.getElementById('currentDate').textContent;
             
@@ -383,91 +1030,161 @@
             
             // Get reversal times
             const reversalItems = Array.from(document.querySelectorAll('.time-value')).map(el => el.textContent);
+            const validReversalTimes = reversalItems.filter(t => t !== '--:--');
             
-            // Construct the storyboard
-            const storyboard = `
-=======================
-DECODEX MARKET REEL SCRIPT
-=======================
-Date: ${dateStr}
-Background: ${document.querySelector('.bg-option.active').getAttribute('data-title')}
-Total Duration: 60 seconds
+            // Template video URL (your chosen template)
+            const templateVideoUrl = "https://drive.google.com/uc?export=download&id=1f3O6G0E1OxUQCsmd6cEPVUOOz8bXMmP6";
+            
+            // Generate the complete video script
+            const script = `
+===========================================
+DECODEX MARKET - INSTAGRAM REEL SCRIPT
+===========================================
+📅 Date: ${dateStr}
+🎬 Background Video: ${templateVideoUrl}
+⏱ Total Duration: 60 Seconds
 
---- TIMED SCRIPT ---
-[0-4 SECONDS]
-🎬 HOOK SCENE
-"TOMORROW'S NIFTY ACTION PLAN"
-(Animated text reveal on chart background)
+===========================================
+🎯 STEP-BY-STEP VIDEO INSTRUCTIONS:
+===========================================
 
-[4-12 SECONDS]
-📈 KEY PREDICTION
-"${prediction}"
-(Highlight with icon and emphasis)
+[00-05 SECONDS - HOOK]
+• Use your background video (link above)
+• Add text overlay: "TOMORROW'S NIFTY ACTION PLAN"
+• Font: Large, Bold, White with Green shadow
+• Animation: Text slides in from bottom
 
-[12-22 SECONDS]
-⚖️ SUPPORT & RESISTANCE
-RESISTANCE: ${resLevels.join(' | ')}
-SUPPORT: ${supLevels.join(' | ')}
-(Levels slide in one by one)
+[05-12 SECONDS - PREDICTION]
+• Text: "${prediction}"
+• Add emoji: 📈 if bullish, 📉 if bearish
+• Color: Green for bullish, Red for bearish
+• Animation: Typewriter effect
 
-[22-32 SECONDS]
-⏰ TIMING IS EVERYTHING
-Watch for reversals around:
-${reversalItems.filter(t => t !== '--:--').map((t, i) => `• ${t}`).join('\\n')}
+[12-22 SECONDS - SUPPORT & RESISTANCE]
+• Text Line 1: "RESISTANCE: ${resLevels.join(' | ')}"
+• Text Line 2: "SUPPORT: ${supLevels.join(' | ')}"
+• Color: Resistance in Pink (#f43f5e), Support in Green (#10b981)
+• Animation: Levels appear one by one
 
-[32-48 SECONDS]
-🛠️ OUR EXPERT SERVICES
-• 📊 FII–DII Data Decoding
-• 📈 Nifty | BankNifty | Sensex
-• ⏱ Intraday Reversal Timings
-• 🧠 OI & PCR Based Analysis
-(Services appear in list)
+[22-32 SECONDS - REVERSAL TIMINGS]
+• Text: "KEY REVERSAL TIMINGS"
+• List times:${validReversalTimes.map(t => `\n• ${t}`).join('')}
+• Icon: ⏰ before each time
+• Animation: Slide in from right
 
-[48-55 SECONDS]
-🏆 BRANDING & CTA
-[SHOW: decodexlogo.png]
-"Where Data Meets Direction."
-💬 Message to learn: 8271890090
-📸 Follow @DecodeXMarket
+[32-45 SECONDS - OUR SERVICES]
+• Text: "OUR EXPERT SERVICES"
+• List:
+  📊 FII–DII Data Decoding
+  📈 Nifty | BankNifty | Sensex
+  ⏱ Intraday Reversal Timings
+  🧠 OI & PCR Based Analysis
+• Animation: Each bullet point appears separately
 
-[55-60 SECONDS]
-🔁 FINAL CTA
-"SAVE THIS FOR TOMORROW'S TRADING!"
-#DecodeXMarket #Nifty50 #TradingTips
+[45-52 SECONDS - LOGO & TAGLINE]
+• Show image: decodexlogo.png
+• Text below logo: "Where Data Meets Direction."
+• WhatsApp CTA: "I want to learn 📱 8271890090"
+• Instagram: "Follow @DecodeXMarket"
+• Animation: Fade in logo, then text
 
---- NEXT STEPS ---
-1. COPY this script.
-2. PASTE into CapCut/InShot.
-3. Use chosen background video.
-4. Add text per this timing.
-5. Add a trending audio track.
-6. Export and post!
+[52-57 SECONDS - FINAL CTA]
+• Text: "SAVE THIS FOR TOMORROW'S TRADING!"
+• Hashtags: #DecodeXMarket #Nifty50 #StockMarketIndia
+• Animation: Text scales up slightly
 
-=======================
+[57-60 SECONDS - END SCREEN]
+• Keep logo visible
+• Add your website if space permits
+
+===========================================
+🎵 AUDIO RECOMMENDATION:
+===========================================
+• Use trending Instagram audio
+• Search: "epic motivational" or "trading music"
+• Volume: Keep background music at 30%, text should be clear
+
+===========================================
+🏷️ HASHTAGS TO ADD:
+===========================================
+#DecodeXMarket #Nifty50 #BankNifty #StockMarket
+#NiftyPrediction #TradingTips #Investing
+#StockMarketIndia #IntradayTrading #MarketAnalysis
+#TechnicalAnalysis #TradingView #NiftyLevels
+
+===========================================
+📱 FINAL STEP:
+===========================================
+1. Add this script audio as voiceover (optional)
+2. Export at 1080x1920 resolution
+3. Post between 7-9 AM or 8-10 PM IST
+4. Engage with comments for better reach
+
+===========================================
+⚠️ DISCLAIMER (Add in caption):
+===========================================
+I am not SEBI registered. Information is for educational purposes only. Not a buy/sell recommendation.
             `;
             
-            storyboardEl.textContent = storyboard;
-            showNotification('Storyboard generated! Copy the script.');
+            // Display script in modal
+            videoScriptEl.textContent = script;
+            videoModal.style.display = 'flex';
+            showNotification('Reel script generated!', 'success');
         }
 
-        function copyStoryboardToClipboard() {
-            const storyboardText = storyboardEl.textContent;
-            navigator.clipboard.writeText(storyboardText).then(() => {
-                showNotification('Script copied to clipboard! Ready for CapCut.');
+        // Copy video script to clipboard
+        function copyVideoScript() {
+            const scriptText = videoScriptEl.textContent;
+            navigator.clipboard.writeText(scriptText).then(() => {
+                showNotification('Script copied to clipboard!', 'success');
             }).catch(err => {
-                console.error('Copy failed: ', err);
+                console.error('Copy failed:', err);
                 showNotification('Copy failed. Please select and copy manually.', 'error');
             });
         }
 
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            // Your original data fetch call
-            if (checkAdminAccess()) {
-                fetchData();
-                setInterval(fetchData, 5 * 60 * 1000);
-            }
-        });
+        // Close video modal
+        function closeVideoModal() {
+            videoModal.style.display = 'none';
+        }
+
+        // Show loading state
+        function showLoading(show) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                if (show) {
+                    section.classList.add('loading');
+                } else {
+                    section.classList.remove('loading');
+                }
+            });
+        }
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            // Remove existing notifications
+            document.querySelectorAll('.notification').forEach(n => n.remove());
+            
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.style.background = type === 'error' ? '#f43f5e' : 
+                                          type === 'warning' ? '#f39c12' : 
+                                          '#10b981';
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
     </script>
 </body>
 </html>
