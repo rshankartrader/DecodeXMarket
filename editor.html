@@ -11,7 +11,7 @@
             --primary: #10b981;
             --secondary: #059669;
             --accent: #f43f5e;
-            --warning: #f59e0b;
+            --warning: #f39c12;
             --dark: #0f172a;
             --darker: #0a1120;
             --light: #ecf0f1;
@@ -30,10 +30,11 @@
             background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
             color: var(--light);
             min-height: 100vh;
-            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
 
         .container {
@@ -48,22 +49,258 @@
 
         /* ===== COMPACT 9:16 RECTANGLE BOX ===== */
         .rectangle-box {
-            width: 337.5px;
-            height: 600px;
+            width: 337.5px; /* 9 units */
+            height: 600px; /* 16 units */
             background: linear-gradient(145deg, #0d1525, #111a2d);
             border-radius: 18px;
             border: 3px solid var(--primary);
             padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 10px; /* Reduced from 12px */
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
             position: relative;
             overflow: hidden;
         }
 
-        /* [Keep all your original rectangle box styles] */
-        /* [They remain exactly the same] */
+        /* Compact Header */
+        .box-header {
+            text-align: center;
+            padding-bottom: 10px; /* Reduced from 12px */
+            border-bottom: 2px solid var(--primary);
+            margin-bottom: 4px; /* Reduced from 5px */
+        }
+
+        .box-header h1 {
+            color: white;
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: -0.3px;
+            margin-bottom: 3px; /* Reduced from 4px */
+            line-height: 1.2;
+        }
+
+        .box-date {
+            color: var(--gray);
+            font-size: 11px; /* Reduced from 12px */
+            font-weight: 600;
+        }
+
+        /* Compact Content Sections */
+        .section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 9px; /* Reduced from 10px */
+            padding: 10px; /* Reduced from 12px */
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
+            flex-shrink: 0;
+        }
+
+        .section-title {
+            color: var(--primary);
+            font-size: 12px; /* Reduced from 13px */
+            font-weight: 800;
+            margin-bottom: 8px; /* Reduced from 10px */
+            display: flex;
+            align-items: center;
+            gap: 5px; /* Reduced from 6px */
+        }
+
+        .section-title i {
+            font-size: 13px; /* Reduced from 14px */
+        }
+
+        /* Expected Move - Compact */
+        .prediction-box {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 8px 10px; /* Reduced from 10px 12px */
+            min-height: 60px; /* Reduced from 65px */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        #finalPrediction {
+            font-size: 19px; /* Reduced from 20px */
+            font-weight: 900;
+            color: white;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+            line-height: 1.2;
+            min-height: 26px; /* Reduced from 28px */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Support & Resistance - Ultra Compact Horizontal */
+        .levels-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px; /* Reduced from 10px */
+            margin-top: 4px; /* Reduced from 5px */
+        }
+
+        .levels-row {
+            display: flex;
+            align-items: center;
+            gap: 6px; /* Reduced from 8px */
+            margin-bottom: 1px; /* Reduced from 2px */
+        }
+
+        .level-label {
+            min-width: 65px; /* Reduced from 70px */
+            font-size: 11px; /* Reduced from 12px */
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 3px; /* Reduced from 4px */
+        }
+
+        .resistance-label {
+            color: var(--accent);
+        }
+
+        .support-label {
+            color: var(--primary);
+        }
+
+        .levels-container {
+            flex: 1;
+            display: flex;
+            gap: 5px; /* Reduced from 6px */
+            flex-wrap: wrap;
+        }
+
+        .level-value {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px 6px; /* Reduced from 5px 8px */
+            border-radius: 5px; /* Reduced from 6px */
+            font-size: 11px; /* Reduced from 12px */
+            font-weight: 700;
+            min-width: 55px; /* Reduced from 58px */
+            text-align: center;
+            border: 1px solid;
+            flex-shrink: 0;
+        }
+
+        .resistance-value {
+            border-color: rgba(244, 63, 94, 0.3);
+            color: #ff6b8b;
+        }
+
+        .support-value {
+            border-color: rgba(16, 185, 129, 0.3);
+            color: #34d399;
+        }
+
+        /* Expected Reversal Times - ULTRA COMPACT */
+        .reversal-section {
+            background: linear-gradient(135deg, rgba(243, 156, 18, 0.15) 0%, rgba(231, 76, 60, 0.15) 100%);
+            border: 1px solid rgba(243, 156, 18, 0.3);
+            padding: 7px 9px; /* Reduced from 8px 10px */
+            min-height: 80px; /* Reduced from 85px */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .reversal-times {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 5px; /* Reduced from 6px */
+            margin-top: 1px; /* Reduced from 2px */
+        }
+
+        .time-item {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px; /* Reduced from 5px */
+            padding: 5px; /* Reduced from 6px */
+            text-align: center;
+            border: 1px solid rgba(243, 156, 18, 0.2);
+            min-height: 35px; /* Reduced from 38px */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .time-bar {
+            font-size: 8px; /* Reduced from 9px */
+            color: var(--warning);
+            margin-bottom: 1px; /* Reduced from 2px */
+            font-weight: 600;
+        }
+
+        .time-value {
+            font-size: 10px; /* Reduced from 11px */
+            font-weight: 800;
+            color: white;
+            line-height: 1.2;
+        }
+
+        /* Contact Information - Semi Transparent Brand Labels */
+        .contact-info {
+            background: rgba(148, 163, 184, 0.1); /* 60% opacity gray */
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 8px;
+            padding: 8px;
+            margin: 5px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: center;
+            flex-shrink: 0;
+            backdrop-filter: blur(4px);
+        }
+
+        .contact-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .contact-icon {
+            color: var(--primary);
+            font-size: 11px;
+            width: 16px;
+            text-align: center;
+        }
+
+        .contact-text {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+        }
+
+        .instagram-text {
+            color: #E4405F; /* Instagram pink color */
+        }
+
+        .whatsapp-text {
+            color: #4ADE80; /* WhatsApp bright green color */
+        }
+
+        /* Disclaimer - Fits perfectly at bottom */
+        .disclaimer-box {
+            margin-top: auto;
+            padding: 7px 9px; /* Reduced from 8px 10px */
+            background: rgba(244, 63, 94, 0.1);
+            border: 1px solid rgba(244, 63, 94, 0.3);
+            border-radius: 5px; /* Reduced from 6px */
+            font-size: 7.5px; /* Reduced from 8px */
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            line-height: 1.2;
+            flex-shrink: 0;
+        }
+
+        .disclaimer-box strong {
+            color: var(--accent);
+            font-size: 8px; /* Reduced from 8.5px */
+        }
 
         /* Controls */
         .controls {
@@ -108,14 +345,68 @@
             background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
         }
 
-        /* Individual Slide Controls */
-        .slide-controls {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 15px;
+        /* Slide Generation Section */
+        .slide-generation {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            border: 2px solid var(--border);
             width: 100%;
-            max-width: 600px;
+            max-width: 800px;
+            display: none; /* Hidden by default */
+        }
+
+        .slide-generation-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: var(--primary);
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .slide-controls-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .slide-control-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 15px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            text-align: center;
+        }
+
+        .slide-control-btn:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.2);
+        }
+
+        .slide-icon {
+            font-size: 30px;
+        }
+
+        .slide-title {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .slide-desc {
+            font-size: 11px;
+            color: var(--gray);
         }
 
         .slide-btn {
@@ -132,152 +423,12 @@
             align-items: center;
             justify-content: center;
             gap: 5px;
+            width: 100%;
         }
 
         .slide-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
-        }
-
-        .slide-btn:nth-child(1) { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
-        .slide-btn:nth-child(2) { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
-        .slide-btn:nth-child(3) { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
-        .slide-btn:nth-child(4) { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); }
-        .slide-btn:nth-child(5) { background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); }
-        .slide-btn:nth-child(6) { background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%); }
-
-        /* Loading */
-        .loading {
-            opacity: 0.7;
-            pointer-events: none;
-            position: relative;
-        }
-
-        .loading::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 18px;
-            height: 18px;
-            border: 2px solid var(--border);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            background: var(--primary);
-            color: white;
-            padding: 10px 16px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            z-index: 1000;
-            animation: slideIn 0.3s ease;
-            font-weight: 600;
-            font-size: 13px;
-            max-width: 300px;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        /* Slides Section */
-        .slides-section {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 15px;
-            padding: 25px;
-            margin-top: 30px;
-            border: 2px solid var(--border);
-            width: 100%;
-            max-width: 800px;
-        }
-
-        .section-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            color: var(--primary);
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        .slides-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-
-        .slide-preview {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 12px;
-            padding: 15px;
-            border: 1px solid var(--border);
-            cursor: pointer;
-            transition: all 0.3s;
-            min-height: 200px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .slide-preview:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.2);
-        }
-
-        .slide-number {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: var(--primary);
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            font-size: 14px;
-        }
-
-        .slide-icon {
-            font-size: 40px;
-            margin-bottom: 15px;
-            color: var(--primary);
-        }
-
-        .slide-title {
-            font-size: 16px;
-            font-weight: 800;
-            margin-bottom: 10px;
-            color: white;
-        }
-
-        .slide-desc {
-            font-size: 12px;
-            color: var(--gray);
-            line-height: 1.4;
         }
 
         /* Processing Modal */
@@ -338,14 +489,58 @@
             transition: width 0.3s;
         }
 
+        /* Loading */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+            position: relative;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: var(--primary);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+            font-weight: 600;
+            font-size: 13px;
+            max-width: 300px;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
-            .slides-grid {
+            .slide-controls-grid {
                 grid-template-columns: 1fr;
-            }
-            
-            .slide-controls {
-                grid-template-columns: repeat(2, 1fr);
             }
         }
 
@@ -356,18 +551,14 @@
                 padding: 15px;
             }
             
-            .controls, .slide-controls {
+            .controls {
                 flex-direction: column;
                 width: 90vw;
             }
             
-            .control-btn, .slide-btn {
+            .control-btn {
                 width: 100%;
                 justify-content: center;
-            }
-            
-            .slide-controls {
-                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -375,15 +566,14 @@
 <body>
     <div class="container">
         <h1 style="color: var(--primary); text-align: center; margin-bottom: 5px; font-size: 20px;">
-            <i class="fas fa-chart-line"></i> Market Overview & Reel Slides Generator
+            <i class="fas fa-chart-line"></i> Market Overview Generator
         </h1>
         <p style="color: var(--gray); text-align: center; margin-bottom: 15px; font-size: 12px;">
-            9:16 Instagram Format • All Data in One View • 6 Professional Slides
+            9:16 Instagram Format • All Data in One View
         </p>
 
         <!-- 9:16 Rectangle Box -->
         <div class="rectangle-box" id="overviewBox">
-            <!-- [Your existing rectangle box content remains exactly the same] -->
             <!-- Header -->
             <div class="box-header">
                 <h1>Tomorrow Market Overview</h1>
@@ -426,7 +616,7 @@
                 </div>
             </div>
 
-            <!-- Expected Reversal Times -->
+            <!-- Expected Reversal Times - ULTRA COMPACT -->
             <div class="section reversal-section">
                 <div class="section-title">
                     <i class="fas fa-retweet"></i> Expected Reversal @15min
@@ -436,7 +626,7 @@
                 </div>
             </div>
 
-            <!-- Contact Information -->
+            <!-- Contact Information - Semi Transparent -->
             <div class="contact-info">
                 <div class="contact-row">
                     <div class="contact-icon">
@@ -456,13 +646,13 @@
                 </div>
             </div>
 
-            <!-- Disclaimer -->
+            <!-- Disclaimer - Now fits perfectly -->
             <div class="disclaimer-box">
                 <strong>Disclaimer:</strong> I am not SEBI registered, provided info is only for educational purposes and don't consider it as buy or sell signal.
             </div>
         </div>
 
-        <!-- Main Controls -->
+        <!-- Controls -->
         <div class="controls">
             <button class="control-btn" onclick="refreshData()">
                 <i class="fas fa-sync-alt"></i> Refresh
@@ -470,97 +660,73 @@
             <button class="control-btn" onclick="exportAsImage()">
                 <i class="fas fa-download"></i> Export Image
             </button>
-            <button class="control-btn download-all" onclick="downloadAllSlides()">
-                <i class="fas fa-layer-group"></i> Download All 6 Slides
+            <button class="control-btn slides" onclick="showSlideGenerator()">
+                <i class="fas fa-film"></i> Generate Reel Slides
             </button>
             <button class="control-btn secondary" onclick="window.location.href='index.html'">
                 <i class="fas fa-arrow-left"></i> Dashboard
             </button>
         </div>
 
-        <!-- Slides Section -->
-        <div class="slides-section">
-            <div class="section-header">
+        <p style="color: var(--gray); text-align: center; margin-top: 10px; font-size: 11px;">
+            <i class="fas fa-info-circle"></i> Perfect for Instagram • All data fits in 9:16 frame
+        </p>
+
+        <!-- Slide Generation Section (Hidden by default) -->
+        <div class="slide-generation" id="slideGenerator">
+            <div class="slide-generation-header">
                 <i class="fas fa-images"></i>
-                <span>Individual Reel Slides (Click to Download)</span>
+                <span>Reel Slides Generator</span>
             </div>
             
-            <div class="slides-grid">
+            <div class="slide-controls-grid">
                 <!-- Slide 1 -->
-                <div class="slide-preview" onclick="downloadSlide(1)">
-                    <div class="slide-number">1</div>
+                <div class="slide-control-btn" onclick="createSlide(1)">
                     <div class="slide-icon">🤔</div>
                     <div class="slide-title">Hook Question</div>
                     <div class="slide-desc">Want to know Nifty's move tomorrow?</div>
                 </div>
                 
                 <!-- Slide 2 -->
-                <div class="slide-preview" onclick="downloadSlide(2)">
-                    <div class="slide-number">2</div>
+                <div class="slide-control-btn" onclick="createSlide(2)">
                     <div class="slide-icon">📈</div>
                     <div class="slide-title">Expected Move</div>
                     <div class="slide-desc">FII-DII Data Decoding Prediction</div>
                 </div>
                 
                 <!-- Slide 3 -->
-                <div class="slide-preview" onclick="downloadSlide(3)">
-                    <div class="slide-number">3</div>
+                <div class="slide-control-btn" onclick="createSlide(3)">
                     <div class="slide-icon">⚖️</div>
                     <div class="slide-title">Support & Resistance</div>
                     <div class="slide-desc">Key Nifty Levels for Tomorrow</div>
                 </div>
                 
                 <!-- Slide 4 -->
-                <div class="slide-preview" onclick="downloadSlide(4)">
-                    <div class="slide-number">4</div>
+                <div class="slide-control-btn" onclick="createSlide(4)">
                     <div class="slide-icon">⏰</div>
                     <div class="slide-title">Reversal Timings</div>
                     <div class="slide-desc">Intraday Reversal Points</div>
                 </div>
                 
                 <!-- Slide 5 -->
-                <div class="slide-preview" onclick="downloadSlide(5)">
-                    <div class="slide-number">5</div>
+                <div class="slide-control-btn" onclick="createSlide(5)">
                     <div class="slide-icon">🏆</div>
                     <div class="slide-title">Branding & CTA</div>
                     <div class="slide-desc">Services + WhatsApp + Follow</div>
                 </div>
                 
                 <!-- Slide 6 -->
-                <div class="slide-preview" onclick="downloadSlide(6)">
-                    <div class="slide-number">6</div>
+                <div class="slide-control-btn" onclick="createSlide(6)">
                     <div class="slide-icon">⚠️</div>
                     <div class="slide-title">Disclaimer</div>
                     <div class="slide-desc">Legal & Risk Information</div>
                 </div>
             </div>
             
-            <!-- Individual Slide Controls -->
-            <div class="slide-controls">
-                <button class="slide-btn" onclick="downloadSlide(1)">
-                    <i class="fas fa-download"></i> Slide 1
-                </button>
-                <button class="slide-btn" onclick="downloadSlide(2)">
-                    <i class="fas fa-download"></i> Slide 2
-                </button>
-                <button class="slide-btn" onclick="downloadSlide(3)">
-                    <i class="fas fa-download"></i> Slide 3
-                </button>
-                <button class="slide-btn" onclick="downloadSlide(4)">
-                    <i class="fas fa-download"></i> Slide 4
-                </button>
-                <button class="slide-btn" onclick="downloadSlide(5)">
-                    <i class="fas fa-download"></i> Slide 5
-                </button>
-                <button class="slide-btn" onclick="downloadSlide(6)">
-                    <i class="fas fa-download"></i> Slide 6
-                </button>
-            </div>
+            <button class="control-btn download-all" onclick="downloadAllSlides()">
+                <i class="fas fa-layer-group"></i> Download All 6 Slides
+            </button>
         </div>
-
-        <p style="color: var(--gray); text-align: center; margin-top: 20px; font-size: 11px;">
-            <i class="fas fa-info-circle"></i> Professional 9:16 slides for Instagram Reels • Click any slide to download
-        </p>
     </div>
 
     <!-- Processing Modal -->
@@ -584,49 +750,55 @@
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
         // ========================
-        // ORIGINAL DATA FUNCTIONS
+        // ORIGINAL CODE (UNCHANGED)
         // ========================
         
+        // Check if user is admin
         function checkAdminAccess() {
             const savedUser = localStorage.getItem('decodexmarket_current_user');
             if (savedUser) {
                 const user = JSON.parse(savedUser);
-                return user.role === "admin";
+                if (user.role === "admin") {
+                    return true;
+                }
             }
             return false;
         }
 
+        // Data configuration
         const MARKET_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQgqBUGz6xFmT2Pd5qdvTZGYm3H3d-KgZlL65PHanPKDz3b9mp1rx7ZQNlV8BUJnYY0nfk-jyYvjWNY/pub?gid=658749771&single=true&output=csv";
         
+        // Sample data fallback
         const sampleData = {
-            date: new Date().toLocaleDateString('en-IN', {
-                weekday: 'long',
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
-            }),
+            date: "Thursday, 25 January 2024",
             prediction: "Market May Go Up",
-            resistance: ["25128", "25208", "25288"],
-            support: ["24800", "24720", "24640"],
-            reversalBars: ["4", "8", "12", "13"]
+            resistance: ["25128", "25208", "25288", "25367", "25447"],
+            support: ["24800", "24720", "24640", "24560", "24480"],
+            reversalBars: ["4", "8", "12", "13", "18"] // Number of 15-min bars
         };
 
+        // DOM Elements
         const currentDateEl = document.getElementById('currentDate');
         const finalPredictionEl = document.getElementById('finalPrediction');
         const resistanceLevelsEl = document.getElementById('resistanceLevels');
         const supportLevelsEl = document.getElementById('supportLevels');
         const reversalTimesEl = document.getElementById('reversalTimes');
 
+        // On page load
         document.addEventListener('DOMContentLoaded', () => {
+            // Check if user is admin
             if (!checkAdminAccess()) {
                 alert("Access Denied. This page is for admin users only.");
                 window.location.href = 'index.html';
                 return;
             }
+            
+            // If admin, proceed with initialization
             fetchData();
             setInterval(fetchData, 5 * 60 * 1000);
         });
 
+        // Parse CSV
         function parseCSV(csvText) {
             const rows = [];
             const lines = csvText.split('\n');
@@ -662,9 +834,11 @@
             return rows;
         }
 
+        // Fetch data from Google Sheets
         async function fetchData() {
             try {
                 showLoading(true);
+                
                 const response = await fetch(MARKET_SHEET_URL);
                 if (!response.ok) throw new Error('Network error');
                 
@@ -678,7 +852,7 @@
                     throw new Error("No data received");
                 }
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error fetching data:', error);
                 updateWithSampleData();
                 showNotification('Using sample data', 'warning');
             } finally {
@@ -686,77 +860,104 @@
             }
         }
 
+        // Update overview with actual data
         function updateOverview(rows) {
-            // Get tomorrow's date
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            const tomorrowDate = tomorrow.toLocaleDateString('en-IN', {
-                weekday: 'long',
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
-            });
-            
-            currentDateEl.textContent = tomorrowDate;
+            // Date
+            if (rows[2] && rows[2][0]) {
+                const dateValue = rows[2][0];
+                currentDateEl.textContent = dateValue;
+            } else {
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                currentDateEl.textContent = tomorrow.toLocaleDateString('en-IN', {
+                    weekday: 'long',
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+            }
             
             // Prediction
             if (rows[0] && (rows[0][3] || rows[0][4])) {
                 const prediction = (rows[0][3] || rows[0][4]).trim();
                 finalPredictionEl.textContent = prediction;
                 
+                // Color based on prediction
                 if (prediction.toLowerCase().includes('up') || prediction.toLowerCase().includes('bull')) {
                     finalPredictionEl.style.color = '#10b981';
                 } else if (prediction.toLowerCase().includes('down') || prediction.toLowerCase().includes('bear')) {
                     finalPredictionEl.style.color = '#f43f5e';
                 } else {
-                    finalPredictionEl.style.color = '#f59e0b';
+                    finalPredictionEl.style.color = '#f39c12';
                 }
             }
             
-            // Levels
+            // Support & Resistance Levels (first 5 from rows 13-17)
             updateLevels(rows.slice(13, 18));
+            
+            // Reversal bars and times (from column D rows 7-11)
             updateReversalTimes(rows.slice(7, 12));
         }
 
+        // Update Support & Resistance levels
         function updateLevels(levelRows) {
             resistanceLevelsEl.innerHTML = '';
             supportLevelsEl.innerHTML = '';
             
+            // Get first 5 resistance levels (column B)
             for (let i = 0; i < 5; i++) {
                 const row = levelRows[i];
-                const resValue = row && row[1] ? row[1] : `R${i+1}`;
-                const supValue = row && row[0] ? row[0] : `S${i+1}`;
+                const value = row && row[1] ? row[1] : `R${i+1}`;
                 
-                const resEl = document.createElement('div');
-                resEl.className = 'level-value resistance-value';
-                resEl.textContent = resValue;
-                resistanceLevelsEl.appendChild(resEl);
+                const levelEl = document.createElement('div');
+                levelEl.className = 'level-value resistance-value';
+                levelEl.textContent = value;
+                resistanceLevelsEl.appendChild(levelEl);
+            }
+            
+            // Get first 5 support levels (column A)
+            for (let i = 0; i < 5; i++) {
+                const row = levelRows[i];
+                const value = row && row[0] ? row[0] : `S${i+1}`;
                 
-                const supEl = document.createElement('div');
-                supEl.className = 'level-value support-value';
-                supEl.textContent = supValue;
-                supportLevelsEl.appendChild(supEl);
+                const levelEl = document.createElement('div');
+                levelEl.className = 'level-value support-value';
+                levelEl.textContent = value;
+                supportLevelsEl.appendChild(levelEl);
             }
         }
 
+        // Update reversal times (15-minute bars to time conversion)
         function updateReversalTimes(reversalRows) {
             reversalTimesEl.innerHTML = '';
-            const bars = [];
             
+            // Get reversal bars from column D (index 3)
+            const bars = [];
             for (let i = 0; i < reversalRows.length; i++) {
                 if (reversalRows[i] && reversalRows[i][3]) {
                     const bar = parseInt(reversalRows[i][3]);
-                    if (!isNaN(bar) && bar > 0) bars.push(bar);
+                    if (!isNaN(bar) && bar > 0) {
+                        bars.push(bar);
+                    }
                 }
             }
             
-            if (bars.length === 0) bars.push(...sampleData.reversalBars.map(Number));
+            // If no data, use sample
+            if (bars.length === 0) {
+                bars.push(...sampleData.reversalBars.map(Number));
+            }
             
+            // Sort ascending and take unique values
             const uniqueBars = [...new Set(bars)].sort((a, b) => a - b);
+            
+            // Take first 4 bars for display
             const displayBars = uniqueBars.slice(0, 4);
+            
+            // Calculate times (Market opens at 9:15 AM)
             const marketOpen = new Date();
             marketOpen.setHours(9, 15, 0, 0);
             
+            // Create time items
             displayBars.forEach(bar => {
                 const time = new Date(marketOpen.getTime() + (bar * 15 * 60 * 1000));
                 const timeStr = time.toLocaleTimeString('en-IN', { 
@@ -773,43 +974,49 @@
                 `;
                 reversalTimesEl.appendChild(timeItem);
             });
+            
+            // Fill remaining slots if needed
+            for (let i = displayBars.length; i < 4; i++) {
+                const timeItem = document.createElement('div');
+                timeItem.className = 'time-item';
+                timeItem.innerHTML = `
+                    <div class="time-bar">--</div>
+                    <div class="time-value">--:--</div>
+                `;
+                reversalTimesEl.appendChild(timeItem);
+            }
         }
 
+        // Fallback to sample data
         function updateWithSampleData() {
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            currentDateEl.textContent = tomorrow.toLocaleDateString('en-IN', {
-                weekday: 'long',
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
-            });
-            
+            currentDateEl.textContent = sampleData.date;
             finalPredictionEl.textContent = sampleData.prediction;
             finalPredictionEl.style.color = '#10b981';
             
+            // Update levels
             resistanceLevelsEl.innerHTML = '';
             supportLevelsEl.innerHTML = '';
             
             sampleData.resistance.forEach(value => {
-                const el = document.createElement('div');
-                el.className = 'level-value resistance-value';
-                el.textContent = value;
-                resistanceLevelsEl.appendChild(el);
+                const levelEl = document.createElement('div');
+                levelEl.className = 'level-value resistance-value';
+                levelEl.textContent = value;
+                resistanceLevelsEl.appendChild(levelEl);
             });
             
             sampleData.support.forEach(value => {
-                const el = document.createElement('div');
-                el.className = 'level-value support-value';
-                el.textContent = value;
-                supportLevelsEl.appendChild(el);
+                const levelEl = document.createElement('div');
+                levelEl.className = 'level-value support-value';
+                levelEl.textContent = value;
+                supportLevelsEl.appendChild(levelEl);
             });
             
+            // Update reversal times
             const marketOpen = new Date();
             marketOpen.setHours(9, 15, 0, 0);
-            reversalTimesEl.innerHTML = '';
             
-            sampleData.reversalBars.forEach(bar => {
+            reversalTimesEl.innerHTML = '';
+            sampleData.reversalBars.slice(0, 4).forEach(bar => {
                 const time = new Date(marketOpen.getTime() + (bar * 15 * 60 * 1000));
                 const timeStr = time.toLocaleTimeString('en-IN', { 
                     hour: '2-digit', 
@@ -827,67 +1034,82 @@
             });
         }
 
+        // Refresh data manually
         function refreshData() {
             fetchData();
         }
 
+        // Export as image
         function exportAsImage() {
             const box = document.getElementById('overviewBox');
+            
+            // Check if html2canvas is available
+            if (typeof html2canvas === 'undefined') {
+                // Load html2canvas
+                const script = document.createElement('script');
+                script.src = 'https://html2canvas.hertzen.com/dist/html2canvas.min.js';
+                script.onload = function() {
+                    captureImage();
+                };
+                document.head.appendChild(script);
+                showNotification('Loading export tool...', 'info');
+            } else {
+                captureImage();
+            }
             
             function captureImage() {
                 showNotification('Creating image...', 'info');
                 
                 html2canvas(box, {
-                    scale: 3,
+                    scale: 3, // High resolution
                     backgroundColor: '#0d1525',
                     useCORS: true,
                     logging: false,
                     width: box.offsetWidth,
                     height: box.offsetHeight
                 }).then(canvas => {
+                    // Create download link
                     const link = document.createElement('a');
                     const dateStr = new Date().toLocaleDateString('en-IN').replace(/\//g, '-');
                     link.download = `Market_Overview_${dateStr}.png`;
                     link.href = canvas.toDataURL('image/png');
                     link.click();
+                    
                     showNotification('Image downloaded!', 'success');
                 }).catch(error => {
                     console.error('Error:', error);
                     showNotification('Export failed. Try again.', 'error');
                 });
             }
-            
-            if (typeof html2canvas === 'undefined') {
-                const script = document.createElement('script');
-                script.src = 'https://html2canvas.hertzen.com/dist/html2canvas.min.js';
-                script.onload = captureImage;
-                document.head.appendChild(script);
-                showNotification('Loading export tool...', 'info');
-            } else {
-                captureImage();
-            }
         }
 
+        // Show loading state
         function showLoading(show) {
             const sections = document.querySelectorAll('.section');
             sections.forEach(section => {
-                if (show) section.classList.add('loading');
-                else section.classList.remove('loading');
+                if (show) {
+                    section.classList.add('loading');
+                } else {
+                    section.classList.remove('loading');
+                }
             });
         }
 
+        // Show notification
         function showNotification(message, type = 'success') {
+            // Remove existing notifications
             document.querySelectorAll('.notification').forEach(n => n.remove());
             
             const notification = document.createElement('div');
             notification.className = 'notification';
             notification.style.background = type === 'error' ? '#f43f5e' : 
-                                          type === 'warning' ? '#f59e0b' : 
+                                          type === 'warning' ? '#f39c12' : 
                                           '#10b981';
             notification.textContent = message;
             
             document.body.appendChild(notification);
             
+            // Auto remove after 3 seconds
             setTimeout(() => {
                 notification.style.opacity = '0';
                 notification.style.transform = 'translateX(100%)';
@@ -900,71 +1122,19 @@
         }
 
         // ========================
-        // NEW: SLIDE GENERATION SYSTEM
+        // NEW: SLIDE GENERATION CODE
         // ========================
         
-        // Image assets
-        const logoImg = new Image();
-        logoImg.src = 'decodexlogo.png';
+        let slideGeneratorVisible = false;
         
-        const bgImg = new Image();
-        bgImg.src = 'reelbg.png';
-        
-        // Store image loading status
-        let assetsLoaded = false;
-        let assetsLoading = false;
-        
-        // Load assets
-        async function loadAssets() {
-            if (assetsLoaded) return true;
-            if (assetsLoading) {
-                // Wait for loading to complete
-                return new Promise(resolve => {
-                    const checkInterval = setInterval(() => {
-                        if (assetsLoaded) {
-                            clearInterval(checkInterval);
-                            resolve(true);
-                        }
-                    }, 100);
-                });
+        function showSlideGenerator() {
+            const slideGenerator = document.getElementById('slideGenerator');
+            slideGeneratorVisible = !slideGeneratorVisible;
+            slideGenerator.style.display = slideGeneratorVisible ? 'block' : 'none';
+            
+            if (slideGeneratorVisible) {
+                showNotification('Click any slide to download. Use "Download All" for all 6 slides.', 'info');
             }
-            
-            assetsLoading = true;
-            
-            return new Promise((resolve) => {
-                let loadedCount = 0;
-                const totalAssets = 2;
-                
-                function assetLoaded() {
-                    loadedCount++;
-                    if (loadedCount === totalAssets) {
-                        assetsLoaded = true;
-                        assetsLoading = false;
-                        resolve(true);
-                    }
-                }
-                
-                logoImg.onload = assetLoaded;
-                logoImg.onerror = () => {
-                    console.log('Logo image not found, will use text fallback');
-                    assetLoaded();
-                };
-                
-                bgImg.onload = assetLoaded;
-                bgImg.onerror = () => {
-                    console.log('Background image not found, will use gradient fallback');
-                    assetLoaded();
-                };
-                
-                // Timeout fallback
-                setTimeout(() => {
-                    if (!assetsLoaded) {
-                        assetsLoaded = true;
-                        assetsLoading = false;
-                        resolve(true);
-                    }
-                }, 2000);
-            });
         }
 
         // Get tomorrow's date for slides
@@ -979,90 +1149,58 @@
             });
         }
 
-        // Get tomorrow's date in DD-MMM-YYYY format
-        function getTomorrowDateFormatted() {
+        // Get formatted date for filenames
+        function getFormattedDate() {
             const tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
             return tomorrow.toLocaleDateString('en-IN', {
                 day: '2-digit',
                 month: 'short',
                 year: 'numeric'
-            }).toUpperCase();
+            }).replace(/ /g, '_').toUpperCase();
         }
 
-        // Create a canvas for slide
-        function createCanvas() {
+        // Create a canvas with background
+        function createCanvasWithBackground() {
             const canvas = document.createElement('canvas');
             canvas.width = 1080;
             canvas.height = 1920;
-            return canvas;
-        }
-
-        // Draw background
-        function drawBackground(ctx) {
-            ctx.clearRect(0, 0, 1080, 1920);
+            const ctx = canvas.getContext('2d');
             
-            if (bgImg.complete && bgImg.naturalWidth > 0) {
-                // Draw background image
-                ctx.drawImage(bgImg, 0, 0, 1080, 1920);
-                // Add dark overlay for readability
-                ctx.fillStyle = 'rgba(15, 23, 42, 0.7)';
-                ctx.fillRect(0, 0, 1080, 1920);
-            } else {
-                // Gradient fallback
-                const gradient = ctx.createLinearGradient(0, 0, 1080, 1920);
-                gradient.addColorStop(0, '#0f172a');
-                gradient.addColorStop(1, '#1e293b');
-                ctx.fillStyle = gradient;
-                ctx.fillRect(0, 0, 1080, 1920);
-                
-                // Add subtle pattern
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
-                for (let i = 0; i < 1080; i += 40) {
-                    for (let j = 0; j < 1920; j += 40) {
-                        if ((i + j) % 80 === 0) {
-                            ctx.fillRect(i, j, 2, 2);
-                        }
+            // Gradient background
+            const gradient = ctx.createLinearGradient(0, 0, 1080, 1920);
+            gradient.addColorStop(0, '#0f172a');
+            gradient.addColorStop(0.5, '#1e293b');
+            gradient.addColorStop(1, '#0f172a');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 1080, 1920);
+            
+            // Add subtle pattern
+            ctx.fillStyle = 'rgba(16, 185, 129, 0.03)';
+            for (let i = 0; i < 1080; i += 40) {
+                for (let j = 0; j < 1920; j += 40) {
+                    if ((i + j) % 80 === 0) {
+                        ctx.fillRect(i, j, 2, 2);
                     }
                 }
             }
+            
+            return { canvas, ctx };
         }
 
-        // Draw logo at top center
-        function drawLogo(ctx) {
-            if (logoImg.complete && logoImg.naturalWidth > 0) {
-                // Calculate logo dimensions (max 200px width)
-                const logoWidth = Math.min(logoImg.width, 200);
-                const logoHeight = (logoImg.height / logoImg.width) * logoWidth;
-                ctx.drawImage(logoImg, 540 - logoWidth/2, 80, logoWidth, logoHeight);
-            } else {
-                // Text fallback for logo
-                ctx.fillStyle = '#10b981';
-                ctx.font = 'bold 60px Arial';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText('DecodeX', 540, 120);
-                
-                ctx.fillStyle = '#94a3b8';
-                ctx.font = 'bold 20px Arial';
-                ctx.fillText('MARKET ANALYSIS', 540, 170);
-            }
-        }
-
-        // Draw text with effects
-        function drawText(ctx, text, x, y, size, color, bold = true, shadow = true) {
+        // Draw styled text
+        function drawStyledText(ctx, text, x, y, size, color, bold = true, align = 'center') {
             ctx.font = `${bold ? 'bold ' : ''}${size}px 'Segoe UI', Arial, sans-serif`;
-            ctx.textAlign = 'center';
+            ctx.textAlign = align;
             ctx.textBaseline = 'middle';
-            
-            if (shadow) {
-                ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
-                ctx.shadowBlur = 10;
-                ctx.shadowOffsetX = 0;
-                ctx.shadowOffsetY = 3;
-            }
-            
             ctx.fillStyle = color;
+            
+            // Add subtle shadow for readability
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+            ctx.shadowBlur = 5;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 2;
+            
             ctx.fillText(text, x, y);
             
             // Reset shadow
@@ -1073,7 +1211,7 @@
         }
 
         // Create rounded rectangle
-        function roundRect(ctx, x, y, width, height, radius) {
+        function drawRoundedRect(ctx, x, y, width, height, radius, fillColor, strokeColor = null) {
             ctx.beginPath();
             ctx.moveTo(x + radius, y);
             ctx.lineTo(x + width - radius, y);
@@ -1085,95 +1223,73 @@
             ctx.lineTo(x, y + radius);
             ctx.quadraticCurveTo(x, y, x + radius, y);
             ctx.closePath();
+            
+            if (fillColor) {
+                ctx.fillStyle = fillColor;
+                ctx.fill();
+            }
+            
+            if (strokeColor) {
+                ctx.strokeStyle = strokeColor;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
         }
 
         // Slide 1: Hook Question
-        async function createSlide1() {
-            await loadAssets();
-            const canvas = createCanvas();
-            const ctx = canvas.getContext('2d');
+        function createSlide1() {
+            const { canvas, ctx } = createCanvasWithBackground();
             
-            drawBackground(ctx);
-            drawLogo(ctx);
+            // Title with emoji
+            drawStyledText(ctx, "🤔 WANT TO KNOW", 540, 350, 65, '#ffffff', true);
+            drawStyledText(ctx, "HOW NIFTY MOVES", 540, 430, 65, '#10b981', true);
             
             // Tomorrow's date
-            const tomorrowDate = getTomorrowDateFormatted();
+            const tomorrowDate = getTomorrowDate();
+            drawStyledText(ctx, "TOMORROW", 540, 550, 50, '#f59e0b', true);
+            drawStyledText(ctx, tomorrowDate, 540, 620, 40, '#94a3b8', false);
             
-            // Animated question marks background
-            ctx.fillStyle = 'rgba(245, 158, 11, 0.1)';
-            ctx.font = 'bold 300px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText('🤔', 540, 500);
-            ctx.fillText('🤔', 200, 800);
-            ctx.fillText('🤔', 880, 1200);
+            // Question with arrows
+            drawStyledText(ctx, "UP OR DOWN?", 540, 750, 70, '#f43f5e', true);
             
-            // Main question with glow
-            ctx.shadowColor = 'rgba(245, 158, 11, 0.5)';
-            ctx.shadowBlur = 30;
-            drawText(ctx, "WANT TO KNOW", 540, 700, 65, '#ffffff', true, false);
-            drawText(ctx, "HOW NIFTY MOVES", 540, 800, 65, '#f59e0b', true, false);
+            // Arrow graphics
+            ctx.fillStyle = '#10b981';
+            ctx.font = 'bold 100px Arial';
+            ctx.fillText('↑', 365, 950);
+            drawStyledText(ctx, "UP", 365, 1050, 45, '#10b981', true);
             
-            // Tomorrow date with special styling
-            ctx.fillStyle = 'rgba(16, 185, 129, 0.2)';
-            roundRect(ctx, 340, 900, 400, 100, 25);
-            ctx.fill();
+            ctx.fillStyle = '#f43f5e';
+            ctx.font = 'bold 100px Arial';
+            ctx.fillText('↓', 715, 950);
+            drawStyledText(ctx, "DOWN", 715, 1050, 45, '#f43f5e', true);
             
-            ctx.shadowColor = 'transparent';
-            drawText(ctx, `TOMORROW ${tomorrowDate}`, 540, 950, 45, '#10b981', true);
-            
-            // UP/DOWN arrows with animation effect
-            ctx.fillStyle = 'rgba(16, 185, 129, 0.15)';
-            roundRect(ctx, 240, 1050, 250, 150, 30);
-            ctx.fill();
-            
-            ctx.fillStyle = 'rgba(244, 63, 94, 0.15)';
-            roundRect(ctx, 590, 1050, 250, 150, 30);
-            ctx.fill();
-            
-            // UP button
-            drawText(ctx, "🚀", 365, 1120, 70, '#10b981', true);
-            drawText(ctx, "UP", 365, 1200, 50, '#10b981', true);
-            
-            // DOWN button
-            drawText(ctx, "📉", 715, 1120, 70, '#f43f5e', true);
-            drawText(ctx, "DOWN", 715, 1200, 50, '#f43f5e', true);
-            
-            // Connecting line with dots
+            // Connecting line
             ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
             ctx.lineWidth = 3;
             ctx.setLineDash([5, 5]);
             ctx.beginPath();
-            ctx.moveTo(490, 1125);
-            ctx.lineTo(590, 1125);
+            ctx.moveTo(490, 950);
+            ctx.lineTo(590, 950);
             ctx.stroke();
             ctx.setLineDash([]);
             
-            // Pulse animation dots
-            ctx.fillStyle = '#f59e0b';
-            for (let i = 0; i < 3; i++) {
-                ctx.beginPath();
-                ctx.arc(540 + (i * 20), 1125, 4, 0, Math.PI * 2);
-                ctx.fill();
-            }
-            
             // Bottom text
-            drawText(ctx, "Swipe for tomorrow's trading plan →", 540, 1500, 30, '#94a3b8', false);
-            drawText(ctx, "Based on FII-DII Data Analysis", 540, 1550, 25, '#94a3b8', false);
+            drawStyledText(ctx, "Swipe for tomorrow's trading plan →", 540, 1300, 35, '#94a3b8', false);
+            drawStyledText(ctx, "Based on FII-DII Data Analysis", 540, 1350, 30, '#94a3b8', false);
+            
+            // Branding
+            drawStyledText(ctx, "DecodeX Market Analysis", 540, 1550, 40, '#10b981', true);
+            drawStyledText(ctx, "Where Data Meets Direction", 540, 1600, 30, '#94a3b8', false);
             
             return canvas;
         }
 
         // Slide 2: Expected Move
-        async function createSlide2() {
-            await loadAssets();
-            const canvas = createCanvas();
-            const ctx = canvas.getContext('2d');
-            
-            drawBackground(ctx);
-            drawLogo(ctx);
+        function createSlide2() {
+            const { canvas, ctx } = createCanvasWithBackground();
             
             // Title
-            drawText(ctx, "EXPECTED MOVE", 540, 300, 75, '#10b981', true);
+            drawStyledText(ctx, "EXPECTED MOVE", 540, 300, 75, '#10b981', true);
             
             // Underline
             ctx.strokeStyle = '#10b981';
@@ -1184,84 +1300,52 @@
             ctx.stroke();
             
             // Data source
-            drawText(ctx, "Based on FII-DII Data Decoding", 540, 450, 35, '#f59e0b', true);
+            drawStyledText(ctx, "Based on FII-DII Data Decoding", 540, 450, 40, '#f59e0b', true);
             
             // Prediction box
             const prediction = finalPredictionEl.textContent;
             const predictionColor = finalPredictionEl.style.color || '#10b981';
             
-            // Glowing effect for prediction
-            ctx.shadowColor = predictionColor;
-            ctx.shadowBlur = 30;
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
-            roundRect(ctx, 240, 550, 600, 180, 40);
-            ctx.fill();
-            ctx.shadowBlur = 0;
+            // Box background
+            drawRoundedRect(ctx, 240, 550, 600, 180, 30, 'rgba(255, 255, 255, 0.1)', predictionColor);
             
             // Prediction text
-            ctx.fillStyle = predictionColor;
-            ctx.font = 'bold 80px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText(prediction.toUpperCase(), 540, 640);
+            drawStyledText(ctx, prediction.toUpperCase(), 540, 640, 80, predictionColor, true);
             
             // Participants section
-            drawText(ctx, "PARTICIPANTS WISE ANALYSIS", 540, 800, 40, '#ffffff', true);
+            drawStyledText(ctx, "Participants Wise Data Decoding", 540, 800, 40, '#ffffff', true);
             
             // Participants grid
             const participants = [
-                {name: 'CLIENT', emoji: '👤'},
-                {name: 'DII', emoji: '🏦'},
-                {name: 'FII', emoji: '🌍'},
-                {name: 'PRO', emoji: '👑'}
+                { name: 'CLIENT', color: '#10b981' },
+                { name: 'DII', color: '#f59e0b' },
+                { name: 'FII', color: '#f43f5e' },
+                { name: 'PRO', color: '#8B5CF6' }
             ];
             
             participants.forEach((p, i) => {
                 const x = 270 + (i % 2) * 540;
-                const y = 900 + Math.floor(i / 2) * 200;
+                const y = 900 + Math.floor(i / 2) * 150;
                 
                 // Participant card
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
-                roundRect(ctx, x - 100, y - 70, 200, 140, 20);
-                ctx.fill();
-                
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-                ctx.lineWidth = 2;
-                roundRect(ctx, x - 100, y - 70, 200, 140, 20);
-                ctx.stroke();
-                
-                // Emoji
-                ctx.font = 'bold 50px Arial';
-                ctx.fillStyle = '#10b981';
-                ctx.fillText(p.emoji, x, y - 20);
+                drawRoundedRect(ctx, x - 120, y - 50, 240, 100, 20, 'rgba(255, 255, 255, 0.05)', p.color);
                 
                 // Name
-                drawText(ctx, p.name, x, y + 40, 35, '#ffffff', true);
+                drawStyledText(ctx, p.name, x, y, 45, p.color, true);
             });
             
-            // Data timestamp
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('en-IN', { 
-                hour: '2-digit', 
-                minute: '2-digit',
-                hour12: true 
-            }).toUpperCase();
-            
-            drawText(ctx, `Data updated: ${timeStr}`, 540, 1350, 25, '#94a3b8', false);
+            // Bottom note
+            drawStyledText(ctx, "Analysis based on institutional data flows", 540, 1350, 30, '#94a3b8', false);
             
             return canvas;
         }
 
         // Slide 3: Support & Resistance
-        async function createSlide3() {
-            await loadAssets();
-            const canvas = createCanvas();
-            const ctx = canvas.getContext('2d');
-            
-            drawBackground(ctx);
-            drawLogo(ctx);
+        function createSlide3() {
+            const { canvas, ctx } = createCanvasWithBackground();
             
             // Title
-            drawText(ctx, "NIFTY LEVELS FOR TOMORROW", 540, 300, 60, '#ffffff', true);
+            drawStyledText(ctx, "NIFTY LEVELS FOR TOMORROW", 540, 300, 60, '#ffffff', true);
             
             // Get levels
             const resElements = document.querySelectorAll('.resistance-value');
@@ -1270,50 +1354,38 @@
             const supLevels = Array.from(supElements).slice(0, 3).map(el => el.textContent);
             
             // Resistance section
-            ctx.fillStyle = 'rgba(244, 63, 94, 0.1)';
-            roundRect(ctx, 100, 450, 400, 500, 30);
-            ctx.fill();
+            drawStyledText(ctx, "RESISTANCE", 300, 450, 55, '#f43f5e', true);
+            drawStyledText(ctx, "🔻 SELL ZONES", 300, 520, 30, '#ff6b8b', false);
             
-            drawText(ctx, "RESISTANCE", 300, 520, 55, '#f43f5e', true);
-            drawText(ctx, "🔻 SELL ZONES", 300, 580, 30, '#ff6b8b', false);
-            
-            // Resistance levels with chart bars
+            // Resistance levels
             resLevels.forEach((level, i) => {
-                const y = 680 + (i * 120);
+                const y = 650 + (i * 120);
                 
-                // Chart bar
-                const barWidth = 200 + (i * 40);
-                ctx.fillStyle = 'rgba(244, 63, 94, 0.3)';
-                ctx.fillRect(200 - barWidth/2, y - 25, barWidth, 50);
+                // Level box
+                drawRoundedRect(ctx, 150, y - 35, 300, 70, 15, 'rgba(244, 63, 94, 0.1)', '#f43f5e');
                 
                 // Level text
-                drawText(ctx, level, 300, y, 55, '#ffffff', true);
+                drawStyledText(ctx, level, 300, y, 55, '#ffffff', true);
                 
                 // Up arrow
                 ctx.fillStyle = '#f43f5e';
                 ctx.font = 'bold 40px Arial';
-                ctx.fillText('↑', 380, y - 5);
+                ctx.fillText('↑', 400, y - 5);
             });
             
             // Support section
-            ctx.fillStyle = 'rgba(16, 185, 129, 0.1)';
-            roundRect(ctx, 580, 450, 400, 500, 30);
-            ctx.fill();
+            drawStyledText(ctx, "SUPPORT", 780, 450, 55, '#10b981', true);
+            drawStyledText(ctx, "🟢 BUY ZONES", 780, 520, 30, '#34d399', false);
             
-            drawText(ctx, "SUPPORT", 780, 520, 55, '#10b981', true);
-            drawText(ctx, "🟢 BUY ZONES", 780, 580, 30, '#34d399', false);
-            
-            // Support levels with chart bars
+            // Support levels
             supLevels.forEach((level, i) => {
-                const y = 680 + (i * 120);
+                const y = 650 + (i * 120);
                 
-                // Chart bar (inverse direction)
-                const barWidth = 200 + ((2 - i) * 40);
-                ctx.fillStyle = 'rgba(16, 185, 129, 0.3)';
-                ctx.fillRect(780 - barWidth/2, y - 25, barWidth, 50);
+                // Level box
+                drawRoundedRect(ctx, 630, y - 35, 300, 70, 15, 'rgba(16, 185, 129, 0.1)', '#10b981');
                 
                 // Level text
-                drawText(ctx, level, 780, y, 55, '#ffffff', true);
+                drawStyledText(ctx, level, 780, y, 55, '#ffffff', true);
                 
                 // Down arrow
                 ctx.fillStyle = '#10b981';
@@ -1322,24 +1394,15 @@
             });
             
             // Trading tip
-            ctx.fillStyle = 'rgba(245, 158, 11, 0.15)';
-            roundRect(ctx, 140, 1000, 800, 120, 25);
-            ctx.fill();
-            
-            drawText(ctx, "💡 TRADING STRATEGY", 540, 1040, 35, '#f59e0b', true);
-            drawText(ctx, "Buy near support | Sell near resistance | Always use stop-loss", 540, 1090, 28, '#ffffff', false);
+            drawStyledText(ctx, "💡 TRADING STRATEGY", 540, 1100, 40, '#f59e0b', true);
+            drawStyledText(ctx, "Buy near support | Sell near resistance | Always use stop-loss", 540, 1150, 30, '#ffffff', false);
             
             return canvas;
         }
 
         // Slide 4: Reversal Timings
-        async function createSlide4() {
-            await loadAssets();
-            const canvas = createCanvas();
-            const ctx = canvas.getContext('2d');
-            
-            drawBackground(ctx);
-            drawLogo(ctx);
+        function createSlide4() {
+            const { canvas, ctx } = createCanvasWithBackground();
             
             // Title with clock
             ctx.font = 'bold 100px Arial';
@@ -1347,21 +1410,21 @@
             ctx.textAlign = 'center';
             ctx.fillText('⏰', 540, 300);
             
-            drawText(ctx, "INTRADAY REVERSAL TIMINGS", 540, 420, 60, '#ffffff', true);
-            drawText(ctx, "NIFTY (15-Min Chart)", 540, 490, 40, '#f59e0b', true);
+            drawStyledText(ctx, "INTRADAY REVERSAL TIMINGS", 540, 420, 60, '#ffffff', true);
+            drawStyledText(ctx, "NIFTY (Expected Time)", 540, 490, 40, '#f59e0b', true);
             
             // Get reversal times
             const timeElements = document.querySelectorAll('.time-value');
             const reversalTimes = Array.from(timeElements).map(el => el.textContent).filter(t => t !== '--:--');
             
-            // Timeline visualization
+            // Timeline
             const startY = 650;
             const spacing = 180;
             
             reversalTimes.forEach((time, i) => {
                 const y = startY + (i * spacing);
                 
-                // Clock circle
+                // Time circle
                 ctx.fillStyle = i % 2 === 0 ? 'rgba(16, 185, 129, 0.15)' : 'rgba(245, 158, 11, 0.15)';
                 ctx.beginPath();
                 ctx.arc(540, y, 80, 0, Math.PI * 2);
@@ -1373,119 +1436,66 @@
                 ctx.arc(540, y, 80, 0, Math.PI * 2);
                 ctx.stroke();
                 
-                // Clock hands (simulated)
-                ctx.strokeStyle = i % 2 === 0 ? '#10b981' : '#f59e0b';
-                ctx.lineWidth = 6;
-                ctx.beginPath();
-                ctx.moveTo(540, y);
-                ctx.lineTo(540 + 50, y - 30);
-                ctx.stroke();
-                
                 // Time text
-                drawText(ctx, time, 540, y, 65, '#ffffff', true);
+                drawStyledText(ctx, time, 540, y, 65, '#ffffff', true);
                 
                 // Point label
-                drawText(ctx, `Reversal Point ${i + 1}`, 540, y + 100, 30, i % 2 === 0 ? '#94a3b8' : '#94a3b8', false);
-                
-                // Connect dots
-                if (i < reversalTimes.length - 1) {
-                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-                    ctx.lineWidth = 2;
-                    ctx.setLineDash([5, 5]);
-                    ctx.beginPath();
-                    ctx.moveTo(540, y + 80);
-                    ctx.lineTo(540, y + spacing - 80);
-                    ctx.stroke();
-                    ctx.setLineDash([]);
-                }
+                drawStyledText(ctx, `Reversal Point ${i + 1}`, 540, y + 100, 30, '#94a3b8', false);
             });
             
-            // Market hours info
-            ctx.fillStyle = 'rgba(148, 163, 184, 0.1)';
-            roundRect(ctx, 240, 1350, 600, 100, 25);
-            ctx.fill();
-            
-            drawText(ctx, "Market Hours: 9:15 AM - 3:30 PM", 540, 1400, 35, '#94a3b8', true);
+            // Market hours
+            drawStyledText(ctx, "Market Hours: 9:15 AM - 3:30 PM", 540, 1450, 40, '#10b981', true);
             
             // Note
-            drawText(ctx, "Watch for price action confirmation at these times", 540, 1500, 25, '#ffffff', false);
-            drawText(ctx, "Based on historical pattern analysis", 540, 1540, 25, '#94a3b8', false);
+            drawStyledText(ctx, "Watch for price action confirmation at these times", 540, 1550, 30, '#94a3b8', false);
             
             return canvas;
         }
 
         // Slide 5: Branding & CTA
-        async function createSlide5() {
-            await loadAssets();
-            const canvas = createCanvas();
-            const ctx = canvas.getContext('2d');
+        function createSlide5() {
+            const { canvas, ctx } = createCanvasWithBackground();
             
-            drawBackground(ctx);
-            drawLogo(ctx);
+            // Logo area
+            drawStyledText(ctx, "DECODEX", 540, 350, 100, '#10b981', true);
+            drawStyledText(ctx, "MARKET ANALYSIS", 540, 450, 40, '#94a3b8', false);
             
             // Tagline
-            drawText(ctx, '"Markets Are Random,', 540, 350, 50, '#f59e0b', true);
-            drawText(ctx, 'Data Isn\'t"', 540, 420, 50, '#10b981', true);
+            drawStyledText(ctx, '"Markets Are Random,', 540, 550, 50, '#f59e0b', true);
+            drawStyledText(ctx, 'Data Isn\'t"', 540, 610, 50, '#10b981', true);
             
-            // Markets covered
-            drawText(ctx, "NIFTY • BANKNIFTY • SENSEX", 540, 520, 55, '#ffffff', true);
+            // Markets
+            drawStyledText(ctx, "NIFTY • BANKNIFTY • SENSEX", 540, 700, 55, '#ffffff', true);
             
-            // Services title
-            drawText(ctx, "DAILY MARKET DECODE 🔍", 540, 620, 45, '#10b981', true);
+            // Services
+            drawStyledText(ctx, "DAILY MARKET DECODE 🔍", 540, 800, 45, '#10b981', true);
             
-            // Services with icons
+            // Services list
             const services = [
-                {icon: '📊', text: 'FII–DII | OI-Analysis'},
-                {icon: '⏰', text: 'Reversal Timings & Levels'},
-                {icon: '🧠', text: 'Pattern Recognition'},
-                {icon: '🌅', text: 'Visit Before Market Open'}
+                "📊 FII–DII Data Decoding",
+                "📈 Nifty | BankNifty | Sensex",
+                "⏱ Intraday Reversal Timings",
+                "🧠 OI & PCR Based Analysis"
             ];
             
             services.forEach((service, i) => {
-                const y = 720 + (i * 120);
-                ctx.font = 'bold 50px Arial';
-                ctx.fillStyle = '#10b981';
-                ctx.fillText(service.icon, 350, y);
-                
-                ctx.font = 'bold 35px Arial';
-                ctx.fillStyle = '#ffffff';
-                ctx.fillText(service.text, 450, y);
+                const y = 900 + (i * 100);
+                drawStyledText(ctx, service, 540, y, 40, '#ffffff', true);
             });
             
-            // CTA Box with glow
-            ctx.shadowColor = '#f43f5e';
-            ctx.shadowBlur = 30;
-            ctx.fillStyle = 'rgba(244, 63, 94, 0.2)';
-            roundRect(ctx, 140, 1250, 800, 150, 40);
-            ctx.fill();
-            ctx.shadowBlur = 0;
+            // CTA
+            drawStyledText(ctx, "SAVE THIS FOR TOMORROW'S TRADING!", 540, 1400, 45, '#f43f5e', true);
             
-            ctx.strokeStyle = '#f43f5e';
-            ctx.lineWidth = 4;
-            roundRect(ctx, 140, 1250, 800, 150, 40);
-            ctx.stroke();
-            
-            drawText(ctx, "💾 SAVE THIS FOR TOMORROW'S TRADING!", 540, 1320, 40, '#f43f5e', true);
-            
-            // Follow section
-            drawText(ctx, "📱 WhatsApp: 8271890090", 540, 1450, 45, '#4ADE80', true);
-            drawText(ctx, "📸 Follow @DecodeXMarket", 540, 1510, 40, '#E4405F', true);
-            
-            // Final note
-            drawText(ctx, "Tomorrow's analysis ready before market opens", 540, 1650, 30, '#94a3b8', false);
-            drawText(ctx, "Share with fellow traders!", 540, 1700, 30, '#f59e0b', true);
+            // Contact info
+            drawStyledText(ctx, "📱 WhatsApp: 8271890090", 540, 1500, 45, '#4ADE80', true);
+            drawStyledText(ctx, "📸 Follow @DecodeXMarket", 540, 1560, 40, '#E4405F', true);
             
             return canvas;
         }
 
         // Slide 6: Disclaimer
-        async function createSlide6() {
-            await loadAssets();
-            const canvas = createCanvas();
-            const ctx = canvas.getContext('2d');
-            
-            drawBackground(ctx);
-            drawLogo(ctx);
+        function createSlide6() {
+            const { canvas, ctx } = createCanvasWithBackground();
             
             // Warning symbol
             ctx.font = 'bold 120px Arial';
@@ -1494,38 +1504,31 @@
             ctx.fillText('⚠️', 540, 300);
             
             // Title
-            drawText(ctx, "IMPORTANT DISCLAIMER", 540, 450, 70, '#f43f5e', true);
+            drawStyledText(ctx, "IMPORTANT DISCLAIMER", 540, 450, 70, '#f43f5e', true);
             
             // Disclaimer box
-            ctx.fillStyle = 'rgba(244, 63, 94, 0.1)';
-            roundRect(ctx, 90, 550, 900, 1000, 40);
-            ctx.fill();
-            
-            ctx.strokeStyle = '#f43f5e';
-            ctx.lineWidth = 4;
-            roundRect(ctx, 90, 550, 900, 1000, 40);
-            ctx.stroke();
+            drawRoundedRect(ctx, 90, 550, 900, 1000, 40, 'rgba(244, 63, 94, 0.1)', '#f43f5e');
             
             // Disclaimer text
             const lines = [
                 "⚠️ I AM NOT SEBI REGISTERED",
                 "",
-                "This is NOT financial advice.",
+                "Any information provided by me",
+                "or DecodeXMarket platform",
+                "(website, social media, etc.)",
                 "",
-                "Information provided is based on",
-                "personal market study and analysis.",
+                "is based on my personal study",
+                "of the market.",
                 "",
-                "DO NOT consider as buy/sell",
-                "recommendations.",
+                "⚠️ THIS IS NOT FINANCIAL ADVICE",
+                "",
+                "DO NOT consider this as any",
+                "buy/sell recommendation.",
                 "",
                 "⚠️ TRADE AT YOUR OWN RISK",
                 "",
-                "Always consult SEBI registered",
-                "financial advisor before trading.",
-                "",
-                "Past performance ≠ Future results",
-                "",
-                "For educational purposes only."
+                "Always consult a SEBI registered",
+                "financial advisor before trading."
             ];
             
             lines.forEach((line, i) => {
@@ -1534,34 +1537,33 @@
                 const color = line.includes('⚠️') ? '#f43f5e' : '#ffffff';
                 const bold = line.includes('⚠️');
                 
-                drawText(ctx, line, 540, y, size, color, bold);
+                drawStyledText(ctx, line, 540, y, size, color, bold);
             });
             
-            // Contact info
-            drawText(ctx, "For queries: WhatsApp 8271890090", 540, 1650, 30, '#94a3b8', false);
-            drawText(ctx, "Visit: DecodeXMarket Platform", 540, 1700, 30, '#10b981', false);
+            // Final note
+            drawStyledText(ctx, "For educational purposes only", 540, 1650, 35, '#94a3b8', true);
             
             return canvas;
         }
 
-        // Download individual slide
-        async function downloadSlide(slideNumber) {
+        // Create individual slide
+        async function createSlide(slideNumber) {
             showNotification(`Creating Slide ${slideNumber}...`, 'info');
             
             let canvas;
             switch(slideNumber) {
-                case 1: canvas = await createSlide1(); break;
-                case 2: canvas = await createSlide2(); break;
-                case 3: canvas = await createSlide3(); break;
-                case 4: canvas = await createSlide4(); break;
-                case 5: canvas = await createSlide5(); break;
-                case 6: canvas = await createSlide6(); break;
+                case 1: canvas = createSlide1(); break;
+                case 2: canvas = createSlide2(); break;
+                case 3: canvas = createSlide3(); break;
+                case 4: canvas = createSlide4(); break;
+                case 5: canvas = createSlide5(); break;
+                case 6: canvas = createSlide6(); break;
                 default: return;
             }
             
             // Download the slide
             const link = document.createElement('a');
-            const dateStr = getTomorrowDateFormatted().replace(/ /g, '_');
+            const dateStr = getFormattedDate();
             link.download = `DecodeX_Slide${slideNumber}_${dateStr}.png`;
             link.href = canvas.toDataURL('image/png');
             document.body.appendChild(link);
@@ -1592,32 +1594,29 @@
                     
                     let canvas;
                     switch(i) {
-                        case 1: canvas = await createSlide1(); break;
-                        case 2: canvas = await createSlide2(); break;
-                        case 3: canvas = await createSlide3(); break;
-                        case 4: canvas = await createSlide4(); break;
-                        case 5: canvas = await createSlide5(); break;
-                        case 6: canvas = await createSlide6(); break;
+                        case 1: canvas = createSlide1(); break;
+                        case 2: canvas = createSlide2(); break;
+                        case 3: canvas = createSlide3(); break;
+                        case 4: canvas = createSlide4(); break;
+                        case 5: canvas = createSlide5(); break;
+                        case 6: canvas = createSlide6(); break;
                     }
                     
                     slides.push({
                         canvas: canvas,
                         number: i,
-                        date: getTomorrowDateFormatted()
+                        date: getFormattedDate()
                     });
                     
                     // Small delay to show progress
                     await new Promise(resolve => setTimeout(resolve, 300));
                 }
                 
-                // Create zip file with all slides
-                processingText.textContent = 'Creating download package...';
-                
-                // Download each slide individually (browser limitation)
+                // Download each slide
                 for (let i = 0; i < slides.length; i++) {
                     const slide = slides[i];
                     const link = document.createElement('a');
-                    link.download = `DecodeX_Slide${slide.number}_${slide.date.replace(/ /g, '_')}.png`;
+                    link.download = `DecodeX_Slide${slide.number}_${slide.date}.png`;
                     link.href = slide.canvas.toDataURL('image/png');
                     document.body.appendChild(link);
                     
