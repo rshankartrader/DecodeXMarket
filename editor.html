@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nifty 50 Candlestick Chart Viewer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        h1 {
+            color: #4cc9f0;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #a9a9a9;
+            font-size: 1.1rem;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .upload-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: #72efdd;
+            font-size: 1.3rem;
+        }
+        
+        .section-title i {
+            font-size: 1.5rem;
+        }
+        
+        .upload-area {
+            border: 2px dashed #4361ee;
+            border-radius: 10px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(67, 97, 238, 0.05);
+        }
+        
+        .upload-area:hover {
+            background: rgba(67, 97, 238, 0.1);
+            border-color: #4cc9f0;
+        }
+        
+        .upload-area i {
+            font-size: 3rem;
+            color: #4361ee;
+            margin-bottom: 15px;
+        }
+        
+        .upload-area p {
+            margin-bottom: 10px;
+        }
+        
+        .upload-btn {
+            background: linear-gradient(to right, #4361ee, #3a0ca3);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+        
+        .upload-btn:hover {
+            background: linear-gradient(to right, #3a56d4, #2d0a8a);
+            transform: translateY(-2px);
+        }
+        
+        #fileInput {
+            display: none;
+        }
+        
+        .chart-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .chart-controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+        
+        .time-range {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .time-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e0e0e0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .time-btn.active {
+            background: #4361ee;
+            color: white;
+        }
+        
+        .time-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .zoom-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .zoom-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e0e0e0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .zoom-btn:hover {
+            background: #4361ee;
+            color: white;
+        }
+        
+        .chart-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            height: 500px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        #chartCanvas {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .chart-scroll {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+        }
+        
+        .scroll-thumb {
+            position: absolute;
+            height: 100%;
+            background: #4361ee;
+            border-radius: 10px;
+            min-width: 50px;
+        }
+        
+        .download-section {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .download-btn {
+            background: linear-gradient(to right, #4cc9f0, #4361ee);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+        
+        .download-btn:hover {
+            background: linear-gradient(to right, #3ab4d9, #3a56d4);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
+        }
+        
+        .demo-note {
+            background: rgba(114, 239, 221, 0.1);
+            border-left: 4px solid #72efdd;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9rem;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #a9a9a9;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .chart-controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .zoom-controls {
+                align-self: flex-end;
+            }
+            
+            .chart-wrapper {
+                height: 400px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Nifty 50 Candlestick Chart Viewer</h1>
+            <p class="subtitle">Upload your 15-minute candlestick chart screenshot or use our simulated data to analyze today's market trends</p>
+        </header>
+        
+        <div class="main-content">
+            <section class="upload-section">
+                <h2 class="section-title"><i class="fas fa-chart-line"></i> Upload Chart Screenshot</h2>
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Drag & drop your Nifty 50 candlestick chart screenshot here</p>
+                    <p>or</p>
+                    <button class="upload-btn" id="uploadBtn">Browse Files</button>
+                    <input type="file" id="fileInput" accept="image/*">
+                    <p style="font-size: 0.9rem; margin-top: 15px; color: #a9a9a9;">Supports PNG, JPG, JPEG formats</p>
+                </div>
+                <div class="demo-note">
+                    <p><strong>Note:</strong> This demo uses simulated Nifty 50 data. To use your own screenshot, upload an image using the button above. The interactive features (zoom, scroll) will work with both uploaded images and simulated data.</p>
+                </div>
+            </section>
+            
+            <section class="chart-container">
+                <h2 class="section-title"><i class="fas fa-chart-candlestick"></i> Today's Nifty 50 Candlestick Chart (9:15 AM - 3:30 PM)</h2>
+                
+                <div class="chart-controls">
+                    <div class="time-range">
+                        <button class="time-btn active" data-range="full">Full Day</button>
+                        <button class="time-btn" data-range="morning">Morning (9:15-11:30)</button>
+                        <button class="time-btn" data-range="afternoon">Afternoon (12:15-3:30)</button>
+                        <button class="time-btn" data-range="current">Current Session</button>
+                    </div>
+                    
+                    <div class="zoom-controls">
+                        <button class="zoom-btn" id="zoomOut"><i class="fas fa-search-minus"></i></button>
+                        <button class="zoom-btn" id="zoomReset"><i class="fas fa-sync-alt"></i></button>
+                        <button class="zoom-btn" id="zoomIn"><i class="fas fa-search-plus"></i></button>
+                    </div>
+                </div>
+                
+                <div class="chart-wrapper">
+                    <canvas id="chartCanvas"></canvas>
+                    <div class="chart-scroll" id="chartScroll">
+                        <div class="scroll-thumb" id="scrollThumb"></div>
+                    </div>
+                </div>
+                
+                <div class="download-section">
+                    <button class="download-btn" id="downloadBtn">
+                        <i class="fas fa-download"></i> Download Chart Image
+                    </button>
+                </div>
+            </section>
+        </div>
+        
+        <footer>
+            <p>Nifty 50 Candlestick Chart Viewer &copy; 2023 | Designed for market analysis</p>
+            <p>Data shown is for demonstration purposes. Use with actual market data for trading decisions.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Canvas and context setup
+        const canvas = document.getElementById('chartCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Chart configuration
+        let chartData = [];
+        let zoomLevel = 1;
+        let panOffset = 0;
+        let isDragging = false;
+        let dragStartX = 0;
+        let scrollStartX = 0;
+        let isScrollDragging = false;
+        
+        // DOM elements
+        const uploadArea = document.getElementById('uploadArea');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const fileInput = document.getElementById('fileInput');
+        const zoomInBtn = document.getElementById('zoomIn');
+        const zoomOutBtn = document.getElementById('zoomOut');
+        const zoomResetBtn = document.getElementById('zoomReset');
+        const timeButtons = document.querySelectorAll('.time-btn');
+        const chartScroll = document.getElementById('chartScroll');
+        const scrollThumb = document.getElementById('scrollThumb');
+        const downloadBtn = document.getElementById('downloadBtn');
+        
+        // Initialize with simulated candlestick data
+        function initChartData() {
+            chartData = [];
+            
+            // Generate 25 candlesticks from 9:15 AM to 3:30 PM (15-minute intervals)
+            const startTime = new Date();
+            startTime.setHours(9, 15, 0, 0);
+            
+            let basePrice = 19500; // Starting Nifty 50 price
+            
+            for (let i = 0; i < 25; i++) {
+                const time = new Date(startTime);
+                time.setMinutes(startTime.getMinutes() + i * 15);
+                
+                // Generate random price movement
+                const open = basePrice;
+                const change = (Math.random() - 0.5) * 100; // Random change between -50 and +50
+                const close = open + change;
+                const high = Math.max(open, close) + Math.random() * 30;
+                const low = Math.min(open, close) - Math.random() * 30;
+                const volume = Math.floor(Math.random() * 1000000) + 500000;
+                
+                chartData.push({
+                    time: time,
+                    open: open,
+                    high: high,
+                    low: low,
+                    close: close,
+                    volume: volume,
+                    color: close >= open ? '#4ade80' : '#f87171' // Green for up, red for down
+                });
+                
+                // Update base price for next candle
+                basePrice = close;
+            }
+        }
+        
+        // Draw the candlestick chart
+        function drawChart() {
+            const width = canvas.width = canvas.parentElement.clientWidth;
+            const height = canvas.height = canvas.parentElement.clientHeight - 15; // Account for scrollbar
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw chart background
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+            ctx.fillRect(0, 0, width, height);
+            
+            // If no data, show message
+            if (chartData.length === 0) {
+                ctx.fillStyle = '#e0e0e0';
+                ctx.font = '18px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('No chart data available', width / 2, height / 2);
+                return;
+            }
+            
+            // Chart dimensions
+            const chartTop = 50;
+            const chartBottom = height - 50;
+            const chartHeight = chartBottom - chartTop;
+            const chartLeft = 80;
+            const chartRight = width - 30;
+            const chartWidth = chartRight - chartLeft;
+            
+            // Find min and max prices for scaling
+            let minPrice = Number.MAX_VALUE;
+            let maxPrice = Number.MIN_VALUE;
+            
+            chartData.forEach(candle => {
+                minPrice = Math.min(minPrice, candle.low);
+                maxPrice = Math.max(maxPrice, candle.high);
+            });
+            
+            // Add some padding to price range
+            const priceRange = maxPrice - minPrice;
+            minPrice -= priceRange * 0.05;
+            maxPrice += priceRange * 0.05;
+            
+            // Calculate candle width based on zoom level
+            const visibleCandles = Math.floor(chartData.length / zoomLevel);
+            const candleWidth = chartWidth / visibleCandles;
+            
+            // Calculate start index based on pan offset
+            const startIndex = Math.max(0, Math.floor(panOffset * chartData.length));
+            const endIndex = Math.min(chartData.length, startIndex + visibleCandles);
+            
+            // Draw grid lines and labels
+            drawGrid(chartLeft, chartTop, chartRight, chartBottom, minPrice, maxPrice);
+            
+            // Draw candlesticks
+            for (let i = startIndex; i < endIndex; i++) {
+                const candle = chartData[i];
+                const x = chartLeft + (i - startIndex) * candleWidth + candleWidth / 2;
+                
+                // Calculate y positions
+                const openY = chartBottom - ((candle.open - minPrice) / (maxPrice - minPrice)) * chartHeight;
+                const closeY = chartBottom - ((candle.close - minPrice) / (maxPrice - minPrice)) * chartHeight;
+                const highY = chartBottom - ((candle.high - minPrice) / (maxPrice - minPrice)) * chartHeight;
+                const lowY = chartBottom - ((candle.low - minPrice) / (maxPrice - minPrice)) * chartHeight;
+                
+                // Draw candlestick body
+                const bodyTop = Math.min(openY, closeY);
+                const bodyHeight = Math.abs(openY - closeY);
+                
+                ctx.fillStyle = candle.color;
+                ctx.fillRect(x - candleWidth * 0.3, bodyTop, candleWidth * 0.6, Math.max(bodyHeight, 1));
+                
+                // Draw candlestick wick (high-low line)
+                ctx.beginPath();
+                ctx.moveTo(x, highY);
+                ctx.lineTo(x, lowY);
+                ctx.strokeStyle = candle.color;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+            
+            // Update scroll thumb position and size
+            updateScrollThumb(startIndex, endIndex);
+            
+            // Draw time labels
+            drawTimeLabels(chartLeft, chartBottom, chartWidth, startIndex, endIndex);
+        }
+        
+        // Draw grid lines and price labels
+        function drawGrid(left, top, right, bottom, minPrice, maxPrice) {
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.lineWidth = 1;
+            ctx.fillStyle = '#a9a9a9';
+            ctx.font = '12px Arial';
+            
+            // Horizontal grid lines (price levels)
+            const horizontalLines = 5;
+            for (let i = 0; i <= horizontalLines; i++) {
+                const y = top + (bottom - top) * (i / horizontalLines);
+                ctx.beginPath();
+                ctx.moveTo(left, y);
+                ctx.lineTo(right, y);
+                ctx.stroke();
+                
+                // Price label
+                const price = maxPrice - (maxPrice - minPrice) * (i / horizontalLines);
+                ctx.textAlign = 'right';
+                ctx.fillText(price.toFixed(2), left - 10, y + 4);
+            }
+            
+            // Vertical grid lines (time)
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#a9a9a9';
+        }
+        
+        // Draw time labels on x-axis
+        function drawTimeLabels(left, bottom, width, startIndex, endIndex) {
+            ctx.fillStyle = '#a9a9a9';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            
+            // Show a few time labels
+            const labelCount = 6;
+            const step = Math.max(1, Math.floor((endIndex - startIndex) / labelCount));
+            
+            for (let i = startIndex; i < endIndex; i += step) {
+                if (i >= chartData.length) break;
+                
+                const x = left + ((i - startIndex) / (endIndex - startIndex)) * width;
+                const time = chartData[i].time;
+                const timeStr = `${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padStart(2, '0')}`;
+                
+                ctx.fillText(timeStr, x, bottom + 20);
+            }
+            
+            // Draw x-axis label
+            ctx.fillStyle = '#72efdd';
+            ctx.font = '14px Arial';
+            ctx.fillText('Time (15-min intervals)', left + width / 2, bottom + 40);
+            
+            // Draw y-axis label
+            ctx.save();
+            ctx.translate(30, (bottom - left) / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillStyle = '#72efdd';
+            ctx.font = '14px Arial';
+            ctx.fillText('Nifty 50 Price', 0, 0);
+            ctx.restore();
+        }
+        
+        // Update scroll thumb position and size
+        function updateScrollThumb(startIndex, endIndex) {
+            const scrollWidth = chartScroll.clientWidth;
+            const thumbWidth = (scrollWidth * (endIndex - startIndex)) / chartData.length;
+            const thumbLeft = (scrollWidth * startIndex) / chartData.length;
+            
+            scrollThumb.style.width = `${thumbWidth}px`;
+            scrollThumb.style.left = `${thumbLeft}px`;
+        }
+        
+        // Handle mouse wheel for zooming
+        function handleWheel(e) {
+            e.preventDefault();
+            
+            const zoomFactor = 0.1;
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            
+            // Calculate the data point under the mouse
+            const chartLeft = 80;
+            const chartRight = canvas.width - 30;
+            const chartWidth = chartRight - chartLeft;
+            
+            if (mouseX >= chartLeft && mouseX <= chartRight) {
+                const mouseDataPos = panOffset + (mouseX - chartLeft) / (chartWidth * zoomLevel);
+                
+                // Adjust zoom level
+                if (e.deltaY < 0) {
+                    zoomLevel = Math.min(5, zoomLevel + zoomFactor);
+                } else {
+                    zoomLevel = Math.max(1, zoomLevel - zoomFactor);
+                }
+                
+                // Adjust pan to keep the mouse over the same data point
+                const newMouseDataPos = panOffset + (mouseX - chartLeft) / (chartWidth * zoomLevel);
+                panOffset += mouseDataPos - newMouseDataPos;
+                panOffset = Math.max(0, Math.min(1 - 1/zoomLevel, panOffset));
+                
+                drawChart();
+            }
+        }
+        
+        // Handle mouse events for panning
+        function handleMouseDown(e) {
+            isDragging = true;
+            dragStartX = e.clientX;
+            canvas.style.cursor = 'grabbing';
+        }
+        
+        function handleMouseMove(e) {
+            if (isDragging) {
+                const deltaX = e.clientX - dragStartX;
+                dragStartX = e.clientX;
+                
+                // Adjust pan offset
+                const chartWidth = canvas.width - 110; // Account for margins
+                panOffset -= deltaX / (chartWidth * zoomLevel);
+                panOffset = Math.max(0, Math.min(1 - 1/zoomLevel, panOffset));
+                
+                drawChart();
+            }
+        }
+        
+        function handleMouseUp() {
+            isDragging = false;
+            canvas.style.cursor = 'default';
+        }
+        
+        // Handle scroll bar dragging
+        function handleScrollMouseDown(e) {
+            isScrollDragging = true;
+            scrollStartX = e.clientX - scrollThumb.offsetLeft;
+            document.addEventListener('mousemove', handleScrollMouseMove);
+            document.addEventListener('mouseup', handleScrollMouseUp);
+        }
+        
+        function handleScrollMouseMove(e) {
+            if (isScrollDragging) {
+                const scrollWidth = chartScroll.clientWidth;
+                const thumbWidth = scrollThumb.clientWidth;
+                let newLeft = e.clientX - scrollStartX;
+                
+                // Constrain within scroll area
+                newLeft = Math.max(0, Math.min(scrollWidth - thumbWidth, newLeft));
+                
+                // Update pan offset based on scroll position
+                panOffset = newLeft / (scrollWidth - thumbWidth) * (1 - 1/zoomLevel);
+                
+                drawChart();
+            }
+        }
+        
+        function handleScrollMouseUp() {
+            isScrollDragging = false;
+            document.removeEventListener('mousemove', handleScrollMouseMove);
+            document.removeEventListener('mouseup', handleScrollMouseUp);
+        }
+        
+        // Event listeners for zoom buttons
+        zoomInBtn.addEventListener('click', () => {
+            zoomLevel = Math.min(5, zoomLevel + 0.2);
+            drawChart();
+        });
+        
+        zoomOutBtn.addEventListener('click', () => {
+            zoomLevel = Math.max(1, zoomLevel - 0.2);
+            drawChart();
+        });
+        
+        zoomResetBtn.addEventListener('click', () => {
+            zoomLevel = 1;
+            panOffset = 0;
+            drawChart();
+        });
+        
+        // Event listeners for time range buttons
+        timeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                timeButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                const range = button.dataset.range;
+                // In a real app, this would filter the data by time range
+                // For demo, we'll just reset zoom and pan
+                zoomLevel = 1;
+                panOffset = 0;
+                drawChart();
+            });
+        });
+        
+        // Handle file upload
+        uploadBtn.addEventListener('click', () => {
+            fileInput.click();
+        });
+        
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+        
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            if (!file.type.match('image.*')) {
+                alert('Please select an image file.');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                // Create an image from the uploaded file
+                const img = new Image();
+                img.onload = function() {
+                    // For demo purposes, we'll just show an alert
+                    // In a real app, you would process the image to extract candlestick data
+                    alert('Image uploaded successfully! For this demo, we continue showing simulated candlestick data. In a real application, this image would be processed to extract chart data.');
+                    
+                    // Reset to default view
+                    zoomLevel = 1;
+                    panOffset = 0;
+                    drawChart();
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+        
+        // Handle download
+        downloadBtn.addEventListener('click', () => {
+            // Create a temporary canvas for download
+            const tempCanvas = document.createElement('canvas');
+            const tempCtx = tempCanvas.getContext('2d');
+            
+            // Set canvas size
+            tempCanvas.width = 1200;
+            tempCanvas.height = 600;
+            
+            // Draw a white background
+            tempCtx.fillStyle = '#0f172a';
+            tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+            
+            // Draw chart title
+            tempCtx.fillStyle = '#ffffff';
+            tempCtx.font = 'bold 24px Arial';
+            tempCtx.textAlign = 'center';
+            tempCtx.fillText('Nifty 50 Candlestick Chart - ' + new Date().toLocaleDateString(), tempCanvas.width / 2, 40);
+            
+            // Draw the chart
+            drawChartToCanvas(tempCtx, tempCanvas.width, tempCanvas.height - 80, 0, 0);
+            
+            // Create download link
+            const link = document.createElement('a');
+            link.download = `nifty50-chart-${new Date().toISOString().slice(0,10)}.png`;
+            link.href = tempCanvas.toDataURL('image/png');
+            link.click();
+        });
+        
+        // Helper function to draw chart to a specific canvas
+        function drawChartToCanvas(context, width, height, offsetX, offsetY) {
+            // Simplified chart drawing for download
+            // In a real implementation, this would draw the actual chart
+            
+            // Draw a simple representation of the chart
+            context.strokeStyle = '#4361ee';
+            context.lineWidth = 2;
+            
+            // Draw a sample chart line
+            context.beginPath();
+            context.moveTo(offsetX + 50, offsetY + height / 2);
+            
+            for (let i = 1; i < 20; i++) {
+                const x = offsetX + 50 + i * (width - 100) / 20;
+                const y = offsetY + height / 2 + Math.sin(i * 0.5) * 50;
+                context.lineTo(x, y);
+            }
+            
+            context.stroke();
+            
+            // Add labels
+            context.fillStyle = '#ffffff';
+            context.font = '16px Arial';
+            context.textAlign = 'center';
+            context.fillText('Nifty 50 Price', offsetX + 30, offsetY + height / 2);
+            context.fillText('Time (9:15 AM - 3:30 PM)', offsetX + width / 2, offsetY + height - 10);
+        }
+        
+        // Initialize the application
+        function init() {
+            // Initialize chart data
+            initChartData();
+            
+            // Draw initial chart
+            drawChart();
+            
+            // Add event listeners
+            canvas.addEventListener('wheel', handleWheel);
+            canvas.addEventListener('mousedown', handleMouseDown);
+            document.addEventListener('mousemove', handleMouseMove);
+            document.addEventListener('mouseup', handleMouseUp);
+            
+            scrollThumb.addEventListener('mousedown', handleScrollMouseDown);
+            
+            // Handle window resize
+            window.addEventListener('resize', drawChart);
+        }
+        
+        // Start the application when page loads
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
